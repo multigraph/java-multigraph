@@ -1,0 +1,156 @@
+<!--
+
+attribute value types:
+
+DataValue.Type
+integer
+string
+DPoint
+double
+DataValue
+DataRange
+AutoDataValue
+RGBColor
+boolean
+
+-->
+<mugl>
+  <graph>
+    <debug xcolor="0xffffff" xwidth="1.0"/>
+    <background color="0xffffff"/>
+    <window
+        margin="2"
+        border="2"
+        padding="5"
+        bordercolor="0x000000">
+    </window>
+    <legend
+        visible="auto"
+        frame="plot"
+        base="1 1"
+        anchor="1 1"
+        position="0 0"
+        columns="-1"
+        rows="-1"
+        border="1"
+        round="false"
+        radius="15"
+        color="0xffffff"
+        bordercolor= "0x000000"
+        opacity="1"
+        padding="0">
+      <icon
+          width="40"
+          height="30"
+          border="1">
+      </icon>
+    </legend>
+    <title
+        frame="padding"
+        base="0 1"
+        anchor="0 1"
+        position="0 0"
+        border="0"
+        color="0xffffff"
+        bordercolor="0x000000"
+        opacity="1"
+        round="false"
+        radius="15"
+        padding="0"
+        fontsize="18">
+    </title>
+    <plotarea
+        border="0"
+        bordercolor="0xeeeeee"
+        marginbottom="35"
+        marginleft="38"
+        margintop="10"
+        marginright="35">
+    </plotarea>
+    <axis
+        type="number"
+        position="0"
+        positionbase="left"
+        base="-1 -1"
+        anchor="-1"
+        length="1"
+        pregap="0"
+        postgap="0"
+        min="auto"
+        minposition="-1"
+        max="auto"
+        maxposition="1"
+        linewidth="1"
+        color="0x000000"
+        tickmin="-3"
+        tickmax="3"
+        highlightstyle="axis">
+      <title
+          fontname="default"
+          fontsize="12"
+          fontcolor="0x000000"
+          angle="0"
+          position="0 0"
+          anchor="0 0"
+          position_horiz_top="0 15"
+          position_horiz_bot="0 -18"
+          position_vert_right="33 0"
+          position_vert_left="-25 0"
+          anchor_horiz_top="0 -1"
+          anchor_horiz_bot="0 1"
+          anchor_vert_right="-1 0"
+          anchor_vert_left="1 0">
+      </title>
+      <labels
+          fontname="default"
+          fontsize="12"
+          fontcolor="0x000000"
+          format="%1d"
+          start="0"
+          angle="0"
+          position_horiz_top="0 5"
+          position_horiz_bot="0 -5"
+          position_vert_right="5 0"
+          position_vert_left="-8 0"
+          anchor_horiz_top="0 -1"
+          anchor_horiz_bot="0 1"
+          anchor_vert_right="-1 0"
+          anchor_vert_left="1 0"
+          spacing="10000 5000 2000 1000 500 200 100 50 20 10 5 2 1 0.1 0.01 0.001">
+      </labels>
+      <grid
+          color="0xeeeeee"
+          visible="false">
+      </grid>
+      <pan
+          allowed="yes">
+        <!-- min="null" -->
+        <!-- max="null" -->
+      </pan>
+      <zoom 
+          allowed="yes">
+        <!-- anchor="null" -->
+        <!-- in="null" -->
+        <!-- out="null" -->
+      </zoom>
+    </axis>
+    <plot>
+      <legend label="" visible="true"/>
+      <horizontalaxis ref="">
+        <variable ref=""/>
+      </horizontalaxis>
+      <verticalaxis ref="">
+        <variable ref=""/>
+      </verticalaxis>
+      <renderer type="line">
+      </renderer>
+    </plot>
+      <data>
+        <variables missingvalue="" missingop="">
+          <variable type="number"/>
+        </variables>
+        <values>
+        </values>
+      </data>
+  </graph>
+</mugl>

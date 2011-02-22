@@ -1,0 +1,58 @@
+#! /usr/bin/perl
+
+
+doit("boolean",   "allowed");
+doit("double",    "min");
+doit("double",    "max");
+doit("DataValue", "anchor");
+
+#doit("String", "fontname");
+#doit("int",    "fontsize");
+#doit("RGBColor", "color");
+#doit("double", "angle");
+#doit("DPoint", "position");
+#doit("DPoint", "anchor");
+
+#doit("String", "positionbase");
+#doit("DPoint", "base");
+#doit("double", "anchor");
+#doit("double", "length");
+#doit("int", "pregap");
+#doit("int", "postgap");
+#doit("int", "minposition");
+#doit("int", "maxposition");
+
+#doit("Type", "type");
+#doit("DataValue", "min");
+#doit("DataValue", "max");
+#doit("int", "tickmin");
+#doit("int", "tickmax");
+#doit("String", "highlightstyle");
+#doit("int", "linewidth");
+#doit("String", "id");
+#doit("int", "position");
+
+sub doit {
+    my $type = shift;
+    my $prop = shift;
+    my $Prop = ucfirst($prop);
+
+print <<EOF
+	public $type get$Prop() {
+		return $prop;
+	}
+	public void set$Prop($type $prop) {
+		this.$prop = $prop;
+	}
+	public void set$Prop($type $prop, boolean isDefault) {
+        set$Prop($prop);
+        this.${prop}IsDefault = isDefault;
+        this.${prop}IsSet     = true;
+    }
+    public void have$Prop() {
+        return ${prop}IsSet;
+    }
+EOF
+;
+}
+

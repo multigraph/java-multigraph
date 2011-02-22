@@ -1,0 +1,842 @@
+#! /usr/bin/perl
+
+makebean({
+    'class' => "org.multigraph.Mugl",
+    'tag' => "mugl",
+    'subelements' => [
+        { 'tag' => 'graph',           'type' => 'org.multigraph.mugl.Graph',  'name' => 'graphs',  'array' => 1 },
+        ]
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.Graph",
+    'tag'         => "graph",
+    'parentclass' => "org.multigraph.Mugl",
+    'attributes' => [
+        { 'name' => "x",         "type" => "int",   'nullallowed' => 1 },
+        { 'name' => "y",         "type" => "int",   'nullallowed' => 1 },
+        { 'name' => "width",     "type" => "int",   'nullallowed' => 1 },
+        { 'name' => "height",    "type" => "int",   'nullallowed' => 1 },
+        ],
+    'subelements' => [
+        { 'tag' => 'background',      'type' => 'org.multigraph.mugl.graph.Background' },
+        { 'tag' => 'debug',           'type' => 'org.multigraph.mugl.graph.Debug'      },
+        { 'tag' => 'window',          'type' => 'org.multigraph.mugl.graph.Window'     },
+        { 'tag' => 'legend',          'type' => 'org.multigraph.mugl.graph.Legend'     },
+        { 'tag' => 'title',           'type' => 'org.multigraph.mugl.graph.Title'      },
+        { 'tag' => 'plotarea',        'type' => 'org.multigraph.mugl.graph.Plotarea'   },
+        { 'tag' => 'horizontalaxis',  'type' => 'org.multigraph.mugl.graph.Axis',  'defaultstag' => 'axis',
+          'name' => 'haxes',   'array' => 1, 'parseargs' => 'org.multigraph.mugl.graph.Axis.Orientation.HORIZONTAL' },
+        { 'tag' => 'verticalaxis',    'type' => 'org.multigraph.mugl.graph.Axis',  'defaultstag' => 'axis',
+          'name' => 'vaxes',   'array' => 1, 'parseargs' => 'org.multigraph.mugl.graph.Axis.Orientation.VERTICAL'   },
+        { 'tag' => 'plot',            'type' => 'org.multigraph.mugl.graph.Plot',  'name' => 'plots',   'array' => 1 },
+        { 'tag' => 'data',            'type' => 'org.multigraph.mugl.graph.Data',  'name' => 'datas',   'array' => 1 },
+        ]
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.Debug",
+    'tag'         => "debug",
+    'parentclass' => "org.multigraph.mugl.Graph",
+    'attributes' => [
+        { 'name' => "xcolor",     "type" => "RGBColor" },
+        { 'name' => "xwidth",     "type" => "double"   }
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.Background",
+    'tag'         => "background",
+    'parentclass' => "org.multigraph.mugl.Graph",
+    'attributes' => [
+        { 'name' => "color",     "type" => "RGBColor" },
+        ],
+    'subelements' => [
+        {'tag' => 'img',          'type' => 'org.multigraph.mugl.graph.background.Img' },
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.background.Img",
+    'tag'         => "img",
+    'parentclass' => "org.multigraph.mugl.graph.Background",
+    'attributes' => [
+        { 'name' => 'frame',           'type' => 'String' },
+        { 'name' => 'anchor',          'type' => 'DPoint' },
+        { 'name' => 'base',            'type' => 'DPoint' },
+        { 'name' => 'position',        'type' => 'DPoint' },
+        { 'name' => 'src',             'type' => 'String' }
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.Window",
+    'tag'         => "window",
+    'parentclass' => "org.multigraph.mugl.Graph",
+    'attributes' => [
+        { 'name' => "margin",    "type" => "int" },
+        { 'name' => "border",    "type" => "int" },
+        { 'name' => "bordercolor",  "type" => "RGBColor" },
+        { 'name' => "padding",   "type" => "int" },
+        { 'name' => "width",     "type" => "int",   'nullallowed' => 1 },
+        { 'name' => "height",    "type" => "int",   'nullallowed' => 1 },
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.Legend",
+    'tag'         => "legend",
+    'parentclass' => "org.multigraph.mugl.Graph",
+    'attributes' => [
+        { 'name' => 'visible',       'type' => 'String'      },
+        { 'name' => 'frame',         'type' => 'String'      },
+        { 'name' => 'base',          'type' => 'DPoint'      },
+        { 'name' => 'anchor',        'type' => 'DPoint'      },
+        { 'name' => 'position',      'type' => 'DPoint'      },
+        { 'name' => 'columns',       'type' => 'int'         },
+        { 'name' => 'rows',          'type' => 'int'         },
+        { 'name' => 'border',        'type' => 'int'         },
+        { 'name' => 'round',         'type' => 'boolean'     },
+        { 'name' => 'radius',        'type' => 'int'         },
+        { 'name' => 'color',         'type' => 'RGBColor'    },
+        { 'name' => 'bordercolor',   'type' => 'RGBColor'    },
+        { 'name' => 'opacity',       'type' => 'double'      },
+        { 'name' => 'padding',       'type' => 'int'         },
+        ],
+    'subelements' => [
+        { 'tag' => 'icon',          'type' => 'org.multigraph.mugl.graph.legend.Icon'    },
+        ]
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.legend.Icon",
+    'tag'         => "icon",
+    'parentclass' => "org.multigraph.mugl.graph.Legend",
+    'attributes' => [
+        { 'name' => 'border',         'type' =>  'int'      },
+        { 'name' => 'width',          'type' =>  'int'      },
+        { 'name' => 'height',         'type' =>  'int'      }
+        ],
+         });
+
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.Title",
+    'tag'         => "title",
+    'parentclass' => "org.multigraph.mugl.Graph",
+    'attributes' => [
+        { 'name' => 'frame',           'type' => 'String'      },
+        { 'name' => 'base',            'type' => 'DPoint'      },
+        { 'name' => 'anchor',          'type' => 'DPoint'      },
+        { 'name' => 'position',        'type' => 'DPoint'      },
+        { 'name' => 'border',          'type' => 'int'         },
+        { 'name' => 'color',           'type' => 'RGBColor'    },
+        { 'name' => 'bordercolor',     'type' => 'RGBColor'    },
+        { 'name' => 'opacity',         'type' => 'double'      },
+        { 'name' => 'round',           'type' => 'boolean'     },
+        { 'name' => 'radius',          'type' => 'int'         },
+        { 'name' => 'padding',         'type' => 'int'         },         
+        { 'name' => 'fontsize',        'type' => 'int'         },    
+        ],
+        'textname'    => 'text',
+         });
+
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.Plotarea",
+    'tag'         => "plotarea",
+    'parentclass' => "org.multigraph.mugl.Graph",
+    'attributes' => [
+        { 'name' => 'border',         'type' =>  'int'      },
+        { 'name' => 'bordercolor',    'type' =>  'RGBColor' },
+        { 'name' => 'marginbottom',   'type' =>  'int'      },
+        { 'name' => 'marginleft',     'type' =>  'int'      },
+        { 'name' => 'margintop',      'type' =>  'int'      },
+        { 'name' => 'marginright',    'type' =>  'int'      },
+        ],
+         });
+
+makebean({
+    'class'       => 'org.multigraph.mugl.graph.Axis',
+    'tag'         => 'axis',
+    'parentclass' => 'org.multigraph.mugl.Graph',
+    'preamble' => <<EOF
+    public static enum Orientation { HORIZONTAL, VERTICAL };
+
+    public static String OrientationToString(Orientation orientation) {
+        if (orientation == org.multigraph.mugl.graph.Axis.Orientation.HORIZONTAL) { return "horizontalaxis"; }
+        if (orientation == org.multigraph.mugl.graph.Axis.Orientation.VERTICAL)   { return "verticalaxis"; }
+        return null;
+    }
+
+    private Orientation orientation;
+    public Orientation getOrientation() {
+        return orientation;
+    }
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
+EOF
+    ,
+
+    'parseargs' => "Orientation orientation",
+
+    'initsteps' => "axis.setOrientation(orientation);",
+
+    'tagexpr'   => "OrientationToString(orientation)",
+
+    'attributes' => [
+        { 'name' => 'type',           'type' => 'DataValue.Type' },
+        { 'name' => 'min',            'type' => 'String'         },
+        { 'name' => 'max',            'type' => 'String'         },
+        { 'name' => 'tickmin',        'type' => 'int'            },
+        { 'name' => 'tickmax',        'type' => 'int'            },
+        { 'name' => 'highlightstyle', 'type' => 'String'         },
+        { 'name' => 'linewidth',      'type' => 'int'            },
+        { 'name' => 'id',             'type' => 'String'         },
+        { 'name' => 'position',       'type' => 'int'            },
+        { 'name' => 'positionbase',   'type' => 'String'         },
+        { 'name' => 'base',           'type' => 'DPoint'         },
+        { 'name' => 'anchor',         'type' => 'double'         },
+        { 'name' => 'length',         'type' => 'double'         },
+        { 'name' => 'color',          'type' => 'RGBColor'       },
+        { 'name' => 'pregap',         'type' => 'int'            },
+        { 'name' => 'postgap',        'type' => 'int'            },
+        { 'name' => 'minposition',    'type' => 'double'         },
+        { 'name' => 'maxposition',    'type' => 'double'         }                                                                           ,
+    ],
+    
+    'subelements' => [
+        { 'tag' => 'title',           'type' => 'org.multigraph.mugl.graph.axis.Title',
+          'defaultmods' => sub { my $subel = shift; my $inst = shift; return qq/${subel}.setText( ${inst}.getId() );/; } },
+        { 'tag' => 'zoom',            'type' => 'org.multigraph.mugl.graph.axis.Zoom'          },
+        { 'tag' => 'pan',             'type' => 'org.multigraph.mugl.graph.axis.Pan'           },
+        { 'tag' => 'grid',            'type' => 'org.multigraph.mugl.graph.axis.Grid'          },
+        { 'tag' => 'labels',          'type' => 'org.multigraph.mugl.graph.axis.Labels'        },
+    ],
+         });
+
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.axis.Title",
+    'tag'         => "title",
+    'parentclass' => "org.multigraph.mugl.graph.Axis",
+    'attributes' => [
+        { 'name' => 'fontname',      "type" => 'String'   },
+        { 'name' => 'fontsize',      "type" => 'int'      },
+        { 'name' => 'fontcolor',     "type" => 'RGBColor' },
+        { 'name' => 'angle',         "type" => 'double'   },
+        { 'name' => 'position',      "type" => 'DPoint'   },
+        { 'name' => 'anchor',        "type" => 'DPoint'   },
+        ],
+        'textname'    => 'text',
+         });
+
+makebean({
+    'class' => 'org.multigraph.mugl.graph.axis.Zoom',
+    'tag' => 'zoom',
+    'parentclass' => 'org.multigraph.mugl.graph.Axis',
+    'attributes' => [
+        { 'name' => 'allowed',     "type" =>   'boolean'    },
+        { 'name' => 'min',         "type" =>   'double',    'nullallowed' => 1     },
+        { 'name' => 'max',         "type" =>   'double',    'nullallowed' => 1     },
+        { 'name' => 'anchor',      "type" =>   'DataValue', 'nullallowed' => 1     },
+        ],
+         });
+
+makebean({
+    'class' => 'org.multigraph.mugl.graph.axis.Pan',
+    'tag' => 'pan',
+    'parentclass' => 'org.multigraph.mugl.graph.Axis',
+    'attributes' => [
+        { 'name' => 'allowed',     "type" =>   'boolean'    },
+        { 'name' => 'min',         "type" =>   'double',    'nullallowed' => 1     },
+        { 'name' => 'max',         "type" =>   'double',    'nullallowed' => 1     },
+        ],
+         });
+
+makebean({
+    'class' => 'org.multigraph.mugl.graph.axis.Grid',
+    'tag' => 'grid',
+    'parentclass' => 'org.multigraph.mugl.graph.Axis',
+    'attributes' => [
+        { 'name' => 'color',       "type" => 'RGBColor' },
+        { 'name' => 'visible',     "type" => 'boolean'  }
+        ],
+         });
+
+makebean({
+    'class' => 'org.multigraph.mugl.graph.axis.Labels',
+    'tag' => 'labels',
+    'parentclass' => 'org.multigraph.mugl.graph.Axis',
+    'attributes' => [
+        { 'name' => 'fontname',   "type" => 'String'    },
+        { 'name' => 'fontsize',   "type" => 'int'       },
+        { 'name' => 'fontcolor',  "type" => 'RGBColor'  },
+        { 'name' => 'angle',      "type" => 'double'    },
+        { 'name' => 'position',   "type" => 'DPoint',   'nullallowed' => 1    },
+        { 'name' => 'anchor',     "type" => 'DPoint',   'nullallowed' => 1    },
+        { 'name' => 'spacing',    "type" => 'String'    },
+        { 'name' => 'start',      "type" => 'DataValue' },
+        { 'name' => 'format',     "type" => 'String'    },
+        ],
+        'subelements' => [
+            { 'tag' => 'label',     'type' => 'org.multigraph.mugl.graph.axis.labels.Label',  'name' => 'labels',  'array' => 1 },
+        ],
+         }
+    );
+
+makebean({
+    'class' => "org.multigraph.mugl.graph.axis.labels.Label",
+    'tag' => "label",
+    'parentclass' => "org.multigraph.mugl.graph.axis.Labels",
+    'attributes' => [
+        { 'name' => 'fontname',   "type" => 'String',    'nullsetter' => 'setFromParent' },
+        { 'name' => 'fontsize',   "type" => 'int',       'nullsetter' => 'setFromParent' },
+        { 'name' => 'fontcolor',  "type" => 'RGBColor',  'nullsetter' => 'setFromParent' },
+        { 'name' => 'angle',      "type" => 'double',    'nullsetter' => 'setFromParent' },
+        { 'name' => 'position',   "type" => 'DPoint',    'nullsetter' => 'setFromParent' },
+        { 'name' => 'anchor',     "type" => 'DPoint',    'nullsetter' => 'setFromParent' },
+        { 'name' => 'spacing',    "type" => 'String',    'nullsetter' => 'setFromParent' },
+        { 'name' => 'start',      "type" => 'DataValue', 'nullsetter' => 'setFromParent' },
+        { 'name' => 'format',     "type" => 'String',    'nullsetter' => 'setFromParent' },
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.Plot",
+    'tag'         => "plot",
+    'parentclass' => "org.multigraph.mugl.Graph",
+    'subelements' => [
+        { 'tag'  => 'legend',         "type" => 'org.multigraph.mugl.graph.plot.Legend'                                 },
+        { 'tag'  => 'horizontalaxis', "type" => 'org.multigraph.mugl.graph.plot.Axis',     'defaultstag' => 'axis',
+          'parseargs' => 'org.multigraph.mugl.graph.Axis.Orientation.HORIZONTAL' },
+        { 'tag'  => 'verticalaxis',   "type" => 'org.multigraph.mugl.graph.plot.Axis',     'defaultstag' => 'axis',
+          'parseargs' => 'org.multigraph.mugl.graph.Axis.Orientation.VERTICAL' },
+        { 'tag'  => 'renderer',       "type" => 'org.multigraph.mugl.graph.plot.Renderer'                               },
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.plot.Legend",
+    'tag'         => "legend",
+    'parentclass' => "org.multigraph.mugl.graph.Plot",
+    'attributes' => [
+        { 'name'  => 'label',          "type" => 'String'    },
+        { 'name'  => 'visible',        "type" => 'boolean'    }
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.plot.Axis",
+    'tag'         => "axis",
+    'parentclass' => "org.multigraph.mugl.graph.Plot",
+    'preamble'    => <<EOF
+    private org.multigraph.mugl.graph.Axis.Orientation orientation;
+    public org.multigraph.mugl.graph.Axis.Orientation getOrientation() {
+        return orientation;
+    }
+    public void setOrientation(org.multigraph.mugl.graph.Axis.Orientation orientation) {
+        this.orientation = orientation;
+    }
+EOF
+    ,
+    'parseargs' => "org.multigraph.mugl.graph.Axis.Orientation orientation",
+    'initsteps' => "axis.setOrientation(orientation);",
+    'tagexpr'   => "org.multigraph.mugl.graph.Axis.OrientationToString(orientation)",
+    'attributes' => [
+        { 'name' => 'ref',           'type' => 'String' },
+        ],
+    'subelements' => [
+        { 'tag' => 'variable',        'type' => 'org.multigraph.mugl.graph.plot.axis.Variable',   'name' => 'variables',   'array' => 1 }
+        ],
+         });
+
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.plot.axis.Variable",
+    'tag'         => "variable",
+    'parentclass' => "org.multigraph.mugl.graph.plot.Axis",
+    'attributes' => [
+        { 'name'  => 'ref',          "type" => 'String'    },
+        ],
+         });
+
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.plot.Renderer",
+    'tag'         => "renderer",
+    'parentclass' => "org.multigraph.mugl.graph.Plot",
+    'attributes' => [
+        { 'name'  => 'type',          "type" => 'String'    },
+        ],
+    'subelements' => [
+        { 'tag'  => 'option',        "type" => 'org.multigraph.mugl.graph.plot.renderer.Option',    'name' => 'options',    'array' => 1  },
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.plot.renderer.Option",
+    'tag'         => "option",
+    'parentclass' => "org.multigraph.mugl.graph.plot.Renderer",
+    'attributes' => [
+        { 'name'  => 'name',          "type" => 'String'    },
+        { 'name'  => 'value',         "type" => 'String'    },
+        { 'name'  => 'min',           "type" => 'String',   'nullallowed' => 1     },
+        { 'name'  => 'max',           "type" => 'String',   'nullallowed' => 1     }
+        ],
+         });
+
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.Data",
+    'tag'         => "data",
+    'parentclass' => "org.multigraph.mugl.Graph",
+    'subelements' => [
+        { 'tag'  => 'variables',     "type" => 'org.multigraph.mugl.graph.data.Variables'  },
+        { 'tag'  => 'values',        "type" => 'org.multigraph.mugl.graph.data.Values'     },
+        { 'tag'  => 'csv',           "type" => 'org.multigraph.mugl.graph.data.Csv'        },
+        { 'tag'  => 'service',       "type" => 'org.multigraph.mugl.graph.data.Service'    }
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.data.Variables",
+    'tag'         => "variables",
+    'parentclass' => "org.multigraph.mugl.graph.Data",
+    'attributes' => [
+        { 'name'  => 'missingvalue',  "type" => 'String',   'nullallowed' => 1  },
+        { 'name'  => 'missingop',     "type" => 'String',   'nullallowed' => 1  },
+        ],
+    'subelements' => [
+        { 'tag'  => 'variable',      "type" => 'org.multigraph.mugl.graph.data.variables.Variable',   'name' => 'variables', 'array' => 1  },
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.data.variables.Variable",
+    'tag'         => "variable",
+    'parentclass' => "org.multigraph.mugl.graph.data.Variables",
+    'attributes' => [
+        { 'name'  => 'id',            "type" => 'String'                                                      },
+        { 'name'  => 'column',        "type" => 'int'                                                         },
+        { 'name'  => 'type',          "type" => 'DataValue.Type'                                              },
+        { 'name'  => 'missingvalue',  "type" => 'String',          'nullallowed' => 1, 'nullsetter' => 'setFromParent'            },
+        { 'name'  => 'missingop',     "type" => 'String',          'nullallowed' => 1, 'nullsetter' => 'setFromParent'            },
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.data.Values",
+    'tag'         => "values",
+    'parentclass' => "org.multigraph.mugl.graph.Data",
+    'textname'    => 'text'
+         });
+
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.data.Csv",
+    'tag'         => "csv",
+    'parentclass' => "org.multigraph.mugl.graph.Data",
+    'attributes' => [
+        { 'name'  => 'location',            "type" => 'String'  },
+        ],
+         });
+
+makebean({
+    'class'       => "org.multigraph.mugl.graph.data.Service",
+    'tag'         => "service",
+    'parentclass' => "org.multigraph.mugl.graph.Data",
+    'attributes' => [
+        { 'name'  => 'location',            "type" => 'String'  },
+        ],
+         });
+
+
+sub setFromParent {
+    my $inst = shift;
+    my $name = shift;
+    my $Name = ucfirst($name);
+    return qq|$inst.set${Name}(parent.get${Name}(),true);|;
+}
+
+sub makebean {
+    my $contents = shift;
+
+    my $class       = $contents->{'class'};
+    my $tag         = $contents->{'tag'};
+    my $parentclass = $contents->{'parentclass'};
+    my $attrs       = $contents->{'attributes'}  ? $contents->{'attributes'}  : [];
+    my $subels      = $contents->{'subelements'} ? $contents->{'subelements'} : [];
+    my $preamble    = $contents->{'preamble'};
+    my $textname    = $contents->{'textname'};
+
+    my $textnameCap = $textname ? ucfirst($textname) : undef;
+
+    my $package = $class;
+    $package =~ s|\.[^\.]+$||;
+
+    my $dir = $package;
+    $dir =~ s|\.|/|g;
+
+    my $className  = $class;
+    $className =~ s|^.*\.([^\.]+)|$1|;
+
+    my $instName  = lcfirst($tag);
+    my $fileName  = "${className}.java";
+
+    ###
+    ### Preamble
+    ###
+    system("mkdir -p src/$dir");
+    open(OUT, ">src/$dir/$fileName");
+    print OUT <<EOF
+package ${package};
+
+import java.util.List;
+import java.util.ArrayList;
+import org.jdom.DataConversionException;
+import org.jdom.Element;
+import org.jdom.Attribute;
+import org.jdom.xpath.XPath;
+
+import org.multigraph.MuglBean;
+import org.multigraph.DataValue;
+import org.multigraph.DoubleDataValue;
+import org.multigraph.DPoint;
+import org.multigraph.RGBColor;
+
+public class ${className} extends MuglBean {
+EOF
+    ;
+    if ($parent) {
+        print OUT <<EOF
+    private $parentclass parent;
+EOF
+    ;
+    }
+        print OUT <<EOF
+$preamble
+EOF
+    ;
+
+    ###
+    ### declarations
+    ###
+    if ($textname) {
+        print OUT <<EOF
+    private String $textname;
+EOF
+    ;
+    }
+    foreach $attr (@$attrs) {
+        $attrName = $attr->{name};
+        $attrType = $attr->{type};
+        print OUT <<EOF
+    private $attrType $attrName;
+    private boolean ${attrName}IsSet     = false;
+    private boolean ${attrName}IsDefault = false;
+EOF
+    ;
+    }
+    foreach $subel (@$subels) {
+        $subelTag  = $subel->{tag};
+        $subelType = $subel->{type};
+        $subelName = $subel->{name} ? $subel->{name} : $subel->{tag};
+        if ($subel->{array}) {
+        print OUT <<EOF
+    private ArrayList<$subelType> $subelName = new ArrayList<$subelType>();
+EOF
+    ;
+        } else {
+        print OUT <<EOF
+    private $subelType $subelName;
+    private boolean ${subelName}IsDefault = false;
+EOF
+    ;
+        }
+    }
+
+    ###
+    ### getters & setters
+    ###
+    if ($parent) {
+        print OUT <<EOF
+    public $parentclass getParent() {
+        return parent;
+    }
+    public void setParent($parentclass parent) {
+        this.parent = parent;
+    }
+EOF
+    ;
+    }
+    if ($textname) {
+        print OUT <<EOF
+    public String get${textnameCap}() {
+        return $textname;
+    }
+    public void set${textnameCap}(String $textname) {
+        this.$textname = $textname;
+    }
+EOF
+    ;
+    }
+    foreach $attr (@$attrs) {
+        $attrName    = $attr->{name};
+        $attrNameCap = ucfirst($attrName);
+        $attrType    = $attr->{type};
+        print OUT <<EOF
+	public ${attrType} get${attrNameCap}() {
+		return ${attrName};
+	}
+	public void set${attrNameCap}($attrType $attrName) {
+		this.${attrName} = ${attrName};
+	}
+	public void set${attrNameCap}(${attrType} ${attrName}, boolean isDefault) {
+        set${attrNameCap}(${attrName});
+        this.${attrName}IsSet = true;
+        this.${attrName}IsDefault = isDefault;
+    }
+	public boolean have${attrNameCap}() {
+        return ${attrName}IsSet;
+    }
+EOF
+    ;
+    }
+    foreach $subel (@$subels) {
+        $subelTag  = $subel->{tag};
+        $subelType = $subel->{type};
+        $subelName = $subel->{name} ? $subel->{name} : $subel->{tag};
+        $subelNameCap = ucfirst($subelName);
+        if ($subel->{array}) {
+            print OUT <<EOF
+	public ArrayList<${subelType}> get${subelNameCap}() {
+		return ${subelName};
+	}
+EOF
+           ;
+        } else {
+            print OUT <<EOF
+	public ${subelType} get${subelNameCap}() {
+		return ${subelName};
+	}
+	public void set${subelNameCap}($subelType $subelName) {
+		this.${subelName} = ${subelName};
+	}
+	public void set${subelNameCap}(${subelType} ${subelName}, boolean isDefault) {
+        set${subelNameCap}(${subelName});
+        this.${subelName}IsDefault = isDefault;
+    }
+    public boolean have${subelNameCap}() {
+        return this.${subelName} != null;
+    }
+EOF
+           ;
+        }
+    }
+
+
+    ###
+    ### parse method
+    ###
+    my $parseargs = $contents->{parseargs} ? sprintf("%s,", $contents->{parseargs}) : "";
+    my $initsteps = $contents->{initsteps};
+    my $parentarg = $parentclass ? ", ${parentclass} parent" : "";
+    print OUT <<EOF
+    public static ${className} parse(${parseargs} Element node, Element defaultsNode${parentarg} ) throws Exception {
+        final ${className} ${instName} = new ${className}();
+        ${initsteps}
+EOF
+    ;
+    if ($parent) {
+    print OUT <<EOF
+        ${instName}.setParent(parent);
+EOF
+    ;
+    }
+    foreach $attr (@$attrs) {
+        $attrName    = $attr->{name};
+        $attrNameCap = ucfirst($attr->{name});
+        $attrType    = $attr->{type};
+        $attrValue   = stringToValue($attrType, "value");
+        $nullallowed = $attr->{nullallowed} ? " false," : "";
+        $nullsetter  = ($attr->{nullsetter}
+                        ? sprintf(qq|if (!${instName}.have${attrNameCap}()) { %s }|,
+                                  $attr->{nullsetter}(${instName},${attrName}))
+                        : "");
+        print OUT <<EOF
+        setProperty("${attrName}", node, defaultsNode,$nullallowed
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        ${instName}.set${attrNameCap}( ${attrValue}, isDefault );
+                    }});
+        $nullsetter
+EOF
+    ;
+    }
+    foreach $subel (@$subels) {
+        $subelTag          = $subel->{tag};
+        $subelDefaultsTag  = $subel->{defaultstag} ? $subel->{defaultstag} : $subel->{tag};
+        $subelType         = $subel->{type};
+        $subelName         = $subel->{name} ? $subel->{name} : $subel->{tag};
+        $singleSubelName   = $subel->{array} ? lcfirst($subelTag) : $subelName;
+        $subelNameCap      = ucfirst($subelName);
+        $defaultMods       = $subel->{defaultmods} ? $subel->{defaultmods}($singleSubelName, $instName) : "";
+        $parseargs         = $subel->{parseargs} ? $subel->{parseargs}."," : "";
+        if ($subel->{array}) {
+            print OUT <<EOF
+        {
+            List<Element> elements = (List<Element>)(XPath.selectNodes(node, "${subelTag}"));
+            Element defaultsElement = (Element)XPath.selectSingleNode(defaultsNode, "${subelDefaultsTag}");
+            for (Element element : elements) {
+                if (element != null) {
+                    ${instName}.get${subelNameCap}().add( ${subelType}.parse($parseargs element, defaultsElement, ${instName}) );
+                } else {
+                	${subelType} ${singleSubelName} = ${subelType}.parse($parseargs null, defaultsElement, ${instName});
+                    $defaultMods
+                    ${instName}.get${subelNameCap}().add( ${singleSubelName} );
+                }
+            }
+        }
+EOF
+            ;
+        } else {
+            print OUT <<EOF
+        {
+            Element element = (Element)XPath.selectSingleNode(node, "${subelTag}");
+            Element defaultsElement = (Element)XPath.selectSingleNode(defaultsNode, "${subelDefaultsTag}");
+            if (element != null) {
+                ${instName}.set${subelNameCap}( ${subelType}.parse($parseargs element, defaultsElement, ${instName}), false );
+            } else if (defaultsElement != null) {
+            	${subelType} ${singleSubelName} = ${subelType}.parse($parseargs null, defaultsElement, ${instName});
+                $defaultMods
+                ${instName}.set${subelNameCap}( ${singleSubelName}, true );
+            }
+        }
+EOF
+            ;
+        }
+    }
+
+    if ($textname) {
+    print OUT <<EOF
+        ${instName}.set${textnameCap}( node == null ? null : node.getText() );
+EOF
+    ;
+    }
+
+    print OUT <<EOF
+        return ${instName};
+    }
+EOF
+    ;
+
+
+    ###
+    ### build method
+    ###
+    my $tagexpr = $contents->{tagexpr} ? $contents->{tagexpr} : qq/"${instName}"/;
+    print OUT <<EOF
+    public Element build(boolean includeAll) throws Exception {
+    	Element element = new Element(${tagexpr});
+EOF
+    ;
+    foreach $attr (@$attrs) {
+        $attrName    = $attr->{name};
+        $attrNameCap = ucfirst($attr->{name});
+        $attrType    = $attr->{type};
+        $attrString  = valueToString($attrType, $attrName);
+        print OUT <<EOF
+        if (${attrName}IsSet && (includeAll || !${attrName}IsDefault)) { element.setAttribute("${attrName}",  ${attrString} ); }
+EOF
+    ;
+    }
+
+    foreach $subel (@$subels) {
+        $subelTag  = $subel->{tag};
+        $subelType = $subel->{type};
+        $subelName = $subel->{name} ? $subel->{name} : $subel->{tag};
+        $subelNameCap = ucfirst($subelName);
+        $singleSubelName = $subel->{array} ? lcfirst($subelTag) : $subelName;
+        if ($subel->{array}) {
+        print OUT <<EOF
+        for ($subelType $singleSubelName : $subelName) {
+            element.addContent( ${singleSubelName}.build(includeAll)  );
+        }
+EOF
+    ;
+        } else {
+        print OUT <<EOF
+        if (have${subelNameCap}() && (includeAll || !${subelName}IsDefault)) { element.addContent( ${subelName}.build(includeAll)  ); }
+EOF
+    ;
+        }
+    }
+
+    if ($textname) {
+        print OUT <<EOF
+        element.setText( ${textname} );
+EOF
+    ;
+    }
+
+    print OUT <<EOF
+        return element;
+    }
+EOF
+    ;
+
+    print OUT <<EOF
+}
+EOF
+    ;
+    close(OUT);
+
+}
+
+
+sub stringToValue {
+    my $type = shift;
+    my $value = shift;
+
+    if ($type eq "boolean") {
+        return qq/($value.equals("true") || $value.equals("yes"))/;
+    } elsif ($type eq "int") {
+        return qq/Integer.parseInt($value)/;
+    } elsif ($type eq "double") {
+        return qq/Double.parseDouble($value)/;
+    } elsif ($type eq "String") {
+        return $value;
+    } elsif ($type eq "DPoint") {
+        return qq/new DPoint(${value})/;
+    } elsif ($type eq "RGBColor") {
+        return qq/new RGBColor(${value})/;
+    } elsif ($type eq "DataValue") {
+        return qq/new DoubleDataValue(${value})/;
+    } elsif ($type eq "DataValue.Type") {
+        return qq/DataValue.StringToType(${value})/;
+    }
+}
+
+sub valueToString {
+    my $type = shift;
+    my $value = shift;
+
+    if ($type eq "boolean") {
+        return qq/Boolean.toString($value)/;
+    } elsif ($type eq "int") {
+        return qq/Integer.toString($value)/;
+    } elsif ($type eq "double") {
+        return qq/Double.toString($value)/;
+    } elsif ($type eq "String") {
+        return $value;
+    } elsif ($type eq "DPoint") {
+        return qq/${value}.toString()/;
+    } elsif ($type eq "RGBColor") {
+        return qq/${value}.toString()/;
+    } elsif ($type eq "DataValue") {
+        return qq/${value}.getStringValue()/;
+    } elsif ($type eq "DataValue.Type") {
+        return qq/DataValue.TypeToString(${value})/;
+    }
+}

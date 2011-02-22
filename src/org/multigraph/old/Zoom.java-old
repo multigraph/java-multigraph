@@ -1,0 +1,129 @@
+package org.multigraph;
+
+import org.jdom.DataConversionException;
+import org.jdom.Element;
+import org.jdom.Attribute;
+
+public class Zoom extends MuglBean {
+
+    private boolean   allowed;
+    private boolean   allowedIsDefault = true;
+
+    private double    min;
+    private boolean   minIsSet     = false;
+    private boolean   minIsDefault = true;
+
+    private double    max;
+    private boolean   maxIsSet     = false;
+    private boolean   maxIsDefault = true;
+
+    private DataValue anchor;
+    private boolean   anchorIsSet     = false;
+    private boolean   anchorIsDefault = true;
+
+    private Axis      parent;
+
+    public static Zoom parse(Element node, Element defaultsNode, Axis parent) throws Exception {
+        final Zoom zoom = new Zoom();
+        zoom.setParent(parent);
+
+        setProperty("allowed", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        zoom.setAllowed( value.equals("true") || value.equals("yes"), isDefault );
+                    }});
+
+        setProperty("min", node, defaultsNode, false,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        zoom.setMin( Double.parseDouble(value), isDefault );
+                    }});
+
+        setProperty("max", node, defaultsNode, false,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        zoom.setMax( Double.parseDouble(value), isDefault );
+                    }});
+
+        setProperty("anchor", node, defaultsNode, false,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        switch (zoom.getParent().getType()) {
+                        case NUMBER:
+                            zoom.setAnchor( new DoubleDataValue(value), isDefault );
+                            break;
+                        case DATETIME:
+                            break;
+                        }
+                    }});
+
+        return zoom;
+    }
+
+    public Element build(boolean includeAll) throws Exception {
+    	Element element = new Element("zoom");
+        if (includeAll || !allowedIsDefault)    { element.setAttribute("allowed",        Boolean.toString(allowed)       ); }
+        if (includeAll || !minIsDefault)        { element.setAttribute("min",            Double.toString(min)            ); }
+        if (includeAll || !maxIsDefault)        { element.setAttribute("max",            Double.toString(max)            ); }
+        if (includeAll || !anchorIsDefault)     { element.setAttribute("anchor",         anchor.getStringValue()         ); }
+        return element;
+    }
+
+
+	public boolean getAllowed() {
+		return allowed;
+	}
+	public void setAllowed(boolean allowed) {
+		this.allowed = allowed;
+	}
+	public void setAllowed(boolean allowed, boolean isDefault) {
+        setAllowed(allowed);
+        this.allowedIsDefault = isDefault;
+    }
+	public double getMin() {
+		return min;
+	}
+	public void setMin(double min) {
+		this.min = min;
+	}
+	public void setMin(double min, boolean isDefault) {
+        setMin(min);
+        this.minIsDefault = isDefault;
+        this.minIsSet     = true;
+    }
+    public boolean haveMin() {
+        return minIsSet;
+    }
+	public double getMax() {
+		return max;
+	}
+	public void setMax(double max) {
+		this.max = max;
+	}
+	public void setMax(double max, boolean isDefault) {
+        setMax(max);
+        this.maxIsDefault = isDefault;
+        this.maxIsSet     = true;
+    }
+    public boolean haveMax() {
+        return maxIsSet;
+    }
+	public DataValue getAnchor() {
+		return anchor;
+	}
+	public void setAnchor(DataValue anchor) {
+		this.anchor = anchor;
+	}
+	public void setAnchor(DataValue anchor, boolean isDefault) {
+        setAnchor(anchor);
+        this.anchorIsDefault = isDefault;
+        this.anchorIsSet     = true;
+    }
+    public boolean haveAnchor() {
+        return anchorIsSet;
+    }
+
+    public Axis getParent() {
+        return parent;
+    }
+    public void setParent(Axis parent) {
+        this.parent = parent;
+    }
+
+}

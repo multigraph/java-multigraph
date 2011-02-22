@@ -1,0 +1,514 @@
+package org.multigraph;
+
+import org.jdom.DataConversionException;
+import org.jdom.Element;
+import org.jdom.Attribute;
+import org.jdom.xpath.XPath;
+
+public class Axis extends MuglBean {
+
+    public static enum Orientation { HORIZONTAL, VERTICAL };
+
+    public static String OrientationToString(Orientation orientation) {
+        if (orientation == Axis.Orientation.HORIZONTAL) { return "horizontalaxis"; }
+        if (orientation == Axis.Orientation.VERTICAL)   { return "verticalaxis"; }
+        return null;
+    }
+
+    private Orientation orientation;
+
+    private DataValue.Type type;
+    private   boolean typeIsDefault = true;
+
+    private DataValue min;
+    private   boolean minIsDefault = true;
+
+    private DataValue max;
+    private   boolean maxIsDefault = true;
+
+    private       int tickmin;
+    private   boolean tickminIsDefault = true;
+
+    private       int tickmax;
+    private   boolean tickmaxIsDefault = true;
+
+    private    String highlightstyle;
+    private   boolean highlightstyleIsDefault = true;
+
+    private       int linewidth;
+    private   boolean linewidthIsDefault = true;
+
+    private    String id;
+    private   boolean idIsDefault = true;
+
+    private       int position;
+    private   boolean positionIsDefault = true;
+
+    private    String positionbase;
+    private   boolean positionbaseIsDefault = true;
+
+    private    DPoint base;
+    private   boolean baseIsDefault = true;
+
+    private    double anchor;
+    private   boolean anchorIsDefault = true;
+
+    private    double length;
+    private   boolean lengthIsDefault = true;
+
+    private       int pregap;
+    private   boolean pregapIsDefault = true;
+
+    private       int postgap;
+    private   boolean postgapIsDefault = true;
+
+    private    double minposition;
+    private   boolean minpositionIsDefault = true;
+
+    private    double maxposition;
+    private   boolean maxpositionIsDefault = true;
+
+    private     Title title;
+    private   boolean titleIsDefault = true;
+
+    private     Zoom zoom;
+    private   boolean zoomIsDefault = true;
+
+    private     Labels labels;
+    private   boolean labelsIsDefault = true;
+
+    private     Pan pan;
+    private   boolean panIsDefault = true;
+
+    private     Grid grid;
+    private   boolean gridIsDefault = true;
+
+    private    Graph parent;
+
+    public static Axis parse(Orientation orientation,
+                             Element node,
+                             Element defaultsNode,
+                             Graph parent) throws Exception {
+        final Axis axis = new Axis();
+        axis.setParent(parent);
+        axis.setOrientation(orientation);
+
+        setProperty("type", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        if (value.equals("number")) {
+                            axis.setType( DataValue.Type.NUMBER, isDefault ); 
+                        } else if (value.equals("datetime")) {
+                            axis.setType( DataValue.Type.DATETIME, isDefault );
+                        }
+                    }});
+        
+        setProperty("min", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        switch (axis.getType()) {
+                        case NUMBER:
+                            axis.setMin( new AutoDoubleDataValue(value), isDefault );
+                            break;
+                        case DATETIME:
+                            break;
+                        }
+                    }});
+
+        setProperty("max", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        switch (axis.getType()) {
+                        case NUMBER:
+                            axis.setMax( new AutoDoubleDataValue(value), isDefault );
+                            break;
+                        case DATETIME:
+                            break;
+                        }
+                    }});
+
+        setProperty("tickmin", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setTickmin(Integer.parseInt(value), isDefault);
+                    }});
+
+        setProperty("tickmax", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setTickmax(Integer.parseInt(value), isDefault);
+                    }});
+
+        setProperty("highlightstyle", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setHighlightstyle(value, isDefault);
+                    }});
+
+        setProperty("linewidth", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setLinewidth(Integer.parseInt(value), isDefault);
+                    }});
+
+        setProperty("id", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setId(value, isDefault);
+                    }});
+
+        setProperty("position", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setPosition(Integer.parseInt(value), isDefault);
+                    }});
+
+        setProperty("positionbase", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setPositionbase(value, isDefault);
+                    }});
+
+        setProperty("base", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setBase(new DPoint(value), isDefault);
+                    }});
+
+        setProperty("anchor", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setAnchor(Double.parseDouble(value), isDefault);
+                    }});
+
+        setProperty("pregap", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setPregap(Integer.parseInt(value), isDefault);
+                    }});
+
+        setProperty("postgap", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setPostgap(Integer.parseInt(value), isDefault);
+                    }});
+
+        setProperty("minposition", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setMinposition(Double.parseDouble(value), isDefault);
+                    }});
+
+        setProperty("maxposition", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        axis.setMaxposition(Double.parseDouble(value), isDefault);
+                    }});
+
+        {
+            Element titleNode         = (Element)XPath.selectSingleNode(node,         "title");
+            Element defaultsTitleNode = (Element)XPath.selectSingleNode(defaultsNode, "title");
+            if (titleNode != null) {
+                axis.setTitle( Title.parse(titleNode, defaultsTitleNode, axis), false );
+            } else {
+            	Title title = Title.parse(null, defaultsTitleNode, axis); 
+                title.setText( axis.getId() );
+                axis.setTitle( title, true );
+            }
+        }
+
+        {
+            Element zoomNode         = (Element)XPath.selectSingleNode(node,         "zoom");
+            Element defaultsZoomNode = (Element)XPath.selectSingleNode(defaultsNode, "zoom");
+            if (zoomNode != null) {
+                axis.setZoom( Zoom.parse(zoomNode, defaultsZoomNode, axis), false );
+            } else {
+                axis.setZoom( Zoom.parse(null, defaultsZoomNode, axis), true );
+            }
+        }
+
+        {
+            Element labelsNode         = (Element)XPath.selectSingleNode(node,         "labels");
+            Element defaultsLabelsNode = (Element)XPath.selectSingleNode(defaultsNode, "labels");
+            if (labelsNode != null) {
+                axis.setLabels( Labels.parse(labelsNode, defaultsLabelsNode, axis), false );
+            } else {
+                axis.setLabels( Labels.parse(null, defaultsLabelsNode, axis), true );
+            }
+        }
+
+        {
+            Element panNode         = (Element)XPath.selectSingleNode(node,         "pan");
+            Element defaultsPanNode = (Element)XPath.selectSingleNode(defaultsNode, "pan");
+            if (panNode != null) {
+                axis.setPan( Pan.parse(panNode, defaultsPanNode, axis), false );
+            } else {
+                axis.setPan( Pan.parse(null, defaultsPanNode, axis), true );
+            }
+        }
+
+        {
+            Element gridNode         = (Element)XPath.selectSingleNode(node,         "grid");
+            Element defaultsGridNode = (Element)XPath.selectSingleNode(defaultsNode, "grid");
+            if (gridNode != null) {
+                axis.setGrid( Grid.parse(gridNode, defaultsGridNode, axis), false );
+            } else {
+                axis.setGrid( Grid.parse(null, defaultsGridNode, axis), true );
+            }
+        }
+        
+
+        return axis;
+    }
+
+    public Element build(boolean includeAll) throws Exception {
+    	Element element = new Element(OrientationToString(orientation));
+        if (includeAll || !typeIsDefault)           { element.setAttribute("type",            DataValue.TypeToString(type)    ); }
+        if (includeAll || !minIsDefault)            { element.setAttribute("min",             min.getStringValue()            ); }
+        if (includeAll || !maxIsDefault)            { element.setAttribute("max",             max.getStringValue()            ); }
+        if (includeAll || !tickminIsDefault)        { element.setAttribute("tickmin",         Integer.toString(tickmin)       ); }
+        if (includeAll || !tickmaxIsDefault)        { element.setAttribute("tickmax",         Integer.toString(tickmax)       ); }
+        if (includeAll || !highlightstyleIsDefault) { element.setAttribute("highlightstyle",  highlightstyle                  ); }
+        if (includeAll || !linewidthIsDefault)      { element.setAttribute("linewidth",       Integer.toString(linewidth)     ); }
+        if (includeAll || !idIsDefault)             { element.setAttribute("id",              id                              ); }
+        if (includeAll || !positionIsDefault)       { element.setAttribute("position",        Integer.toString(position)      ); }
+        if (includeAll || !positionbaseIsDefault)   { element.setAttribute("positionbase",    positionbase                    ); }
+        if (includeAll || !baseIsDefault)           { element.setAttribute("base",            base.toString()                 ); }
+        if (includeAll || !anchorIsDefault)         { element.setAttribute("anchor",          Double.toString(anchor)         ); }
+        if (includeAll || !lengthIsDefault)         { element.setAttribute("length",          Double.toString(length)         ); }
+        if (includeAll || !pregapIsDefault)         { element.setAttribute("pregap",          Integer.toString(pregap)        ); }
+        if (includeAll || !postgapIsDefault)        { element.setAttribute("postgap",         Integer.toString(postgap)       ); }
+        if (includeAll || !minpositionIsDefault)    { element.setAttribute("minposition",     Double.toString(minposition)    ); }
+        if (includeAll || !maxpositionIsDefault)    { element.setAttribute("maxposition",     Double.toString(maxposition)    ); }
+        if (includeAll || !titleIsDefault)          { element.addContent( title.build(includeAll)  ); }
+        if (includeAll || !labelsIsDefault)         { element.addContent( labels.build(includeAll) ); }
+        if (includeAll || !zoomIsDefault)           { element.addContent( zoom.build(includeAll)   ); }
+        if (includeAll || !panIsDefault)            { element.addContent( pan.build(includeAll)    ); }
+        if (includeAll || !gridIsDefault)           { element.addContent( grid.build(includeAll)   ); }
+        return element;
+    }
+
+	public DataValue.Type getType() {
+		return type;
+	}
+	public void setType(DataValue.Type type) {
+		this.type = type;
+	}
+	public void setType(DataValue.Type type, boolean isDefault) {
+        setType(type);
+        this.typeIsDefault = isDefault;
+    }
+	public DataValue getMin() {
+		return min;
+	}
+	public void setMin(DataValue min) {
+		this.min = min;
+	}
+	public void setMin(DataValue min, boolean isDefault) {
+        setMin(min);
+        this.minIsDefault = isDefault;
+    }
+	public DataValue getMax() {
+		return max;
+	}
+	public void setMax(DataValue max) {
+		this.max = max;
+	}
+	public void setMax(DataValue max, boolean isDefault) {
+        setMax(max);
+        this.maxIsDefault = isDefault;
+    }
+	public int getTickmin() {
+		return tickmin;
+	}
+	public void setTickmin(int tickmin) {
+		this.tickmin = tickmin;
+	}
+	public void setTickmin(int tickmin, boolean isDefault) {
+        setTickmin(tickmin);
+        this.tickminIsDefault = isDefault;
+    }
+	public int getTickmax() {
+		return tickmax;
+	}
+	public void setTickmax(int tickmax) {
+		this.tickmax = tickmax;
+	}
+	public void setTickmax(int tickmax, boolean isDefault) {
+        setTickmax(tickmax);
+        this.tickmaxIsDefault = isDefault;
+    }
+	public String getHighlightstyle() {
+		return highlightstyle;
+	}
+	public void setHighlightstyle(String highlightstyle) {
+		this.highlightstyle = highlightstyle;
+	}
+	public void setHighlightstyle(String highlightstyle, boolean isDefault) {
+        setHighlightstyle(highlightstyle);
+        this.highlightstyleIsDefault = isDefault;
+    }
+	public int getLinewidth() {
+		return linewidth;
+	}
+	public void setLinewidth(int linewidth) {
+		this.linewidth = linewidth;
+	}
+	public void setLinewidth(int linewidth, boolean isDefault) {
+        setLinewidth(linewidth);
+        this.linewidthIsDefault = isDefault;
+    }
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public void setId(String id, boolean isDefault) {
+        setId(id);
+        this.idIsDefault = isDefault;
+    }
+	public int getPosition() {
+		return position;
+	}
+	public void setPosition(int position) {
+		this.position = position;
+	}
+	public void setPosition(int position, boolean isDefault) {
+        setPosition(position);
+        this.positionIsDefault = isDefault;
+    }
+	public String getPositionbase() {
+		return positionbase;
+	}
+	public void setPositionbase(String positionbase) {
+		this.positionbase = positionbase;
+	}
+	public void setPositionbase(String positionbase, boolean isDefault) {
+        setPositionbase(positionbase);
+        this.positionbaseIsDefault = isDefault;
+    }
+	public DPoint getBase() {
+		return base;
+	}
+	public void setBase(DPoint base) {
+		this.base = base;
+	}
+	public void setBase(DPoint base, boolean isDefault) {
+        setBase(base);
+        this.baseIsDefault = isDefault;
+    }
+	public double getAnchor() {
+		return anchor;
+	}
+	public void setAnchor(double anchor) {
+		this.anchor = anchor;
+	}
+	public void setAnchor(double anchor, boolean isDefault) {
+        setAnchor(anchor);
+        this.anchorIsDefault = isDefault;
+    }
+	public double getLength() {
+		return length;
+	}
+	public void setLength(double length) {
+		this.length = length;
+	}
+	public void setLength(double length, boolean isDefault) {
+        setLength(length);
+        this.lengthIsDefault = isDefault;
+    }
+	public int getPregap() {
+		return pregap;
+	}
+	public void setPregap(int pregap) {
+		this.pregap = pregap;
+	}
+	public void setPregap(int pregap, boolean isDefault) {
+        setPregap(pregap);
+        this.pregapIsDefault = isDefault;
+    }
+	public int getPostgap() {
+		return postgap;
+	}
+	public void setPostgap(int postgap) {
+		this.postgap = postgap;
+	}
+	public void setPostgap(int postgap, boolean isDefault) {
+        setPostgap(postgap);
+        this.postgapIsDefault = isDefault;
+    }
+	public double getMinposition() {
+		return minposition;
+	}
+	public void setMinposition(double minposition) {
+		this.minposition = minposition;
+	}
+	public void setMinposition(double minposition, boolean isDefault) {
+        setMinposition(minposition);
+        this.minpositionIsDefault = isDefault;
+    }
+	public double getMaxposition() {
+		return maxposition;
+	}
+	public void setMaxposition(double maxposition) {
+		this.maxposition = maxposition;
+	}
+	public void setMaxposition(double maxposition, boolean isDefault) {
+        setMaxposition(maxposition);
+        this.maxpositionIsDefault = isDefault;
+    }
+	public void setTitle(Title title) {
+			this.title = title;
+	}
+	public void setTitle(Title title, boolean isDefault) {
+			this.title = title;
+            this.titleIsDefault = isDefault;
+	}
+	public Title getTitle() {
+		return this.title;
+	}
+
+	public void setLabels(Labels labels) {
+			this.labels = labels;
+	}
+	public void setLabels(Labels labels, boolean isDefault) {
+			this.labels = labels;
+            this.labelsIsDefault = isDefault;
+	}
+	public Labels getLabels() {
+		return this.labels;
+	}
+
+
+	public void setZoom(Zoom zoom) {
+			this.zoom = zoom;
+	}
+	public void setZoom(Zoom zoom, boolean isDefault) {
+			this.zoom = zoom;
+            this.zoomIsDefault = isDefault;
+	}
+	public Zoom getZoom() {
+		return this.zoom;
+	}
+
+
+	public void setPan(Pan pan) {
+			this.pan = pan;
+	}
+	public void setPan(Pan pan, boolean isDefault) {
+			this.pan = pan;
+            this.panIsDefault = isDefault;
+	}
+	public Pan getPan() {
+		return this.pan;
+	}
+
+	public void setGrid(Grid grid) {
+			this.grid = grid;
+	}
+	public void setGrid(Grid grid, boolean isDefault) {
+			this.grid = grid;
+            this.gridIsDefault = isDefault;
+	}
+	public Grid getGrid() {
+		return this.grid;
+	}
+
+    public Graph getParent() {
+        return parent;
+    }
+    public void setParent(Graph parent) {
+        this.parent = parent;
+    }
+    public Orientation getOrientation() {
+        return orientation;
+    }
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
+}

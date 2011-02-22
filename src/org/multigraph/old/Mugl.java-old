@@ -1,0 +1,17 @@
+package org.multigraph;
+
+import org.jdom.Element;
+import org.jdom.Attribute;
+import org.jdom.xpath.XPath;
+
+public class Mugl extends MuglBean {
+
+	@Override
+	public Element build(boolean includeAll) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+}

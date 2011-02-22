@@ -1,0 +1,90 @@
+package org.multigraph;
+
+import org.jdom.DataConversionException;
+import org.jdom.Element;
+import org.jdom.Attribute;
+
+public class Window extends MuglBean {
+
+    private Mugl parent;
+
+    private int margin;
+    private boolean marginIsSet     = false;
+    private boolean marginIsDefault = true;
+    private int border;
+    private boolean borderIsSet     = false;
+    private boolean borderIsDefault = true;
+    private int padding;
+    private boolean paddingIsSet     = false;
+    private boolean paddingIsDefault = true;
+    public Mugl getParent() {
+        return parent;
+    }
+    public void setParent(Mugl parent) {
+        this.parent = parent;
+    }
+	public double getMargin() {
+		return margin;
+	}
+	public void setMargin(int margin) {
+		this.margin = margin;
+	}
+	public void setMargin(int margin, boolean isDefault) {
+        setMargin(margin);
+        this.marginIsDefault = isDefault;
+    }
+	public boolean haveMargin() {
+        return marginIsSet;
+    }
+	public double getBorder() {
+		return border;
+	}
+	public void setBorder(int border) {
+		this.border = border;
+	}
+	public void setBorder(int border, boolean isDefault) {
+        setBorder(border);
+        this.borderIsDefault = isDefault;
+    }
+	public boolean haveBorder() {
+        return borderIsSet;
+    }
+	public double getPadding() {
+		return padding;
+	}
+	public void setPadding(int padding) {
+		this.padding = padding;
+	}
+	public void setPadding(int padding, boolean isDefault) {
+        setPadding(padding);
+        this.paddingIsDefault = isDefault;
+    }
+	public boolean havePadding() {
+        return paddingIsSet;
+    }
+    public static Window parse(Element node, Element defaultsNode, Mugl parent) throws Exception {
+        final Window window = new Window();
+        window.setParent(parent);
+
+        setProperty("margin", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        window.setMargin( Integer.parseInt(value), isDefault );
+                    }});
+        setProperty("border", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        window.setBorder( Integer.parseInt(value), isDefault );
+                    }});
+        setProperty("padding", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        window.setPadding( Integer.parseInt(value), isDefault );
+                    }});
+        return window;
+    }
+    public Element build(boolean includeAll) throws Exception {
+    	Element element = new Element("window");
+        if (includeAll || !marginIsDefault)    { element.setAttribute("margin",  Integer.toString(margin) ); }
+        if (includeAll || !borderIsDefault)    { element.setAttribute("border",  Integer.toString(border) ); }
+        if (includeAll || !paddingIsDefault)    { element.setAttribute("padding",  Integer.toString(padding) ); }
+        return element;
+    }
+}

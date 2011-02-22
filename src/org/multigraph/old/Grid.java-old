@@ -1,0 +1,50 @@
+package org.multigraph;
+
+import org.jdom.DataConversionException;
+import org.jdom.Element;
+import org.jdom.Attribute;
+
+public class Grid extends MuglBean {
+
+    private RGBColor  color;
+    private boolean  colorIsDefault = true;
+
+    private Axis       parent;
+
+    public static Grid parse(Element node, Element defaultsNode, Axis parent) throws Exception {
+        final Grid grid = new Grid();
+        grid.setParent(parent);
+
+        setProperty("color", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        grid.setColor( new RGBColor(value), isDefault );
+                    }});
+
+        return grid;
+    }
+
+    public Element build(boolean includeAll) throws Exception {
+    	Element element = new Element("grid");
+        if (includeAll || !colorIsDefault)  { element.setAttribute("color",      color.toString()            ); }
+        return element;
+    }
+
+	public RGBColor getColor() {
+		return color;
+	}
+	public void setColor(RGBColor color) {
+		this.color = color;
+	}
+	public void setColor(RGBColor color, boolean isDefault) {
+        setColor(color);
+        this.colorIsDefault = isDefault;
+    }
+
+    public Axis getParent() {
+        return parent;
+    }
+    public void setParent(Axis parent) {
+        this.parent = parent;
+    }
+
+}

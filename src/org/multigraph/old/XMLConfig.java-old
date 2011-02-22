@@ -1,0 +1,221 @@
+package org.multigraph;
+
+/**
+ * The XMLConfig class provides convenient access to an XML-format
+ * configuration file.  It is basically a wrapper around several
+ * common XPath and W3C DOM classes/methods.
+ *
+ * To use XMLConfig, create an instance using the pathname of
+ * an XML configuration file as follows:
+ * 
+ *     XMLConfig xmlConfig = new XMLConfig( PATH_TO_CONFIG_FILE );
+ *
+ * Then make calls to the getString(), getModifiedString(), getNode(),
+ * or getNodeList() to read information from the file.  
+ */
+
+import java.io.File;
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.util.HashMap;
+
+public class XMLConfig {
+
+	private String configFile;
+	private XPath xpath;
+	private Document configDocument;
+
+	public XMLConfig(String configFile) throws Exception {
+		this.configFile = configFile;
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		InputStream is = (new File(configFile).toURL()).openStream();
+		this.configDocument = builder.parse(is);
+		is.close();
+		this.xpath = XPathFactory.newInstance().newXPath();    	
+	}
+
+	/**
+	 * Return the org.w3c.dom.Node object that represents the node resulting from evaluating
+	 * an XPath expression (rooted at the top of the document).
+	 *
+	 * @param	expr	The XPath expression to evaluate
+	 */
+	public Node getNode(String expr) throws Exception {
+		return (Node)(this.xpath.evaluate(expr, configDocument, XPathConstants.NODE));
+	}
+
+	/**
+	 * Return the org.w3c.dom.NodeList object that represents the list of nodes resulting
+	 * from evaluating an XPath expression (rooted at the top of the document).
+	 *
+	 * @param	expr	The XPath expression to evaluate
+	 */
+	public NodeList getNodeList(String expr) throws Exception {
+		return (NodeList)(this.xpath.evaluate(expr, configDocument, XPathConstants.NODESET));
+	}
+
+	/**
+	 * Return the org.w3c.dom.NodeList object that represents the list of nodes resulting
+	 * from evaluating an XPath expression rooted at an arbitrary node.
+	 *
+	 * @param	expr	The XPath expression to evaluate
+	 */
+	public NodeList getNodeList(String expr, Node node) throws Exception {
+		return (NodeList)(this.xpath.evaluate(expr, node, XPathConstants.NODESET));
+	}
+
+	/**
+	 * Return the org.w3c.dom.NodeList object that represents the list of nodes resulting
+	 * from evaluating an XPath expression rooted at an arbitrary given node, or rooted at an
+     * alternate "defaults" node if none is found at the given node.
+	 *
+	 * @param	expr	The XPath expression to evaluate
+	 */
+	public NodeList getNodeList(String expr, Node node, Node defaultsNode) throws Exception {
+        NodeList list = (NodeList)(this.xpath.evaluate(expr, node, XPathConstants.NODESET));
+        if (list != null && list.getLength() > 0) {
+            return list;
+        }
+        return (NodeList)(this.xpath.evaluate(expr, defaultsNode, XPathConstants.NODESET));
+	}
+
+	/**
+	 * Return the org.w3c.dom.Node object that results from forming a list of nodes
+	 * by evaluating one XPath expression, rooted at the top of the document, and
+	 * then searching for the first node in that list for which a second XPath expression
+	 * has a given value.
+	 *
+	 * @param	expr	The XPath expression to evaluate
+	 */
+	public Node findNodeInList(String listExpr, String nodeExpr, String nodeExprValue) throws Exception {
+		NodeList nodeList = getNodeList(listExpr);
+  		for (int i=0; i<nodeList.getLength(); ++i) {
+			Node node = nodeList.item(i);
+			if (getString(nodeExpr, node).equals(nodeExprValue)) {
+				return node;
+			}
+		}
+		return null;
+	}
+
+
+	/**
+	 * Return the string that results from evaluating an XPath expression rooted
+	 * at the top of the document.
+	 *
+	 * @param	expr	The XPath expression to evaluate
+	 */
+    public String getString(String expr) throws Exception {
+		return getString(expr, this.configDocument, null);
+    }
+	/**
+	 * Return the string that results from evaluating an XPath expression rooted
+	 * at the top of the document, but after applying a set of string replacements
+	 * to the string.
+	 *
+	 * @param	expr			The XPath expression to evaluate
+	 * @param	replacements	A HashMap giving the replacements to be applied; for each entry
+	 *                          in the HashMap, each occurrance of the key is replaced by its value.
+	 */
+    public String getModifiedString(String expr, HashMap<String,String> replacements) throws Exception {
+		return applyReplacements(getString(expr), replacements);
+	}
+
+	/**
+	 * Return the string that results from evaluating an XPath expression rooted
+	 * at a given node in the document.
+	 *
+	 * @param	expr	The XPath expression to evaluate
+	 * @param	node	The document node to evaluate relative to
+	 */
+    public String getString(String expr, Node node) throws Exception {
+		return getString(expr, node, null);
+    }
+	/**
+	 * Return the string that results from evaluating an XPath expression rooted
+	 * at a given node in the document, but after applying a set of string replacements
+	 * to the string.
+	 *
+	 * @param	expr			The XPath expression to evaluate
+	 * @param	node	The document node to evaluate relative to
+	 * @param	replacements	A HashMap giving the replacements to be applied; for each entry
+	 *                          in the HashMap, each occurrance of the key is replaced by its value.
+	 */
+    public String getModifiedString(String expr, Node node, HashMap<String,String> replacements) throws Exception {
+		return applyReplacements(getString(expr, node), replacements);
+	}
+
+	/**
+	 * Return the string that results from evaluating an XPath expression rooted
+	 * at a given node in the document, or rooted at a different "defaults" node
+	 * if the string doesn't exist at the given node.
+	 *
+	 * @param	expr			The XPath expression to evaluate
+	 * @param	node			The document node to evaluate relative to
+	 * @param	defaultsNode	The document node to evaluate relative to, if the expression
+	 *                          is not defined relative to "node".
+	 */
+    public String getString(String expr, Node node, Node defaultsNode) throws Exception {
+    	String string = (String)(this.xpath.evaluate(expr,node,XPathConstants.STRING));
+    	if ((string==null || string.length()==0) && defaultsNode!=null) {
+			string = (String)(this.xpath.evaluate(expr,defaultsNode,XPathConstants.STRING));
+		}
+    	if (string == null || string.length()==0) { return ""; }
+		return string;
+    }
+	/**
+	 * Return the string that results from evaluating an XPath expression rooted
+	 * at a given node in the document, or rooted at a different "defaults" node
+	 * if the string doesn't exist at the given node, but after applying a set of
+	 * string replacements to the string.
+	 *
+	 * @param	expr			The XPath expression to evaluate
+	 * @param	node			The document node to evaluate relative to
+	 * @param	defaultsNode	The document node to evaluate relative to, if the expression
+	 *                          is not defined relative to "node".
+	 * @param	replacements	A HashMap giving the replacements to be applied; for each entry
+	 *                          in the HashMap, each occurrance of the key is replaced by its value.
+	 */
+    public String getModifiedString(String expr, Node node, Node defaultsNode, HashMap<String,String> replacements) throws Exception {
+		return applyReplacements(getString(expr, node, defaultsNode), replacements);
+	}
+
+    private String applyReplacements(String string, HashMap<String,String> replacements) {
+    	if (string==null || string.length()==0 || replacements==null) { return string; }
+    	for (String pattern : replacements.keySet()) {
+    		string = string.replaceAll("\\Q"+pattern+"\\E", replacements.get(pattern));
+    	}
+    	return string;
+    }
+
+    public double getDouble(String expr) throws Exception {
+        return Double.parseDouble(getString(expr));
+    }
+    public double getDouble(String expr, Node node) throws Exception {
+        return Double.parseDouble(getString(expr,node));
+    }
+    public double getDouble(String expr, Node node, Node defaultsNode) throws Exception {
+        return Double.parseDouble(getString(expr,node,defaultsNode));
+    }
+
+    public int getInt(String expr) throws Exception {
+        return Integer.parseInt(getString(expr));
+    }
+    public int getInt(String expr, Node node) throws Exception {
+        return Integer.parseInt(getString(expr,node));
+    }
+    public int getInt(String expr, Node node, Node defaultsNode) throws Exception {
+        return Integer.parseInt(getString(expr,node,defaultsNode));
+    }
+
+}

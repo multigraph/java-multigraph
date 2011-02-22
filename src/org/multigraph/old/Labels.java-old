@@ -1,0 +1,224 @@
+package org.multigraph;
+
+import org.jdom.DataConversionException;
+import org.jdom.Element;
+import org.jdom.Attribute;
+
+public class Labels extends MuglBean {
+
+    private String fontname;
+    private boolean fontnameIsDefault = true;
+
+    private int    fontsize;
+    private boolean    fontsizeIsDefault = true;
+
+    private RGBColor  fontcolor;
+    private boolean  fontcolorIsDefault = true;
+
+    private double    angle;
+    private boolean    angleIsDefault = true;
+
+    private DPoint position;
+    private boolean positionIsDefault = true;
+
+    private DPoint anchor;
+    private boolean anchorIsDefault = true;
+
+    private String    spacing;
+    private boolean   spacingIsDefault = true;
+
+    private DataValue start;
+    private   boolean startIsDefault = true;
+
+    private    String format;
+    private   boolean formatIsDefault = true;
+
+    private Axis       parent;
+
+    /*
+      position_horiz_top="0 15"
+      position_horiz_bot="0 -18"
+      position_vert_right="33 0"
+      position_vert_left="-25 0"
+      anchor_horiz_top="0 -1"
+      anchor_horiz_bot="0 1"
+      anchor_vert_right="-1 0"
+      anchor_vert_left="1 0">
+    */
+
+    public static Labels parse(Element node, Element defaultsNode, Axis parent) throws Exception {
+        final Labels labels = new Labels();
+        labels.setParent(parent);
+
+        setProperty("fontname", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        labels.setFontname( value, isDefault );
+                    }});
+
+        setProperty("fontsize", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        labels.setFontsize( Integer.parseInt(value), isDefault );
+                    }});
+
+        setProperty("fontcolor", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        labels.setFontcolor( new RGBColor(value), isDefault );
+                    }});
+
+        setProperty("format", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        labels.setFormat( value, isDefault );
+                    }});
+
+        setProperty("spacing", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        labels.setSpacing( value, isDefault );
+                    }});
+
+        setProperty("start", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        switch (labels.getParent().getType()) {
+                        case NUMBER:
+                            labels.setStart( new DoubleDataValue(value), isDefault );
+                            break;
+                        case DATETIME:
+                            break;
+                        }
+                    }});
+
+        setProperty("angle", node, defaultsNode,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        labels.setAngle( Double.parseDouble(value), isDefault );
+                    }});
+
+        setProperty("position", node, defaultsNode, false,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        labels.setPosition( new DPoint(value), isDefault );
+                    }});
+
+        setProperty("anchor", node, defaultsNode, false,
+                    new PropertySetter() { public void set(String value, boolean isDefault) {
+                        labels.setAnchor( new DPoint(value), isDefault );
+                    }});
+
+        return labels;
+    }
+
+    public Element build(boolean includeAll) throws Exception {
+    	Element element = new Element("labels");
+        if (includeAll || !fontnameIsDefault)   { element.setAttribute("fontname",     fontname                     ); }
+        if (includeAll || !fontsizeIsDefault)   { element.setAttribute("fontsize",     Integer.toString(fontsize)   ); }
+        if (includeAll || !fontcolorIsDefault)  { element.setAttribute("fontcolor",    fontcolor.toString()         ); }
+        if (includeAll || !formatIsDefault)     { element.setAttribute("format",       format                       ); }
+        if (includeAll || !startIsDefault)      { element.setAttribute("start",        start.getStringValue()       ); }
+        if (includeAll || !angleIsDefault)      { element.setAttribute("angle",        Double.toString(angle)       ); }
+        if (includeAll || !positionIsDefault)   { element.setAttribute("position",     position.toString()          ); }
+        if (includeAll || !anchorIsDefault)     { element.setAttribute("anchor",       anchor.toString()            ); }
+        if (includeAll || !spacingIsDefault)    { element.setAttribute("spacing",      spacing                      ); }
+        return element;
+    }
+
+	public String getFontname() {
+		return fontname;
+	}
+	public void setFontname(String fontname) {
+		this.fontname = fontname;
+	}
+	public void setFontname(String fontname, boolean isDefault) {
+        setFontname(fontname);
+        this.fontnameIsDefault = isDefault;
+    }
+	public int getFontsize() {
+		return fontsize;
+	}
+	public void setFontsize(int fontsize) {
+		this.fontsize = fontsize;
+	}
+	public void setFontsize(int fontsize, boolean isDefault) {
+        setFontsize(fontsize);
+        this.fontsizeIsDefault = isDefault;
+    }
+	public RGBColor getFontcolor() {
+		return fontcolor;
+	}
+	public void setFontcolor(RGBColor fontcolor) {
+		this.fontcolor = fontcolor;
+	}
+	public void setFontcolor(RGBColor fontcolor, boolean isDefault) {
+        setFontcolor(fontcolor);
+        this.fontcolorIsDefault = isDefault;
+    }
+	public double getAngle() {
+		return angle;
+	}
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
+	public void setAngle(double angle, boolean isDefault) {
+        setAngle(angle);
+        this.angleIsDefault = isDefault;
+    }
+	public DPoint getPosition() {
+		return position;
+	}
+	public void setPosition(DPoint position) {
+		this.position = position;
+	}
+	public void setPosition(DPoint position, boolean isDefault) {
+        setPosition(position);
+        this.positionIsDefault = isDefault;
+    }
+	public DPoint getAnchor() {
+		return anchor;
+	}
+	public void setAnchor(DPoint anchor) {
+		this.anchor = anchor;
+	}
+	public void setAnchor(DPoint anchor, boolean isDefault) {
+        setAnchor(anchor);
+        this.anchorIsDefault = isDefault;
+    }
+
+
+	public String getFormat() {
+		return format;
+	}
+	public void setFormat(String format) {
+		this.format = format;
+	}
+	public void setFormat(String format, boolean isDefault) {
+        setFormat(format);
+        this.formatIsDefault = isDefault;
+    }
+
+	public String getSpacing() {
+		return spacing;
+	}
+	public void setSpacing(String spacing) {
+		this.spacing = spacing;
+	}
+	public void setSpacing(String spacing, boolean isDefault) {
+        setSpacing(spacing);
+        this.spacingIsDefault = isDefault;
+    }
+
+
+	public DataValue getStart() {
+		return start;
+	}
+	public void setStart(DataValue start) {
+		this.start = start;
+	}
+	public void setStart(DataValue start, boolean isDefault) {
+        setStart(start);
+        this.startIsDefault = isDefault;
+    }
+
+    public Axis getParent() {
+        return parent;
+    }
+    public void setParent(Axis parent) {
+        this.parent = parent;
+    }
+
+}
