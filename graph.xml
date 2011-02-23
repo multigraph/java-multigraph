@@ -4,7 +4,7 @@
     <window border="2" bordercolor="0xffffff"/>
     <background color="0x000000"/>
     <plotarea border="0"/>
-    <horizontalaxis id="xaxis" position="0" base="-1,.5" min="1800" max="2000" tickmax="0" tickmin="-14" color="0xffffff">
+    <horizontalaxis id="xaxis" position="0" base="-1,.5" min="1875" max="2005" tickmax="0" tickmin="-14" color="0xffffff">
       <title fontcolor="0x000000">Year</title>
       <zoom min="5" max="200"/>
       <grid visible="true"  color="0x333333"/>
