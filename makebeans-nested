@@ -12,20 +12,31 @@
 
 use Data::Dumper;
 
+$package = "org.multigraph";
+
+$imports = <<EOF
+import org.multigraph.MuglBean;
+import org.multigraph.DataValue;
+import org.multigraph.DoubleDataValue;
+import org.multigraph.DPoint;
+import org.multigraph.RGBColor;
+EOF
+    ;
+
 $classes = [];
 
 makebean({
-    'class' => "org.multigraph.Mugl",
+    'class' => "Mugl",
     'tag' => "mugl",
     'subelements' => [
-        { 'tag' => 'graph',           'type' => "org.multigraph.Mugl.Graph",  'name' => 'graphs',  'array' => 1 },
+        { 'tag' => 'graph',           'type' => "Mugl.Graph",  'name' => 'graphs',  'array' => 1 },
         ]
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph",
+    'class'       => "Mugl.Graph",
     'tag'         => "graph",
-    'parentclass' => "org.multigraph.Mugl",
+    'parentclass' => "Mugl",
     'attributes' => [
         { 'name' => "x",         "type" => "int",   'nullallowed' => 1 },
         { 'name' => "y",         "type" => "int",   'nullallowed' => 1 },
@@ -33,25 +44,25 @@ makebean({
         { 'name' => "height",    "type" => "int",   'nullallowed' => 1 },
         ],
     'subelements' => [
-        { 'tag' => 'background',      'type' => "org.multigraph.Mugl.Graph.Background" },
-        { 'tag' => 'debug',           'type' => "org.multigraph.Mugl.Graph.Debug"      },
-        { 'tag' => 'window',          'type' => "org.multigraph.Mugl.Graph.Window"     },
-        { 'tag' => 'legend',          'type' => "org.multigraph.Mugl.Graph.Legend"     },
-        { 'tag' => 'title',           'type' => "org.multigraph.Mugl.Graph.Title"      },
-        { 'tag' => 'plotarea',        'type' => "org.multigraph.Mugl.Graph.Plotarea"   },
-        { 'tag' => 'horizontalaxis',  'type' => "org.multigraph.Mugl.Graph.Axis",  'defaultstag' => 'axis',
-          'name' => 'haxes',   'array' => 1, 'parseargs' => "org.multigraph.Mugl.Graph.Axis.Orientation.Horizontal" },
-        { 'tag' => 'verticalaxis',    'type' => "org.multigraph.Mugl.Graph.Axis",  'defaultstag' => 'axis',
-          'name' => 'vaxes',   'array' => 1, 'parseargs' => "org.multigraph.Mugl.Graph.Axis.Orientation.Vertical"   },
-        { 'tag' => 'plot',            'type' => "org.multigraph.Mugl.Graph.Plot",  'name' => 'plots',   'array' => 1 },
-        { 'tag' => 'data',            'type' => "org.multigraph.Mugl.Graph.Data",  'name' => 'datas',   'array' => 1 },
+        { 'tag' => 'background',      'type' => "Mugl.Graph.Background" },
+        { 'tag' => 'debug',           'type' => "Mugl.Graph.Debug"      },
+        { 'tag' => 'window',          'type' => "Mugl.Graph.Window"     },
+        { 'tag' => 'legend',          'type' => "Mugl.Graph.Legend"     },
+        { 'tag' => 'title',           'type' => "Mugl.Graph.Title"      },
+        { 'tag' => 'plotarea',        'type' => "Mugl.Graph.Plotarea"   },
+        { 'tag' => 'horizontalaxis',  'type' => "Mugl.Graph.Axis",  'defaultstag' => 'axis',
+          'name' => 'haxes',   'array' => 1, 'parseargs' => "Mugl.Graph.Axis.Orientation.Horizontal" },
+        { 'tag' => 'verticalaxis',    'type' => "Mugl.Graph.Axis",  'defaultstag' => 'axis',
+          'name' => 'vaxes',   'array' => 1, 'parseargs' => "Mugl.Graph.Axis.Orientation.Vertical"   },
+        { 'tag' => 'plot',            'type' => "Mugl.Graph.Plot",  'name' => 'plots',   'array' => 1 },
+        { 'tag' => 'data',            'type' => "Mugl.Graph.Data",  'name' => 'datas',   'array' => 1 },
         ]
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Debug",
+    'class'       => "Mugl.Graph.Debug",
     'tag'         => "debug",
-    'parentclass' => "org.multigraph.Mugl.Graph",
+    'parentclass' => "Mugl.Graph",
     'attributes' => [
         { 'name' => "xcolor",     "type" => "RGBColor" },
         { 'name' => "xwidth",     "type" => "double"   }
@@ -59,21 +70,21 @@ makebean({
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Background",
+    'class'       => "Mugl.Graph.Background",
     'tag'         => "background",
-    'parentclass' => "org.multigraph.Mugl.Graph",
+    'parentclass' => "Mugl.Graph",
     'attributes' => [
         { 'name' => "color",     "type" => "RGBColor" },
         ],
     'subelements' => [
-        {'tag' => 'img',          'type' => "org.multigraph.Mugl.Graph.Background.Img" },
+        {'tag' => 'img',          'type' => "Mugl.Graph.Background.Img" },
         ],
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Background.Img",
+    'class'       => "Mugl.Graph.Background.Img",
     'tag'         => "img",
-    'parentclass' => "org.multigraph.Mugl.Graph.Background",
+    'parentclass' => "Mugl.Graph.Background",
     'attributes' => [
         { 'name' => 'frame',           'type' => 'String' },
         { 'name' => 'anchor',          'type' => 'DPoint' },
@@ -84,9 +95,9 @@ makebean({
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Window",
+    'class'       => "Mugl.Graph.Window",
     'tag'         => "window",
-    'parentclass' => "org.multigraph.Mugl.Graph",
+    'parentclass' => "Mugl.Graph",
     'attributes' => [
         { 'name' => "margin",    "type" => "int" },
         { 'name' => "border",    "type" => "int" },
@@ -98,9 +109,9 @@ makebean({
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Legend",
+    'class'       => "Mugl.Graph.Legend",
     'tag'         => "legend",
-    'parentclass' => "org.multigraph.Mugl.Graph",
+    'parentclass' => "Mugl.Graph",
     'attributes' => [
         { 'name' => 'visible',       'type' => 'String'      },
         { 'name' => 'frame',         'type' => 'String'      },
@@ -118,14 +129,14 @@ makebean({
         { 'name' => 'padding',       'type' => 'int'         },
         ],
     'subelements' => [
-        { 'tag' => 'icon',          'type' => "org.multigraph.Mugl.Graph.Legend.Icon"    },
+        { 'tag' => 'icon',          'type' => "Mugl.Graph.Legend.Icon"    },
         ]
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Legend.Icon",
+    'class'       => "Mugl.Graph.Legend.Icon",
     'tag'         => "icon",
-    'parentclass' => "org.multigraph.Mugl.Graph.Legend",
+    'parentclass' => "Mugl.Graph.Legend",
     'attributes' => [
         { 'name' => 'border',         'type' =>  'int'      },
         { 'name' => 'width',          'type' =>  'int'      },
@@ -135,9 +146,9 @@ makebean({
 
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Title",
+    'class'       => "Mugl.Graph.Title",
     'tag'         => "title",
-    'parentclass' => "org.multigraph.Mugl.Graph",
+    'parentclass' => "Mugl.Graph",
     'attributes' => [
         { 'name' => 'frame',           'type' => 'String'      },
         { 'name' => 'base',            'type' => 'DPoint'      },
@@ -157,9 +168,9 @@ makebean({
 
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Plotarea",
+    'class'       => "Mugl.Graph.Plotarea",
     'tag'         => "plotarea",
-    'parentclass' => "org.multigraph.Mugl.Graph",
+    'parentclass' => "Mugl.Graph",
     'attributes' => [
         { 'name' => 'border',         'type' =>  'int'      },
         { 'name' => 'bordercolor',    'type' =>  'RGBColor' },
@@ -171,15 +182,15 @@ makebean({
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Axis",
+    'class'       => "Mugl.Graph.Axis",
     'tag'         => 'axis',
-    'parentclass' => "org.multigraph.Mugl.Graph",
+    'parentclass' => "Mugl.Graph",
     'preamble' => <<EOF
     public static enum Orientation { HORIZONTAL, VERTICAL };
 
     public static String OrientationToString(Orientation orientation) {
-        if (orientation == org.multigraph.mugl.graph.Axis.Orientation.HORIZONTAL) { return "horizontalaxis"; }
-        if (orientation == org.multigraph.mugl.graph.Axis.Orientation.VERTICAL)   { return "verticalaxis"; }
+        if (orientation == mugl.graph.Axis.Orientation.HORIZONTAL) { return "horizontalaxis"; }
+        if (orientation == mugl.graph.Axis.Orientation.VERTICAL)   { return "verticalaxis"; }
         return null;
     }
 
@@ -221,20 +232,20 @@ EOF
     ],
     
     'subelements' => [
-        { 'tag' => 'title',           'type' => "org.multigraph.Mugl.Graph.Axis.Title",
+        { 'tag' => 'title',           'type' => "Mugl.Graph.Axis.Title",
           'defaultmods' => sub { my $subel = shift; my $inst = shift; return qq/${subel}.setText( ${inst}.getId() );/; } },
-        { 'tag' => 'zoom',            'type' => "org.multigraph.Mugl.Graph.Axis.Zoom"          },
-        { 'tag' => 'pan',             'type' => "org.multigraph.Mugl.Graph.Axis.Pan"           },
-        { 'tag' => 'grid',            'type' => "org.multigraph.Mugl.Graph.Axis.Grid"          },
-        { 'tag' => 'labels',          'type' => "org.multigraph.Mugl.Graph.Axis.Labels"        },
+        { 'tag' => 'zoom',            'type' => "Mugl.Graph.Axis.Zoom"          },
+        { 'tag' => 'pan',             'type' => "Mugl.Graph.Axis.Pan"           },
+        { 'tag' => 'grid',            'type' => "Mugl.Graph.Axis.Grid"          },
+        { 'tag' => 'labels',          'type' => "Mugl.Graph.Axis.Labels"        },
     ],
          });
 
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Axis.Title",
+    'class'       => "Mugl.Graph.Axis.Title",
     'tag'         => "title",
-    'parentclass' => "org.multigraph.Mugl.Graph.Axis",
+    'parentclass' => "Mugl.Graph.Axis",
     'attributes' => [
         { 'name' => 'fontname',      "type" => 'String'   },
         { 'name' => 'fontsize',      "type" => 'int'      },
@@ -247,9 +258,9 @@ makebean({
          });
 
 makebean({
-    'class' => "org.multigraph.Mugl.Graph.Axis.Zoom",
+    'class' => "Mugl.Graph.Axis.Zoom",
     'tag' => 'zoom',
-    'parentclass' => "org.multigraph.Mugl.Graph.Axis",
+    'parentclass' => "Mugl.Graph.Axis",
     'attributes' => [
         { 'name' => 'allowed',     "type" =>   'boolean'    },
         { 'name' => 'min',         "type" =>   'double',    'nullallowed' => 1     },
@@ -259,9 +270,9 @@ makebean({
          });
 
 makebean({
-    'class' => "org.multigraph.Mugl.Graph.Axis.Pan",
+    'class' => "Mugl.Graph.Axis.Pan",
     'tag' => 'pan',
-    'parentclass' => "org.multigraph.Mugl.Graph.Axis",
+    'parentclass' => "Mugl.Graph.Axis",
     'attributes' => [
         { 'name' => 'allowed',     "type" =>   'boolean'    },
         { 'name' => 'min',         "type" =>   'double',    'nullallowed' => 1     },
@@ -270,9 +281,9 @@ makebean({
          });
 
 makebean({
-    'class' => "org.multigraph.Mugl.Graph.Axis.Grid",
+    'class' => "Mugl.Graph.Axis.Grid",
     'tag' => 'grid',
-    'parentclass' => "org.multigraph.Mugl.Graph.Axis",
+    'parentclass' => "Mugl.Graph.Axis",
     'attributes' => [
         { 'name' => 'color',       "type" => 'RGBColor' },
         { 'name' => 'visible',     "type" => 'boolean'  }
@@ -280,9 +291,9 @@ makebean({
          });
 
 makebean({
-    'class' => "org.multigraph.Mugl.Graph.Axis.Labels",
+    'class' => "Mugl.Graph.Axis.Labels",
     'tag' => 'labels',
-    'parentclass' => "org.multigraph.Mugl.Graph.Axis",
+    'parentclass' => "Mugl.Graph.Axis",
     'attributes' => [
         { 'name' => 'fontname',   "type" => 'String'    },
         { 'name' => 'fontsize',   "type" => 'int'       },
@@ -295,15 +306,15 @@ makebean({
         { 'name' => 'format',     "type" => 'String'    },
         ],
         'subelements' => [
-            { 'tag' => 'label',     'type' => "org.multigraph.Mugl.Graph.Axis.Labels.Label",  'name' => 'labels',  'array' => 1 },
+            { 'tag' => 'label',     'type' => "Mugl.Graph.Axis.Labels.Label",  'name' => 'labels',  'array' => 1 },
         ],
          }
     );
 
 makebean({
-    'class' => "org.multigraph.Mugl.Graph.Axis.Labels.Label",
+    'class' => "Mugl.Graph.Axis.Labels.Label",
     'tag' => "label",
-    'parentclass' => "org.multigraph.Mugl.Graph.Axis.Labels",
+    'parentclass' => "Mugl.Graph.Axis.Labels",
     'attributes' => [
         { 'name' => 'fontname',   "type" => 'String',    'nullsetter' => 'setFromParent' },
         { 'name' => 'fontsize',   "type" => 'int',       'nullsetter' => 'setFromParent' },
@@ -318,23 +329,23 @@ makebean({
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Plot",
+    'class'       => "Mugl.Graph.Plot",
     'tag'         => "plot",
-    'parentclass' => "org.multigraph.Mugl.Graph",
+    'parentclass' => "Mugl.Graph",
     'subelements' => [
-        { 'tag'  => 'legend',         "type" => "org.multigraph.Mugl.Graph.Plot.Legend"                                 },
-        { 'tag'  => 'horizontalaxis', "type" => "org.multigraph.Mugl.Graph.Plot.Axis",     'defaultstag' => 'axis',
-          'parseargs' => "org.multigraph.Mugl.Graph.Axis.Orientation.Horizontal" },
-        { 'tag'  => 'verticalaxis',   "type" => "org.multigraph.Mugl.Graph.Plot.Axis",     'defaultstag' => 'axis',
-          'parseargs' => "org.multigraph.Mugl.Graph.Axis.Orientation.Vertical" },
-        { 'tag'  => 'renderer',       "type" => "org.multigraph.Mugl.Graph.Plot.Renderer"                               },
+        { 'tag'  => 'legend',         "type" => "Mugl.Graph.Plot.Legend"                                 },
+        { 'tag'  => 'horizontalaxis', "type" => "Mugl.Graph.Plot.Axis",     'defaultstag' => 'axis',
+          'parseargs' => "Mugl.Graph.Axis.Orientation.Horizontal" },
+        { 'tag'  => 'verticalaxis',   "type" => "Mugl.Graph.Plot.Axis",     'defaultstag' => 'axis',
+          'parseargs' => "Mugl.Graph.Axis.Orientation.Vertical" },
+        { 'tag'  => 'renderer',       "type" => "Mugl.Graph.Plot.Renderer"                               },
         ],
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Plot.Legend",
+    'class'       => "Mugl.Graph.Plot.Legend",
     'tag'         => "legend",
-    'parentclass' => "org.multigraph.Mugl.Graph.Plot",
+    'parentclass' => "Mugl.Graph.Plot",
     'attributes' => [
         { 'name'  => 'label',          "type" => 'String'    },
         { 'name'  => 'visible',        "type" => 'boolean'    }
@@ -342,35 +353,35 @@ makebean({
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Plot.Axis",
+    'class'       => "Mugl.Graph.Plot.Axis",
     'tag'         => "axis",
-    'parentclass' => "org.multigraph.Mugl.Graph.Plot",
+    'parentclass' => "Mugl.Graph.Plot",
     'preamble'    => <<EOF
-    private org.multigraph.mugl.graph.Axis.Orientation orientation;
-    public org.multigraph.mugl.graph.Axis.Orientation getOrientation() {
+    private mugl.graph.Axis.Orientation orientation;
+    public mugl.graph.Axis.Orientation getOrientation() {
         return orientation;
     }
-    public void setOrientation(org.multigraph.mugl.graph.Axis.Orientation orientation) {
+    public void setOrientation(mugl.graph.Axis.Orientation orientation) {
         this.orientation = orientation;
     }
 EOF
     ,
-    'parseargs' => "org.multigraph.Mugl.Graph.Axis.Orientation Orientation",
+    'parseargs' => "Mugl.Graph.Axis.Orientation Orientation",
     'initsteps' => "axis.setOrientation(orientation);",
-    'tagexpr'   => "org.multigraph.Mugl.Graph.Axis.Orientationtostring(Orientation)",
+    'tagexpr'   => "Mugl.Graph.Axis.Orientationtostring(Orientation)",
     'attributes' => [
         { 'name' => 'ref',           'type' => 'String' },
         ],
     'subelements' => [
-        { 'tag' => 'variable',        'type' => "org.multigraph.Mugl.Graph.Plot.Axis.Variable",   'name' => 'variables',   'array' => 1 }
+        { 'tag' => 'variable',        'type' => "Mugl.Graph.Plot.Axis.Variable",   'name' => 'variables',   'array' => 1 }
         ],
          });
 
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Plot.Axis.Variable",
+    'class'       => "Mugl.Graph.Plot.Axis.Variable",
     'tag'         => "variable",
-    'parentclass' => "org.multigraph.Mugl.Graph.Plot.Axis",
+    'parentclass' => "Mugl.Graph.Plot.Axis",
     'attributes' => [
         { 'name'  => 'ref',          "type" => 'String'    },
         ],
@@ -378,21 +389,21 @@ makebean({
 
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Plot.Renderer",
+    'class'       => "Mugl.Graph.Plot.Renderer",
     'tag'         => "renderer",
-    'parentclass' => "org.multigraph.Mugl.Graph.Plot",
+    'parentclass' => "Mugl.Graph.Plot",
     'attributes' => [
         { 'name'  => 'type',          "type" => 'String'    },
         ],
     'subelements' => [
-        { 'tag'  => 'option',        "type" => "org.multigraph.Mugl.Graph.Plot.Renderer.Option",    'name' => 'options',    'array' => 1  },
+        { 'tag'  => 'option',        "type" => "Mugl.Graph.Plot.Renderer.Option",    'name' => 'options',    'array' => 1  },
         ],
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Plot.Renderer.Option",
+    'class'       => "Mugl.Graph.Plot.Renderer.Option",
     'tag'         => "option",
-    'parentclass' => "org.multigraph.Mugl.Graph.Plot.Renderer",
+    'parentclass' => "Mugl.Graph.Plot.Renderer",
     'attributes' => [
         { 'name'  => 'name',          "type" => 'String'    },
         { 'name'  => 'value',         "type" => 'String'    },
@@ -403,34 +414,34 @@ makebean({
 
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Data",
+    'class'       => "Mugl.Graph.Data",
     'tag'         => "data",
-    'parentclass' => "org.multigraph.Mugl.Graph",
+    'parentclass' => "Mugl.Graph",
     'subelements' => [
-        { 'tag'  => 'variables',     "type" => "org.multigraph.Mugl.Graph.Data.Variables"  },
-        { 'tag'  => 'values',        "type" => "org.multigraph.Mugl.Graph.Data.Values"     },
-        { 'tag'  => 'csv',           "type" => "org.multigraph.Mugl.Graph.Data.Csv"        },
-        { 'tag'  => 'service',       "type" => "org.multigraph.Mugl.Graph.Data.Service"    }
+        { 'tag'  => 'variables',     "type" => "Mugl.Graph.Data.Variables"  },
+        { 'tag'  => 'values',        "type" => "Mugl.Graph.Data.Values"     },
+        { 'tag'  => 'csv',           "type" => "Mugl.Graph.Data.Csv"        },
+        { 'tag'  => 'service',       "type" => "Mugl.Graph.Data.Service"    }
         ],
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Data.Variables",
+    'class'       => "Mugl.Graph.Data.Variables",
     'tag'         => "variables",
-    'parentclass' => "org.multigraph.Mugl.Graph.Data",
+    'parentclass' => "Mugl.Graph.Data",
     'attributes' => [
         { 'name'  => 'missingvalue',  "type" => 'String',   'nullallowed' => 1  },
         { 'name'  => 'missingop',     "type" => 'String',   'nullallowed' => 1  },
         ],
     'subelements' => [
-        { 'tag'  => 'variable',      "type" => "org.multigraph.Mugl.Graph.Data.Variables.Variable",   'name' => 'variables', 'array' => 1  },
+        { 'tag'  => 'variable',      "type" => "Mugl.Graph.Data.Variables.Variable",   'name' => 'variables', 'array' => 1  },
         ],
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Data.Variables.Variable",
+    'class'       => "Mugl.Graph.Data.Variables.Variable",
     'tag'         => "variable",
-    'parentclass' => "org.multigraph.Mugl.Graph.Data.Variables",
+    'parentclass' => "Mugl.Graph.Data.Variables",
     'attributes' => [
         { 'name'  => 'id',            "type" => 'String'                                                      },
         { 'name'  => 'column',        "type" => 'int'                                                         },
@@ -441,36 +452,40 @@ makebean({
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Data.Values",
+    'class'       => "Mugl.Graph.Data.Values",
     'tag'         => "values",
-    'parentclass' => "org.multigraph.Mugl.Graph.Data",
+    'parentclass' => "Mugl.Graph.Data",
     'textname'    => 'text'
          });
 
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Data.Csv",
+    'class'       => "Mugl.Graph.Data.Csv",
     'tag'         => "csv",
-    'parentclass' => "org.multigraph.Mugl.Graph.Data",
+    'parentclass' => "Mugl.Graph.Data",
     'attributes' => [
         { 'name'  => 'location',            "type" => 'String'  },
         ],
          });
 
 makebean({
-    'class'       => "org.multigraph.Mugl.Graph.Data.Service",
+    'class'       => "Mugl.Graph.Data.Service",
     'tag'         => "service",
-    'parentclass' => "org.multigraph.Mugl.Graph.Data",
+    'parentclass' => "Mugl.Graph.Data",
     'attributes' => [
         { 'name'  => 'location',            "type" => 'String'  },
         ],
          });
 
 foreach $class (@$classes) {
-    my $javafile = sprintf("%s.java", $class->{'class'});
+    $classname = $class->{'class'};
+#    my $dir = $package;
+#    $dir =~ s|\.|/|g;
+    $dir = ".";
+    my $javafile = sprintf("src/%s/%s.java", $dir, $class->{'class'});
     open(OUT, ">$javafile");
     print OUT <<EOF
-package org.multigraph;
+package $package;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -479,11 +494,8 @@ import org.jdom.Element;
 import org.jdom.Attribute;
 import org.jdom.xpath.XPath;
 
-import org.multigraph.MuglBean;
-import org.multigraph.DataValue;
-import org.multigraph.DoubleDataValue;
-import org.multigraph.DPoint;
-import org.multigraph.RGBColor;
+$imports
+
 EOF
     ;
     print OUT makejava($class);
@@ -571,12 +583,6 @@ sub makejava {
 
     my $textnameCap = $textname ? ucfirst($textname) : undef;
 
-    my $package = $class;
-    $package =~ s|\.[^\.]+$||;
-
-    my $dir = $package;
-    $dir =~ s|\.|/|g;
-
     my $className  = $class;
     $className =~ s|^.*\.([^\.]+)|$1|;
 
@@ -586,7 +592,6 @@ sub makejava {
     ###
     ### Preamble
     ###
-#    system("mkdir -p src/$dir");
     $output = <<EOF
 public class ${className} extends MuglBean {
 $childjavas
