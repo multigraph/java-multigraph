@@ -1,0 +1,60 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+            jxb:version="1.0">
+
+  <xsd:annotation>
+    <xsd:appinfo>
+      <jxb:globalBindings fixedAttributeAsConstantProperty="true"
+                          generateIsSetMethod="true"/>
+    </xsd:appinfo>
+  </xsd:annotation>
+
+  <xsd:group name="GraphContent">
+    <xsd:sequence>
+      <xsd:element name="horizontalaxis" type="HorizontalAxis"  minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="verticalaxis"   type="VerticalAxis"    minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:element name="mugl" type="Graph"/>
+
+  <xsd:complexType name="Graph">
+    <xsd:choice>
+      <xsd:group ref="GraphContent"/>
+      <xsd:element name="graph" type="Graph" minOccurs="1" maxOccurs="unbounded"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="Axis">
+    <xsd:attribute name="id"  type="xsd:string"/>
+    <xsd:attribute name="min" type="xsd:integer"/>
+    <xsd:attribute name="max" type="xsd:integer"/>
+    <xsd:attribute name="orientation" type="AxisOrientation" default="unknown"/>
+  </xsd:complexType>
+
+  <xsd:simpleType name="AxisOrientation">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="unknown"/>
+      <xsd:enumeration value="horizontal"/>
+      <xsd:enumeration value="vertical"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="HorizontalAxis">
+    <xsd:complexContent>
+      <xsd:restriction base="Axis">
+        <xsd:attribute name="orientation" type="AxisOrientation" fixed="horizontal"/>
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="VerticalAxis">
+    <xsd:complexContent>
+      <xsd:restriction base="Axis">
+        <xsd:attribute name="orientation" type="AxisOrientation" fixed="vertical"/>
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+</xsd:schema>
