@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<mugl>
+  <graph>
+    <horizontalaxis id="x1" min="-10" max="10"/>
+    <horizontalaxis id="x2" min="-20" max="20"/>
+    <horizontalaxis id="x3" min="-30" max="30"/>
+    <verticalaxis   id="y1" min="-40" max="40"/>
+    <verticalaxis   id="y2" min="-50" max="50"/>
+  </graph>
+  <graph>
+    <horizontalaxis id="X1" min="-10" max="10"/>
+    <horizontalaxis id="X2" min="-20" max="20"/>
+    <horizontalaxis id="X3" min="-30" max="30"/>
+    <verticalaxis   id="Y1" min="-40" max="40"/>
+    <verticalaxis   id="Y2" min="-50" max="50"/>
+  </graph>
+</mugl>

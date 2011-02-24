@@ -1,0 +1,10 @@
+#! /bin/bash
+
+#xjc -p primer.po po.xsd
+#javac PMain.java primer/po/*.java
+#java PMain
+
+/bin/rm -rf org primer
+xjc -p org.multigraph multigraph.xsd
+javac Main.java org/multigraph/*.java
+java Main
