@@ -9,13 +9,6 @@
     </xsd:appinfo>
   </xsd:annotation>
 
-  <xsd:group name="GraphContent">
-    <xsd:sequence>
-      <xsd:element name="horizontalaxis" type="HorizontalAxis"  minOccurs="0" maxOccurs="unbounded"/>
-      <xsd:element name="verticalaxis"   type="VerticalAxis"    minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:group>
-
   <xsd:element name="mugl" type="Graph"/>
 
   <xsd:complexType name="Graph">
@@ -25,11 +18,38 @@
     </xsd:choice>
   </xsd:complexType>
 
+  <xsd:group name="GraphContent">
+    <xsd:sequence>
+        <xsd:element name="window"         type="Window"          minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="horizontalaxis" type="HorizontalAxis"  minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="verticalaxis"   type="VerticalAxis"    minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="plot"           type="Plot"            minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="data"           type="Data"            minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:complexType name="Window">
+    <xsd:attribute name="border"      type="xsd:integer"/>
+    <xsd:attribute name="bordercolor" type="xsd:string"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="Plotarea">
+    <xsd:attribute name="border"      type="xsd:integer"/>
+  </xsd:complexType>
 
   <xsd:complexType name="Axis">
-    <xsd:attribute name="id"  type="xsd:string"/>
-    <xsd:attribute name="min" type="xsd:integer"/>
-    <xsd:attribute name="max" type="xsd:integer"/>
+    <xsd:sequence>
+      <xsd:element name="labels" type="Labels" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="grid"   type="Grid" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="id"          type="xsd:string"/>
+    <xsd:attribute name="position"    type="xsd:integer"/>
+    <xsd:attribute name="base"        type="xsd:string"/>
+    <xsd:attribute name="min"         type="xsd:integer"/>
+    <xsd:attribute name="max"         type="xsd:integer"/>
+    <xsd:attribute name="tickmin"     type="xsd:integer"/>
+    <xsd:attribute name="tickmax"     type="xsd:integer"/>
+    <xsd:attribute name="color"       type="xsd:string"/>
     <xsd:attribute name="orientation" type="AxisOrientation" default="unknown"/>
   </xsd:complexType>
 
@@ -55,6 +75,89 @@
         <xsd:attribute name="orientation" type="AxisOrientation" fixed="vertical"/>
       </xsd:restriction>
     </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="Labels">
+    <xsd:sequence>
+      <xsd:element minOccurs="0" maxOccurs="unbounded" name="label" type="Label"/>
+    </xsd:sequence>
+    <xsd:attribute name="format"   type="xsd:string"/>
+    <xsd:attribute name="start"    type="xsd:string"/>
+    <xsd:attribute name="angle"    type="xsd:string"/>
+    <xsd:attribute name="position" type="xsd:string"/>
+    <xsd:attribute name="anchor"   type="xsd:string"/>
+    <xsd:attribute name="spacing"  type="xsd:string"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="Label">
+    <xsd:attribute name="format"   type="xsd:string"/>
+    <xsd:attribute name="start"    type="xsd:string"/>
+    <xsd:attribute name="angle"    type="xsd:string"/>
+    <xsd:attribute name="position" type="xsd:string"/>
+    <xsd:attribute name="anchor"   type="xsd:string"/>
+    <xsd:attribute name="spacing" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="Grid">
+    <xsd:attribute name="visible" type="xsd:boolean"/>
+    <xsd:attribute name="color"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="Plot">
+    <xsd:sequence>
+      <xsd:element name="horizontalaxis" type="PlotAxis" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="verticalaxis"   type="PlotAxis" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="renderer"       type="Renderer" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="PlotAxis">
+    <xsd:sequence>
+      <xsd:element name="variable" type="PlotVariable" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="ref" type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="PlotVariable">
+    <xsd:attribute name="ref" type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="Renderer">
+    <xsd:sequence>
+      <xsd:element name="option" type="RendererOption" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="type" type="RendererType" use="required"/>
+  </xsd:complexType>
+
+  <xsd:simpleType name="RendererType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="pointline"/>
+      <xsd:enumeration value="line"/>
+      <xsd:enumeration value="bar"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="RendererOption">
+    <xsd:attribute name="name"  type="xsd:string" use="required"/>
+    <xsd:attribute name="value" type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="Data">
+    <xsd:sequence>
+      <xsd:element name="variables"      type="Variables"   minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="values"         type="xsd:string"  minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Variables">
+    <xsd:sequence>
+      <xsd:element name="variable"       type="Variable" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Variable">
+    <xsd:attribute name="id"      type="xsd:string" use="required"/>
+    <xsd:attribute name="column"  type="xsd:string" />
   </xsd:complexType>
 
 </xsd:schema>

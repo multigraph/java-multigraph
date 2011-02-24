@@ -1,0 +1,17 @@
+<?xml version="1.0"?>  
+<project default="generate">  
+    <path id="classpath">  
+        <fileset dir="./" includes="ant-lib/*.jar" />  
+    </path>  
+    <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">  
+        <classpath refid="classpath" />  
+    </taskdef>  
+  
+    <!--Generate JAXB source files-->  
+    <target name="generate" description="Generate JAXB source files">  
+        <echo message="Compiling the schema..." />  
+        <xjc schema="multigraph.xsd" package="org.multigraph.jaxb" destdir="gen-src">  
+            <produces dir="gen-src/org/multigraph/jaxb" includes="**/*.java" />  
+        </xjc>  
+    </target>  
+</project>
