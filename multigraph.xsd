@@ -21,6 +21,7 @@
   <xsd:group name="GraphContent">
     <xsd:sequence>
         <xsd:element name="window"         type="Window"          minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="muglatrix"      type="Muglatrix"       minOccurs="0" maxOccurs="1"/>
         <xsd:element name="background"     type="Background"      minOccurs="0" maxOccurs="1"/>
         <xsd:element name="plotarea"       type="Plotarea"        minOccurs="0" maxOccurs="1"/>
         <xsd:element name="horizontalaxis" type="HorizontalAxis"  minOccurs="0" maxOccurs="unbounded"/>
@@ -46,6 +47,11 @@
     <xsd:attribute name="margin"      type="xsd:int" default="2"/>
     <xsd:attribute name="padding"      type="xsd:int" default="5"/>
     <xsd:attribute name="bordercolor" type="RGBColor" default="0x000000"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="Muglatrix">
+    <xsd:attribute name="foo"         type="xsd:int" default="2"/>
+    <xsd:attribute name="bar"         type="xsd:int" default="9"/>
   </xsd:complexType>
 
   <xsd:complexType name="Background">

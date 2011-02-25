@@ -39,7 +39,7 @@ public class Multigraph {
     }    
     
 	public static org.multigraph.jaxb.Graph loadMugl(String filename) throws Exception {
-        JAXBContext    jc = JAXBContext.newInstance("org.multigraph.jaxb");
+        JAXBContext    jc = JAXBContext.newInstance("org.multigraph");
         Unmarshaller    u = jc.createUnmarshaller();
         JAXBElement mugle = (JAXBElement) u.unmarshal( new FileInputStream("graph.xml"));
         org.multigraph.jaxb.Graph         graph = (org.multigraph.jaxb.Graph) mugle.getValue();
