@@ -103,7 +103,7 @@ public abstract class Data {
     	if (dataState.isSetValues()) {
     		ArrayData data = new ArrayData(dataVariables);
     		data.parseText(dataState.getValues());
-    		data.dump();
+    		//data.dump();
     		return data;
     	}
     	return null;
