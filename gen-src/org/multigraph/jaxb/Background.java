@@ -17,16 +17,15 @@ import org.multigraph.RGBColor;
 
 
 /**
- * <p>Java class for Grid complex type.
+ * <p>Java class for Background complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Grid">
+ * &lt;complexType name="Background">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;attribute name="visible" type="{http://www.w3.org/2001/XMLSchema}boolean" default="false" />
- *       &lt;attribute name="color" type="{}RGBColor" default="0xeeeeee" />
+ *       &lt;attribute name="color" type="{}RGBColor" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -35,50 +34,12 @@ import org.multigraph.RGBColor;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Grid")
-public class Grid {
+@XmlType(name = "Background")
+public class Background {
 
-    @XmlAttribute
-    protected Boolean visible;
     @XmlAttribute
     @XmlJavaTypeAdapter(Adapter1 .class)
     protected RGBColor color;
-
-    /**
-     * Gets the value of the visible property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public boolean isVisible() {
-        if (visible == null) {
-            return false;
-        } else {
-            return visible;
-        }
-    }
-
-    /**
-     * Sets the value of the visible property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setVisible(boolean value) {
-        this.visible = value;
-    }
-
-    public boolean isSetVisible() {
-        return (this.visible!= null);
-    }
-
-    public void unsetVisible() {
-        this.visible = null;
-    }
 
     /**
      * Gets the value of the color property.
@@ -89,11 +50,7 @@ public class Grid {
      *     
      */
     public RGBColor getColor() {
-        if (color == null) {
-            return new Adapter1().unmarshal("0xeeeeee");
-        } else {
-            return color;
-        }
+        return color;
     }
 
     /**

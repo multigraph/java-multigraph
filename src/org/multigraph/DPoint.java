@@ -27,5 +27,13 @@ public class DPoint {
     public double getY() {
         return y;
     }
+    
+    public static DPoint parse(String string) {
+    	return new DPoint(string);
+    }
+    public static String toString(DPoint d) {
+    	if (d==null) { return "NULL-DPOINT"; }
+    	return d.toString();
+    }
 
 }

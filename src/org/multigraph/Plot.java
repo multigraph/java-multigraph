@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public abstract class Plot {
 
 	protected Graph mParent;
-	protected org.multigraph.mugl.graph.Plot mState;
+	protected org.multigraph.jaxb.Plot mState;
     protected Axis mHorizontalAxis;
     protected Axis mVerticalAxis;
     protected Renderer mRenderer;
     protected String mLegendLabel;
 
-    protected Plot(Graph parent, org.multigraph.mugl.graph.Plot state,
+    protected Plot(Graph parent, org.multigraph.jaxb.Plot state,
     		  	   Axis haxis, Axis vaxis, String legendLabel) {
     	mParent         = parent;
     	mState          = state;
@@ -27,14 +27,14 @@ public abstract class Plot {
 
     public abstract void render(GraphicsContext g);
 
-	public static Plot create(Graph parent, org.multigraph.mugl.graph.Plot state) {
+	public static Plot create(Graph parent, org.multigraph.jaxb.Plot state) {
 		Axis haxis = parent.findAxisById(state.getHorizontalaxis().getRef());
 		Axis vaxis = parent.findAxisById(state.getVerticalaxis().getRef());
 		ArrayList<String> varids = new ArrayList<String>();
-		for (org.multigraph.mugl.graph.plot.axis.Variable var : state.getHorizontalaxis().getVariables()) {
+		for (org.multigraph.jaxb.PlotVariable var : state.getHorizontalaxis().getVariable()) {
 			varids.add( var.getRef() );
 		}
-		for (org.multigraph.mugl.graph.plot.axis.Variable var : state.getVerticalaxis().getVariables()) {
+		for (org.multigraph.jaxb.PlotVariable var : state.getVerticalaxis().getVariable()) {
 			varids.add( var.getRef() );
 		}
 		Data data = parent.findDataByVariableId(varids.get(0));

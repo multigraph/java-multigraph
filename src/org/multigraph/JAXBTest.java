@@ -38,12 +38,12 @@ public class JAXBTest {
 
             System.out.printf("horizontal axes:\n");
             for (org.multigraph.jaxb.Axis axis : graph.getHorizontalaxis()) {
-                System.out.printf("   id='%s'  min='%3d'   max='%3d'   orientation='%s'\n",
+                System.out.printf("   id='%s'  min='%s'   max='%s'   orientation='%s'\n",
                                   axis.getId(), axis.getMin(), axis.getMax(), axis.getOrientation());
             }
             System.out.printf("vertical axes:\n");
             for (org.multigraph.jaxb.Axis axis : graph.getVerticalaxis()) {
-                System.out.printf("   id='%s'  min='%3d'   max='%3d'   orientation='%s'\n",
+                System.out.printf("   id='%s'  min='%s'   max='%s'   orientation='%s'\n",
                                   axis.getId(), axis.getMin(), axis.getMax(), axis.getOrientation());
             }
 

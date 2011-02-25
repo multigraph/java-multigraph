@@ -6,7 +6,7 @@ public abstract class Renderer {
     private Axis mVerticalAxis;
 
     protected Renderer(Plot parent,
-                       org.multigraph.mugl.graph.plot.Renderer state) {
+                       org.multigraph.jaxb.Renderer state) {
         mHorizontalAxis = parent.getHorizontalAxis();
         mVerticalAxis   = parent.getVerticalAxis();
     }
@@ -24,7 +24,7 @@ public abstract class Renderer {
         return output;
   	}
   	
-  	public static Renderer create(Plot parent, org.multigraph.mugl.graph.plot.Renderer state) {
+  	public static Renderer create(Plot parent, org.multigraph.jaxb.Renderer state) {
   		return new PointLineRenderer(parent, state);
   	}
 

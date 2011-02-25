@@ -10,6 +10,7 @@ import org.multigraph.ArrayData;
 import org.multigraph.DataIterator;
 import org.multigraph.DataValue;
 import org.multigraph.DataVariable;
+import org.multigraph.DataType;
 
 public class TestSuite {
 
@@ -31,13 +32,13 @@ public class TestSuite {
     @Test public void test1() {
     	try {
     		ArrayList<DataVariable> vars = new ArrayList<DataVariable>();
-    		vars.add(new DataVariable("x", 0, DataValue.Type.NUMBER));
-    		vars.add(new DataVariable("y", 1, DataValue.Type.NUMBER));
+    		vars.add(new DataVariable("x", 0, DataType.NUMBER));
+    		vars.add(new DataVariable("y", 1, DataType.NUMBER));
     		ArrayData data = new ArrayData(vars);
     		data.parseText("10,11\n12,13");
     		DataIterator di = data.getIterator(new String[] { "x", "y" },
-    										   DataValue.create(DataValue.Type.NUMBER, -100),
-    										   DataValue.create(DataValue.Type.NUMBER,  100),
+    										   DataValue.create(DataType.NUMBER, -100),
+    										   DataValue.create(DataType.NUMBER,  100),
     										   0);
     		if (!di.hasNext()) {
     			Assert.fail("di has no first row");

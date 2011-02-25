@@ -28,4 +28,13 @@ public class RGBColor {
         return String.format("0x%02x%02x%02x", r, g, b);
     }
 
+    public static RGBColor parse(String string) {
+        return new RGBColor(string);
+    }
+
+    public static String toString(RGBColor rgbcolor) {
+    	if (rgbcolor==null) { return "NULL-RGBCOLOR"; }
+        return rgbcolor.toString();
+    }
+
 }

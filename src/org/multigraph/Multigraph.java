@@ -5,7 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.Unmarshaller;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -14,40 +19,55 @@ import org.jdom.xpath.XPath;
 
 public class Multigraph {
 	
-	private Mugl state;
+	//private Mugl state;
+	private org.multigraph.jaxb.Graph state;
     private int width;
     private int height;
     
     private ArrayList<Graph> graphs;
     
-	public static Mugl loadMugl(String filename, String defaultsFilename) throws Exception {
-    	SAXBuilder builder = new SAXBuilder();
-
-    	Document defaults = builder.build(new File(defaultsFilename));
-        Element defaultsElement = (Element)XPath.selectSingleNode(defaults, "/mugl");
-
-    	Document doc = builder.build(new File(filename));
-        Mugl mugl = Mugl.parse((Element)XPath.selectSingleNode(doc, "/mugl"), defaultsElement);
-        return mugl;
+    private static void setAxisOrientations(org.multigraph.jaxb.Graph graph) {
+        for (org.multigraph.jaxb.HorizontalAxis haxis : graph.getHorizontalaxis()) {
+            haxis.setOrientation(org.multigraph.jaxb.AxisOrientation.HORIZONTAL);
+        }
+        for (org.multigraph.jaxb.VerticalAxis vaxis : graph.getVerticalaxis()) {
+            vaxis.setOrientation(org.multigraph.jaxb.AxisOrientation.VERTICAL);
+        }
+        for (org.multigraph.jaxb.Graph childgraph : graph.getGraph()) {
+            setAxisOrientations(childgraph);
+        }
+    }    
+    
+	public static org.multigraph.jaxb.Graph loadMugl(String filename) throws Exception {
+        JAXBContext    jc = JAXBContext.newInstance("org.multigraph.jaxb");
+        Unmarshaller    u = jc.createUnmarshaller();
+        JAXBElement mugle = (JAXBElement) u.unmarshal( new FileInputStream("graph.xml"));
+        org.multigraph.jaxb.Graph         graph = (org.multigraph.jaxb.Graph) mugle.getValue();
+        setAxisOrientations(graph);
+        return graph;
 	}    
 	
 	public Multigraph(String muglFilename, String muglDefaultsFilename, int width, int height) throws Exception {
-		Mugl mugl = loadMugl(muglFilename, muglDefaultsFilename);
+		org.multigraph.jaxb.Graph mugl = loadMugl(muglFilename);
 		init(mugl, width, height);
 	}
 	
-	public Multigraph(Mugl mugl, int width, int height) {
+	public Multigraph(org.multigraph.jaxb.Graph mugl, int width, int height) {
 		init(mugl, width, height);
 	}
 
-	private void init(Mugl mugl, int width, int height) {		
+	private void init(org.multigraph.jaxb.Graph mugl, int width, int height) {		
 		this.state = mugl;
         this.width = width;
         this.height = height;
         
         this.graphs = new ArrayList<Graph>();
-        for (org.multigraph.mugl.Graph graphState : state.getGraphs()) {
-        	this.graphs.add(new Graph(graphState, width, height));
+        if (state.isSetGraph()) {
+        	for (org.multigraph.jaxb.Graph graphState : state.getGraph()) {
+        		this.graphs.add(new Graph(graphState, width, height));
+        	}
+        } else {
+    		this.graphs.add(new Graph(state, width, height));
         }
 	}
 	

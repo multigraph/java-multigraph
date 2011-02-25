@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Axis {
 	
-	private org.multigraph.mugl.graph.Axis mState;
+	private org.multigraph.jaxb.Axis mState;
     private Graph mParent;
 
     private String mId;
@@ -65,21 +65,29 @@ public class Axis {
         }
     }
 
-    private DataValue.Type mType = DataValue.Type.UNKNOWN;
-    public DataValue.Type getType() { return mType; }
+    //private DataValue.Type mType = DataValue.Type.UNKNOWN;
+    //public DataValue.Type getType() { return mType; }
+    private org.multigraph.DataType mType = org.multigraph.DataType.NUMBER;
+    public org.multigraph.DataType getType() { return mType; }
 
-    private org.multigraph.mugl.graph.Axis.Orientation mOrientation;
-    public org.multigraph.mugl.graph.Axis.Orientation getOrientation() { return mOrientation; }
+    private org.multigraph.jaxb.AxisOrientation mOrientation;
+    public org.multigraph.jaxb.AxisOrientation getOrientation() { return mOrientation; }
+    
+    private void prepareState() {
+    	if (!mState.isSetGrid()) { mState.setGrid( new org.multigraph.jaxb.Grid() ); }
+    	if (!mState.isSetLabels()) { mState.setLabels(new org.multigraph.jaxb.Labels() ); }
+    }
 
-
-    public Axis(Graph parent, org.multigraph.mugl.graph.Axis state) {
+    public Axis(Graph parent, org.multigraph.jaxb.Axis state) {
         this.mParent      = parent;
         this.mState       = state;
         this.mOrientation = state.getOrientation();
         this.mId          = state.getId();
         this.mType        = state.getType();
+        
+        prepareState();
 
-        this.mLength = (int)Math.round(mState.getLength() * ((mOrientation == org.multigraph.mugl.graph.Axis.Orientation.HORIZONTAL)
+        this.mLength = (int)Math.round(mState.getLength() * ((mOrientation == org.multigraph.jaxb.AxisOrientation.HORIZONTAL)
                                             ? mParent.getPlotbox().getWidth()
                                             : mParent.getPlotbox().getHeight()));
 
@@ -97,20 +105,20 @@ public class Axis {
 
     private void buildLabelers() {
     	this.mLabelers = new ArrayList<Labeler>();
-    	int numLabelSubtags = mState.getLabels().getLabels().size();
+    	int numLabelSubtags = mState.getLabels()!=null ? mState.getLabels().getLabel().size() : 0; 
     	if (numLabelSubtags > 0) {
     		// This is the case where we have <labels><label>...</label>...</labels>,
     		// i.e. single <label> tags nested inside the <labels> tag
             for(int k = 0; k < numLabelSubtags; ++k) {
-            	String hlabelSpacings[] = mState.getLabels().getLabels().get(k).getSpacing().split("[ \t]+");
+            	String hlabelSpacings[] = mState.getLabels().getLabel().get(k).getSpacing().split("[ \t]+");
             	for (int j=0; j<hlabelSpacings.length; ++j) {
                     double spacing = Double.parseDouble(hlabelSpacings[j]);
                     DoubleLabeler labeler = new DoubleLabeler(spacing, 
-                                                              mState.getLabels().getLabels().get(k).getFormat(),
-                                                              mState.getLabels().getLabels().get(k).getStart().getDoubleValue(),
-                                                              mState.getLabels().getLabels().get(k).getPosition(),
-                                                              mState.getLabels().getLabels().get(k).getAngle(),
-                                                              mState.getLabels().getLabels().get(k).getAnchor());
+                                                              mState.getLabels().getLabel().get(k).getFormat(),
+                                                              Double.parseDouble(mState.getLabels().getLabel().get(k).getStart()),
+                                                              mState.getLabels().getLabel().get(k).getPosition(),
+                                                              mState.getLabels().getLabel().get(k).getAngle(),
+                                                              mState.getLabels().getLabel().get(k).getAnchor());
                     this.mLabelers.add(labeler);
                 }
             }
@@ -121,7 +129,7 @@ public class Axis {
                 double spacing = Double.parseDouble(hlabelSpacings[k]);
                 DoubleLabeler labeler = new DoubleLabeler(spacing, 
                         mState.getLabels().getFormat(),
-                        mState.getLabels().getStart().getDoubleValue(),
+                        Double.parseDouble(mState.getLabels().getStart()),
                         mState.getLabels().getPosition(),
                         mState.getLabels().getAngle(),
                         mState.getLabels().getAnchor());
@@ -162,7 +170,7 @@ public class Axis {
       switch (step) {
       case 0:  // in step 0, render the grid lines associated with this axis, if any
         prepareRender();
-        if (mState.getGrid().getVisible()) {
+        if (mState.getGrid().isVisible()) {
             if (mLabelers.size() > 0 && mDensity <= 1.5) {
                 mLabeler.prepare(mDataMin, mDataMax);
                 boolean first = true;
@@ -174,7 +182,7 @@ public class Axis {
                     double a = dataValueToAxisValue(v);
                     g.setLineWidth(1.0);
                     g.setColor(mState.getGrid().getColor());
-                    if (mOrientation == org.multigraph.mugl.graph.Axis.Orientation.HORIZONTAL) {
+                    if (mOrientation == org.multigraph.jaxb.AxisOrientation.HORIZONTAL) {
                         g.drawLine(a, mPerpOffset, a, mParent.getPlotbox().getHeight() - mPerpOffset);
                     } else {
                         g.drawLine(mPerpOffset, a, mParent.getPlotbox().getWidth() - mPerpOffset, a);
@@ -191,7 +199,7 @@ public class Axis {
               g.setLineWidth(mState.getLinewidth());
               g.setColor(mState.getColor());
 
-              if (mOrientation == org.multigraph.mugl.graph.Axis.Orientation.HORIZONTAL) {
+              if (mOrientation == org.multigraph.jaxb.AxisOrientation.HORIZONTAL) {
                   g.drawLine(mParallelOffset, mPerpOffset, mParallelOffset + mLength, mPerpOffset);
               } else {
                   g.drawLine(mPerpOffset, mParallelOffset, mPerpOffset, mParallelOffset + mLength);

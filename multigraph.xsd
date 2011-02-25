@@ -20,7 +20,9 @@
 
   <xsd:group name="GraphContent">
     <xsd:sequence>
-        <xsd:element name="window"         type="Window"          minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="window"         type="Window"          minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="background"     type="Background"      minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="plotarea"       type="Plotarea"        minOccurs="0" maxOccurs="1"/>
         <xsd:element name="horizontalaxis" type="HorizontalAxis"  minOccurs="0" maxOccurs="unbounded"/>
         <xsd:element name="verticalaxis"   type="VerticalAxis"    minOccurs="0" maxOccurs="unbounded"/>
         <xsd:element name="plot"           type="Plot"            minOccurs="0" maxOccurs="unbounded"/>
@@ -28,14 +30,47 @@
     </xsd:sequence>
   </xsd:group>
 
+  <xsd:simpleType name="RGBColor">
+    <xsd:annotation>
+    <xsd:appinfo>
+      <jxb:javaType name="org.multigraph.RGBColor"
+                    parseMethod="org.multigraph.RGBColor.parse"
+                    printMethod="org.multigraph.RGBColor.toString"/>
+    </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+
   <xsd:complexType name="Window">
-    <xsd:attribute name="border"      type="xsd:integer"/>
-    <xsd:attribute name="bordercolor" type="xsd:string"/>
+    <xsd:attribute name="border"      type="xsd:int" default="2"/>
+    <xsd:attribute name="margin"      type="xsd:int" default="2"/>
+    <xsd:attribute name="padding"      type="xsd:int" default="5"/>
+    <xsd:attribute name="bordercolor" type="RGBColor" default="0x000000"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="Background">
+    <xsd:attribute name="color"       type="RGBColor"/>
   </xsd:complexType>
 
   <xsd:complexType name="Plotarea">
-    <xsd:attribute name="border"      type="xsd:integer"/>
+    <xsd:attribute name="border"       type="xsd:int"  default="0"/>
+    <xsd:attribute name="bordercolor"  type="RGBColor" default="0xeeeeee"/>
+    <xsd:attribute name="marginbottom" type="xsd:int"  default="35"/>
+    <xsd:attribute name="marginleft"   type="xsd:int"  default="38"/>
+    <xsd:attribute name="margintop"    type="xsd:int"  default="10"/>
+    <xsd:attribute name="marginright"  type="xsd:int"  default="35"/>
   </xsd:complexType>
+
+  <xsd:simpleType name="DPoint">
+    <xsd:annotation>
+    <xsd:appinfo>
+      <jxb:javaType name="org.multigraph.DPoint"
+                    parseMethod="org.multigraph.DPoint.parse"
+                    printMethod="org.multigraph.DPoint.toString"/>
+    </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
 
   <xsd:complexType name="Axis">
     <xsd:sequence>
@@ -43,15 +78,33 @@
       <xsd:element name="grid"   type="Grid" minOccurs="0" maxOccurs="1"/>
     </xsd:sequence>
     <xsd:attribute name="id"          type="xsd:string"/>
-    <xsd:attribute name="position"    type="xsd:integer"/>
-    <xsd:attribute name="base"        type="xsd:string"/>
-    <xsd:attribute name="min"         type="xsd:integer"/>
-    <xsd:attribute name="max"         type="xsd:integer"/>
-    <xsd:attribute name="tickmin"     type="xsd:integer"/>
-    <xsd:attribute name="tickmax"     type="xsd:integer"/>
-    <xsd:attribute name="color"       type="xsd:string"/>
+    <xsd:attribute name="type"        type="DataType"   default="number"/>
+    <xsd:attribute name="position"    type="xsd:int"    default="0"/>
+    <xsd:attribute name="length"      type="xsd:double" default="1.0"/>
+    <xsd:attribute name="base"        type="xsd:string" default="-1 1"/>
+    <xsd:attribute name="min"         type="xsd:string" default="auto"/>
+    <xsd:attribute name="max"         type="xsd:string" default="auto"/>
+    <xsd:attribute name="tickmin"     type="xsd:int"    default="-3"/>
+    <xsd:attribute name="tickmax"     type="xsd:int"    default="-3"/>
+    <xsd:attribute name="linewidth"   type="xsd:int"    default="1"/>
+    <xsd:attribute name="color"       type="RGBColor"   default="0x000000"/>
     <xsd:attribute name="orientation" type="AxisOrientation" default="unknown"/>
   </xsd:complexType>
+
+  <xsd:simpleType name="DataType">
+    <xsd:annotation>
+    <xsd:appinfo>
+      <jxb:javaType name="org.multigraph.DataType"
+                    parseMethod="org.multigraph.DataType.parse"
+                    printMethod="org.multigraph.DataType.toString"/>
+    </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="unknown"/>
+      <xsd:enumeration value="number"/>
+      <xsd:enumeration value="datetime"/>
+    </xsd:restriction>
+  </xsd:simpleType>
 
   <xsd:simpleType name="AxisOrientation">
     <xsd:restriction base="xsd:string">
@@ -81,26 +134,26 @@
     <xsd:sequence>
       <xsd:element minOccurs="0" maxOccurs="unbounded" name="label" type="Label"/>
     </xsd:sequence>
-    <xsd:attribute name="format"   type="xsd:string"/>
-    <xsd:attribute name="start"    type="xsd:string"/>
-    <xsd:attribute name="angle"    type="xsd:string"/>
-    <xsd:attribute name="position" type="xsd:string"/>
-    <xsd:attribute name="anchor"   type="xsd:string"/>
-    <xsd:attribute name="spacing"  type="xsd:string"/>
+    <xsd:attribute name="format"   type="xsd:string" default="%1d"/>
+    <xsd:attribute name="start"    type="xsd:string" default="0"/>
+    <xsd:attribute name="angle"    type="xsd:double" default="0.0"/>
+    <xsd:attribute name="position" type="DPoint"     default="0 0"/>
+    <xsd:attribute name="anchor"   type="DPoint"     default="0 0"/>
+    <xsd:attribute name="spacing"  type="xsd:string" default="10000 5000 2000 1000 500 200 100 50 20 10 5 2 1 0.1 0.01 0.001"/>
   </xsd:complexType>
 
   <xsd:complexType name="Label">
     <xsd:attribute name="format"   type="xsd:string"/>
     <xsd:attribute name="start"    type="xsd:string"/>
-    <xsd:attribute name="angle"    type="xsd:string"/>
-    <xsd:attribute name="position" type="xsd:string"/>
-    <xsd:attribute name="anchor"   type="xsd:string"/>
+    <xsd:attribute name="angle"    type="xsd:double"/>
+    <xsd:attribute name="position" type="DPoint"/>
+    <xsd:attribute name="anchor"   type="DPoint"/>
     <xsd:attribute name="spacing" use="required"/>
   </xsd:complexType>
 
   <xsd:complexType name="Grid">
-    <xsd:attribute name="visible" type="xsd:boolean"/>
-    <xsd:attribute name="color"/>
+    <xsd:attribute name="visible" type="xsd:boolean" default="false"/>
+    <xsd:attribute name="color"   type="RGBColor" default="0xeeeeee"/>
   </xsd:complexType>
 
   <xsd:complexType name="Plot">
@@ -153,11 +206,16 @@
     <xsd:sequence>
       <xsd:element name="variable"       type="Variable" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
+    <xsd:attribute name="missingvalue" type="xsd:string"/>
+    <xsd:attribute name="missingop"    type="xsd:string"/>
   </xsd:complexType>
 
   <xsd:complexType name="Variable">
     <xsd:attribute name="id"      type="xsd:string" use="required"/>
-    <xsd:attribute name="column"  type="xsd:string" />
+    <xsd:attribute name="column"  type="xsd:int" />
+    <xsd:attribute name="type"    type="DataType" default="number"/>
+    <xsd:attribute name="missingvalue" type="xsd:string"/>
+    <xsd:attribute name="missingop"    type="xsd:string"/>
   </xsd:complexType>
 
 </xsd:schema>

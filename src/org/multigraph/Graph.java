@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class Graph {
 	
-	private org.multigraph.mugl.Graph mState;
-	public org.multigraph.mugl.Graph getState() { return mState; }
+	private org.multigraph.jaxb.Graph mState;
+	public org.multigraph.jaxb.Graph getState() { return mState; }
 
 	private int    mWidth;
 	private int    mHeight;
@@ -27,27 +27,27 @@ public class Graph {
     private ArrayList<Data> mData;
     private ArrayList<Plot> mPlots;
 	
-	public Graph(org.multigraph.mugl.Graph state, int width, int height) {
+	public Graph(org.multigraph.jaxb.Graph state, int width, int height) {
 		this.mState = state;
 		this.mWidth = width;
 		this.mHeight = height;
 		computeDims();
 
         this.mAxes = new ArrayList<Axis>();
-        for (org.multigraph.mugl.graph.Axis axisState : mState.getHaxes()) {
+        for (org.multigraph.jaxb.Axis axisState : mState.getHorizontalaxis()) {
             this.mAxes.add(new Axis(this, axisState));
         }
-        for (org.multigraph.mugl.graph.Axis axisState : mState.getVaxes()) {
+        for (org.multigraph.jaxb.Axis axisState : mState.getVerticalaxis()) {
             this.mAxes.add(new Axis(this, axisState));
         }
         
         this.mData = new ArrayList<Data>();
-        for (org.multigraph.mugl.graph.Data dataState : mState.getDatas()) {
+        for (org.multigraph.jaxb.Data dataState : mState.getData()) {
         	this.mData.add(Data.create(this, dataState));
         }
         
         this.mPlots = new ArrayList<Plot>();
-        for (org.multigraph.mugl.graph.Plot plotState : mState.getPlots()) {
+        for (org.multigraph.jaxb.Plot plotState : mState.getPlot()) {
         	this.mPlots.add(Plot.create(this, plotState));
         }
         

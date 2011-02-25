@@ -93,16 +93,16 @@ public abstract class Data {
     }
     	
     
-    public static Data create(Graph parent, org.multigraph.mugl.graph.Data dataState) {
+    public static Data create(Graph parent, org.multigraph.jaxb.Data dataState) {
     	ArrayList<DataVariable> dataVariables = new ArrayList<DataVariable>();
-    	for (org.multigraph.mugl.graph.data.variables.Variable varState : dataState.getVariables().getVariables()) {
+    	for (org.multigraph.jaxb.Variable varState : dataState.getVariables().getVariable()) {
     		dataVariables.add( new DataVariable(varState.getId(), varState.getColumn(), varState.getType(),
     				                            DataValue.create(varState.getType(), varState.getMissingvalue()),
     				                            varState.getMissingop()));
     	}
-    	if (dataState.haveValues()) {
+    	if (dataState.isSetValues()) {
     		ArrayData data = new ArrayData(dataVariables);
-    		data.parseText(dataState.getValues().getText());
+    		data.parseText(dataState.getValues());
     		data.dump();
     		return data;
     	}

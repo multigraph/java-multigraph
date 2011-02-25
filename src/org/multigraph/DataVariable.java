@@ -8,21 +8,21 @@ public class DataVariable {
 	private int mColumn;
 	public int getColumn() { return mColumn; }
 		
-	private DataValue.Type mType;
-	public DataValue.Type getType() { return mType; }
+	private DataType mType;
+	public DataType getType() { return mType; }
 
     private static enum MissingOp { NONE, LT, LE, EQ, GE, GT };
     private MissingOp mMissingOp = MissingOp.NONE;
 	private DataValue mMissingValue;
 
-	public DataVariable(String id, int column, DataValue.Type type, DataValue missingValue) {
+	public DataVariable(String id, int column, DataType type, DataValue missingValue) {
         this(id, column, type, missingValue, null);
     }
-	public DataVariable(String id, int column, DataValue.Type type) {
+	public DataVariable(String id, int column, DataType type) {
         this(id, column, type, null, null);
     }
 
-	public DataVariable(String id, int column, DataValue.Type type, DataValue missingValue, String missingOpString)
+	public DataVariable(String id, int column, DataType type, DataValue missingValue, String missingOpString)
 	{
 	  this.mId           = id;
 	  this.mColumn       = column;

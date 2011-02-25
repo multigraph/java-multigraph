@@ -40,9 +40,9 @@ public class PointLineRenderer extends Renderer {
     double[] mPrevPoint;
 
     public PointLineRenderer(Plot parent,
-                             org.multigraph.mugl.graph.plot.Renderer state) {
+                             org.multigraph.jaxb.Renderer state) {
         super(parent, state);
-        for (org.multigraph.mugl.graph.plot.renderer.Option option : state.getOptions()) {
+        for (org.multigraph.jaxb.RendererOption option : state.getOption()) {
             String optionName = option.getName();
             String optionValue = option.getValue();
             if (optionName.equals("linecolor")) {
