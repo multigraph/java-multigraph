@@ -70,8 +70,8 @@ public class Axis {
     private org.multigraph.DataType mType = org.multigraph.DataType.NUMBER;
     public org.multigraph.DataType getType() { return mType; }
 
-    private org.multigraph.jaxb.AxisOrientation mOrientation;
-    public org.multigraph.jaxb.AxisOrientation getOrientation() { return mOrientation; }
+    private AxisOrientation mOrientation;
+    public AxisOrientation getOrientation() { return mOrientation; }
     
     private void prepareState() {
     	if (!mState.isSetGrid()) { mState.setGrid( new org.multigraph.jaxb.Grid() ); }
@@ -87,7 +87,7 @@ public class Axis {
         
         prepareState();
 
-        this.mLength = (int)Math.round(mState.getLength() * ((mOrientation == org.multigraph.jaxb.AxisOrientation.HORIZONTAL)
+        this.mLength = (int)Math.round(mState.getLength() * ((mOrientation == AxisOrientation.HORIZONTAL)
                                             ? mParent.getPlotbox().getWidth()
                                             : mParent.getPlotbox().getHeight()));
 
@@ -182,7 +182,7 @@ public class Axis {
                     double a = dataValueToAxisValue(v);
                     g.setLineWidth(1.0);
                     g.setColor(mState.getGrid().getColor());
-                    if (mOrientation == org.multigraph.jaxb.AxisOrientation.HORIZONTAL) {
+                    if (mOrientation == AxisOrientation.HORIZONTAL) {
                         g.drawLine(a, mPerpOffset, a, mParent.getPlotbox().getHeight() - mPerpOffset);
                     } else {
                         g.drawLine(mPerpOffset, a, mParent.getPlotbox().getWidth() - mPerpOffset, a);
@@ -199,7 +199,7 @@ public class Axis {
               g.setLineWidth(mState.getLinewidth());
               g.setColor(mState.getColor());
 
-              if (mOrientation == org.multigraph.jaxb.AxisOrientation.HORIZONTAL) {
+              if (mOrientation == AxisOrientation.HORIZONTAL) {
                   g.drawLine(mParallelOffset, mPerpOffset, mParallelOffset + mLength, mPerpOffset);
               } else {
                   g.drawLine(mPerpOffset, mParallelOffset, mPerpOffset, mParallelOffset + mLength);

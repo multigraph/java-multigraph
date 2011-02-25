@@ -105,14 +105,22 @@
       <xsd:enumeration value="datetime"/>
     </xsd:restriction>
   </xsd:simpleType>
-
+  
+  
   <xsd:simpleType name="AxisOrientation">
+    <xsd:annotation>
+    <xsd:appinfo>
+      <jxb:javaType name="org.multigraph.AxisOrientation"
+                    parseMethod="org.multigraph.AxisOrientation.parse"
+                    printMethod="org.multigraph.AxisOrientation.toString"/>
+    </xsd:appinfo>
+    </xsd:annotation>
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="unknown"/>
       <xsd:enumeration value="horizontal"/>
       <xsd:enumeration value="vertical"/>
     </xsd:restriction>
-  </xsd:simpleType>
+  </xsd:simpleType>  
 
   <xsd:complexType name="HorizontalAxis">
     <xsd:complexContent>

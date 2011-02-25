@@ -9,19 +9,19 @@
 package org.multigraph.jaxb;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import org.multigraph.RGBColor;
+import org.multigraph.DPoint;
 
-public class Adapter2
-    extends XmlAdapter<String, RGBColor>
+public class Adapter4
+    extends XmlAdapter<String, DPoint>
 {
 
 
-    public RGBColor unmarshal(String value) {
-        return (org.multigraph.RGBColor.parse(value));
+    public DPoint unmarshal(String value) {
+        return (org.multigraph.DPoint.parse(value));
     }
 
-    public String marshal(RGBColor value) {
-        return (org.multigraph.RGBColor.toString(value));
+    public String marshal(DPoint value) {
+        return (org.multigraph.DPoint.toString(value));
     }
 
 }

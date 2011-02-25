@@ -13,10 +13,10 @@ public class JAXBTest {
 
     private static void setAxisOrientations(org.multigraph.jaxb.Graph graph) {
         for (org.multigraph.jaxb.HorizontalAxis haxis : graph.getHorizontalaxis()) {
-            haxis.setOrientation(org.multigraph.jaxb.AxisOrientation.HORIZONTAL);
+            haxis.setOrientation(AxisOrientation.HORIZONTAL);
         }
         for (org.multigraph.jaxb.VerticalAxis vaxis : graph.getVerticalaxis()) {
-            vaxis.setOrientation(org.multigraph.jaxb.AxisOrientation.VERTICAL);
+            vaxis.setOrientation(AxisOrientation.VERTICAL);
         }
         for (org.multigraph.jaxb.Graph childgraph : graph.getGraph()) {
             setAxisOrientations(childgraph);

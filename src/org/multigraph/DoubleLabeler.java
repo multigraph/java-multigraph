@@ -29,7 +29,7 @@ public class DoubleLabeler extends Labeler {
     //@override
     public double getLabelDensity(Axis axis) {
         double absAngle          = Math.abs(mAngle) * Math.PI / 180;
-        double labelPixels       = (axis.getOrientation() == org.multigraph.jaxb.AxisOrientation.HORIZONTAL) 
+        double labelPixels       = (axis.getOrientation() == AxisOrientation.HORIZONTAL) 
             ? mLastTextLabelHeight * Math.sin(absAngle) + mLastTextLabelWidth * Math.cos(absAngle)
             : mLastTextLabelHeight * Math.cos(absAngle) + mLastTextLabelWidth * Math.sin(absAngle);
         double spacingPixels     = mSpacing * Math.abs(axis.getAxisToDataRatio());
