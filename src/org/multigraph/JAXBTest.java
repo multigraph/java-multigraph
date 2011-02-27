@@ -27,8 +27,7 @@ public class JAXBTest {
         try {
             JAXBContext    jc = JAXBContext.newInstance("org.multigraph.jaxb");
             Unmarshaller    u = jc.createUnmarshaller();
-            u.setProperty("com.sun.xml.internal.bind.ObjectFactory",new org.multigraph.MG_ObjectFactory());
-            //u.setProperty("coctory",new org.multigraph.MG_ObjectFactory());
+            //u.setProperty("com.sun.xml.internal.bind.ObjectFactory",new org.multigraph.ObjectFactory());
             JAXBElement mugle = (JAXBElement) u.unmarshal( new FileInputStream("graph.xml"));
             org.multigraph.jaxb.Graph         graph = (org.multigraph.jaxb.Graph) mugle.getValue();
 
@@ -49,9 +48,6 @@ public class JAXBTest {
                                   axis.getId(), axis.getMin(), axis.getMax(), axis.getOrientation());
             }
             
-            Muglatrix muglatrix = (Muglatrix)(graph.getMuglatrix());
-            muglatrix.muglate();
-
             Marshaller      m = jc.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal(mugle, System.out);

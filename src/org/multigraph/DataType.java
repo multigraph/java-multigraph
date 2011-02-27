@@ -4,7 +4,8 @@ public enum DataType {
 	
     UNKNOWN("unknown"),
     NUMBER("number"),
-    DATETIME("datetime");
+    DATETIME("datetime"),
+    STRING("string");
     private final String value;
 
     DataType(String v) {

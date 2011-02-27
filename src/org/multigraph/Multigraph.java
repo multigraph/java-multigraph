@@ -39,8 +39,9 @@ public class Multigraph {
     }    
     
 	public static org.multigraph.jaxb.Graph loadMugl(String filename) throws Exception {
-        JAXBContext    jc = JAXBContext.newInstance("org.multigraph");
+        JAXBContext    jc = JAXBContext.newInstance("org.multigraph.jaxb");
         Unmarshaller    u = jc.createUnmarshaller();
+        //u.setProperty("com.sun.xml.internal.bind.ObjectFactory",new org.multigraph.ObjectFactory());
         JAXBElement mugle = (JAXBElement) u.unmarshal( new FileInputStream("graph.xml"));
         org.multigraph.jaxb.Graph         graph = (org.multigraph.jaxb.Graph) mugle.getValue();
         setAxisOrientations(graph);

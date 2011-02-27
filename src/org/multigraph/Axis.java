@@ -91,12 +91,12 @@ public class Axis {
                                             ? mParent.getPlotbox().getWidth()
                                             : mParent.getPlotbox().getHeight()));
 
-        if (!state.getMin().equals("auto")) {
-            setDataMin(DataValue.create(mType, state.getMin()));
+        if (!state.getMin().isAuto()) {
+            setDataMin(state.getMin().toDataValue(state.getType()));
         }
 
-        if (!state.getMax().equals("auto")) {
-            setDataMax(DataValue.create(mType, state.getMax()));
+        if (!state.getMax().isAuto()) {
+            setDataMax(state.getMax().toDataValue(state.getType()));
         }
 
         buildLabelers();
@@ -113,12 +113,12 @@ public class Axis {
             	String hlabelSpacings[] = mState.getLabels().getLabel().get(k).getSpacing().split("[ \t]+");
             	for (int j=0; j<hlabelSpacings.length; ++j) {
                     double spacing = Double.parseDouble(hlabelSpacings[j]);
-                    DoubleLabeler labeler = new DoubleLabeler(spacing, 
-                                                              mState.getLabels().getLabel().get(k).getFormat(),
-                                                              Double.parseDouble(mState.getLabels().getLabel().get(k).getStart()),
-                                                              mState.getLabels().getLabel().get(k).getPosition(),
-                                                              mState.getLabels().getLabel().get(k).getAngle(),
-                                                              mState.getLabels().getLabel().get(k).getAnchor());
+                    Labeler labeler = new Labeler.Number(spacing, 
+                                                         mState.getLabels().getLabel().get(k).getFormat(),
+                                                         Double.parseDouble(mState.getLabels().getLabel().get(k).getStart()),
+                                                         mState.getLabels().getLabel().get(k).getPosition(),
+                                                         mState.getLabels().getLabel().get(k).getAngle(),
+                                                         mState.getLabels().getLabel().get(k).getAnchor());
                     this.mLabelers.add(labeler);
                 }
             }
@@ -127,7 +127,7 @@ public class Axis {
     		String hlabelSpacings[] = mState.getLabels().getSpacing().split("[ \t]+");
     		for (int k=0; k<hlabelSpacings.length; ++k) {
                 double spacing = Double.parseDouble(hlabelSpacings[k]);
-                DoubleLabeler labeler = new DoubleLabeler(spacing, 
+                Labeler labeler = new Labeler.Number(spacing, 
                         mState.getLabels().getFormat(),
                         Double.parseDouble(mState.getLabels().getStart()),
                         mState.getLabels().getPosition(),

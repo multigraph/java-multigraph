@@ -34,15 +34,15 @@ public class DataVariable {
     public boolean isMissing(DataValue x) {
         switch (mMissingOp) {
         case LT:
-            return x.lt(mMissingValue);
+            return x.compareTo(mMissingValue) < 0;
         case LE:
-            return x.le(mMissingValue);
+            return x.compareTo(mMissingValue) <= 0;
         case EQ:
-            return x.eq(mMissingValue);
+            return x.compareTo(mMissingValue) == 0;
         case GE:
-            return x.ge(mMissingValue);
+            return x.compareTo(mMissingValue) >= 0;
         case GT:
-            return x.gt(mMissingValue);
+            return x.compareTo(mMissingValue) > 0;
         }
         return false;
     }

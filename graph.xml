@@ -1,7 +1,6 @@
 <mugl>
   <graph>
     <window border="2" bordercolor="0xffffff"/>
-    <muglatrix foo="100"/>
     <background color="0x000000"/>
     <plotarea border="0"/>
     <horizontalaxis id="xaxis" position="0" base="-1,.5" min="1875" max="2005" tickmax="0" tickmin="-14" color="0xffffff">

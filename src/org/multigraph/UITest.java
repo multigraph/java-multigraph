@@ -59,8 +59,8 @@ public class UITest extends JPanel
 
         reloadButton.setToolTipText("Click this button to reload the MUGL file.");
 
-        width = 500;
-        height = 500;
+        width = 800;
+        height = 600;
         
         canvas = new MyCanvas();
         canvas.setSize(width, height);

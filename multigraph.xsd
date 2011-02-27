@@ -21,7 +21,6 @@
   <xsd:group name="GraphContent">
     <xsd:sequence>
         <xsd:element name="window"         type="Window"          minOccurs="0" maxOccurs="1"/>
-        <xsd:element name="muglatrix"      type="Muglatrix"       minOccurs="0" maxOccurs="1"/>
         <xsd:element name="background"     type="Background"      minOccurs="0" maxOccurs="1"/>
         <xsd:element name="plotarea"       type="Plotarea"        minOccurs="0" maxOccurs="1"/>
         <xsd:element name="horizontalaxis" type="HorizontalAxis"  minOccurs="0" maxOccurs="unbounded"/>
@@ -47,11 +46,6 @@
     <xsd:attribute name="margin"      type="xsd:int" default="2"/>
     <xsd:attribute name="padding"      type="xsd:int" default="5"/>
     <xsd:attribute name="bordercolor" type="RGBColor" default="0x000000"/>
-  </xsd:complexType>
-
-  <xsd:complexType name="Muglatrix">
-    <xsd:attribute name="foo"         type="xsd:int" default="2"/>
-    <xsd:attribute name="bar"         type="xsd:int" default="9"/>
   </xsd:complexType>
 
   <xsd:complexType name="Background">
@@ -88,8 +82,8 @@
     <xsd:attribute name="position"    type="xsd:int"    default="0"/>
     <xsd:attribute name="length"      type="xsd:double" default="1.0"/>
     <xsd:attribute name="base"        type="xsd:string" default="-1 1"/>
-    <xsd:attribute name="min"         type="xsd:string" default="auto"/>
-    <xsd:attribute name="max"         type="xsd:string" default="auto"/>
+    <xsd:attribute name="min"         type="DataValueOrAuto" default="auto"/>
+    <xsd:attribute name="max"         type="DataValueOrAuto" default="auto"/>
     <xsd:attribute name="tickmin"     type="xsd:int"    default="-3"/>
     <xsd:attribute name="tickmax"     type="xsd:int"    default="-3"/>
     <xsd:attribute name="linewidth"   type="xsd:int"    default="1"/>
@@ -109,6 +103,18 @@
       <xsd:enumeration value="unknown"/>
       <xsd:enumeration value="number"/>
       <xsd:enumeration value="datetime"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="DataValueOrAuto">
+    <xsd:annotation>
+    <xsd:appinfo>
+      <jxb:javaType name="org.multigraph.DataValue.String"
+                    parseMethod="org.multigraph.DataValue.String.parse"
+                    printMethod="org.multigraph.DataValue.String.toString"/>
+    </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
     </xsd:restriction>
   </xsd:simpleType>
   
