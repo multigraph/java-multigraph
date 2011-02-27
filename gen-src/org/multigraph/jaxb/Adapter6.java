@@ -9,19 +9,19 @@
 package org.multigraph.jaxb;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import org.multigraph.AxisOrientation;
+import org.multigraph.RendererType;
 
-public class Adapter1
-    extends XmlAdapter<String, AxisOrientation>
+public class Adapter6
+    extends XmlAdapter<String, RendererType>
 {
 
 
-    public AxisOrientation unmarshal(String value) {
-        return (org.multigraph.AxisOrientation.parse(value));
+    public RendererType unmarshal(String value) {
+        return (org.multigraph.RendererType.parse(value));
     }
 
-    public String marshal(AxisOrientation value) {
-        return (org.multigraph.AxisOrientation.toString(value));
+    public String marshal(RendererType value) {
+        return (org.multigraph.RendererType.toString(value));
     }
 
 }

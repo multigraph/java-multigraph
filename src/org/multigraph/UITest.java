@@ -15,6 +15,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class UITest extends JPanel
                         implements ActionListener {
@@ -82,7 +84,9 @@ public class UITest extends JPanel
     
     private void reload() {
     	try {
-    		Multigraph multigraph = new Multigraph("graph.xml", "defaults.xml", width, height);
+    		InputStream inputStream = new FileInputStream("graph.xml");
+    		Multigraph multigraph = new Multigraph(inputStream, width, height);
+    		inputStream.close();
     		canvas.setMultigraph(multigraph);
     	} catch (Exception e) {
     		System.out.println(e);

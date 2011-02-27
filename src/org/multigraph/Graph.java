@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class Graph {
 	
 	private org.multigraph.jaxb.Graph mState;
-	public org.multigraph.jaxb.Graph getState() { return mState; }
 
 	private int    mWidth;
 	private int    mHeight;
@@ -162,7 +161,7 @@ public class Graph {
 
 	}
 
-    public void computeDims() {
+    private void computeDims() {
         this.mWindow       = new Box(mWidth, mHeight);
         this.mWindowMargin = new Insets(mState.getWindow().getMargin());
         this.mBorder       = new Insets(mState.getWindow().getBorder());

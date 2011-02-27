@@ -203,12 +203,20 @@
   </xsd:complexType>
 
   <xsd:simpleType name="RendererType">
+    <xsd:annotation>
+    <xsd:appinfo>
+      <jxb:javaType name="org.multigraph.RendererType"
+                    parseMethod="org.multigraph.RendererType.parse"
+                    printMethod="org.multigraph.RendererType.toString"/>
+    </xsd:appinfo>
+    </xsd:annotation>
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="pointline"/>
       <xsd:enumeration value="line"/>
       <xsd:enumeration value="bar"/>
     </xsd:restriction>
-  </xsd:simpleType>
+  </xsd:simpleType>  
+
 
   <xsd:complexType name="RendererOption">
     <xsd:attribute name="name"  type="xsd:string" use="required"/>

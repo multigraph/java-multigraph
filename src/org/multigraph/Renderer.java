@@ -25,7 +25,15 @@ public abstract class Renderer {
   	}
   	
   	public static Renderer create(Plot parent, org.multigraph.jaxb.Renderer state) {
-  		return new PointLineRenderer(parent, state);
+  		switch (state.getType()) {
+  		case POINTLINE:
+  			return new PointLineRenderer(parent, state);
+/*
+       case BAR:
+           return new BarRenderer(parent, state);
+*/
+  		}
+  		return null;
   	}
 
 
