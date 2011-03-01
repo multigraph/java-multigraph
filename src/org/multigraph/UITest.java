@@ -15,11 +15,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class UITest extends JPanel
-                        implements ActionListener {
+                        implements ActionListener, KeyListener {
     protected JButton reloadButton;
     
     private MyCanvas canvas;
@@ -66,6 +67,8 @@ public class UITest extends JPanel
         
         canvas = new MyCanvas();
         canvas.setSize(width, height);
+        canvas.setFocusable(true);
+        canvas.addKeyListener(this);
         
         reload();
         
@@ -78,7 +81,6 @@ public class UITest extends JPanel
         if ("reload".equals(e.getActionCommand())) {
         	reload();
         	canvas.repaint();
-        	System.out.println("you clicked Reload");
         }
     }
     
@@ -88,6 +90,7 @@ public class UITest extends JPanel
     		Multigraph multigraph = new Multigraph(inputStream, width, height);
     		inputStream.close();
     		canvas.setMultigraph(multigraph);
+    		System.out.println("MUGL loaded.");
     	} catch (Exception e) {
     		System.out.println(e);
     		System.out.println(e.getMessage());
@@ -109,7 +112,7 @@ public class UITest extends JPanel
         UITest newContentPane = new UITest();
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
-
+        
         //Display the window.
         frame.pack();
         frame.setVisible(true);
@@ -129,4 +132,25 @@ public class UITest extends JPanel
             }
         });
     }
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// the following is a ctrl-r:
+		if (e.getKeyChar()=='') {
+			reload();
+			canvas.repaint();
+		}
+		// TODO Auto-generated method stub
+		
+	}
 }

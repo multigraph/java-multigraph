@@ -42,8 +42,8 @@
       <renderer type="pointline">
         <option name="pointsize" value="2"/>
         <option name="pointshape" value="circle"/>
-        <option name="pointcolor" value="0x000000"/>
-        <option name="pointoutlinecolor" value="0x9999ff"/>
+        <option name="pointcolor" value="0xb06809"/>
+        <option name="pointoutlinecolor" value="0xffffff"/>
         <option name="pointoutlinewidth" value="1"/>
         <option name="linewidth" value="1"/>
         <option name="linecolor" value="0x00ffff"/>
