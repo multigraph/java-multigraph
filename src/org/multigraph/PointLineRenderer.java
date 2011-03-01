@@ -4,37 +4,40 @@ import java.util.ArrayList;
 
 public class PointLineRenderer extends Renderer {
 
-    public static enum Shape { CIRCLE, SQUARE, TRIANGLE, DIAMOND, STAR, PLUS, X };
-
-	private String mOptionLinecolor;
-    private String mOptionLinewidth;
-    private String mOptionPointsize;
-    private String mOptionPointshape;
-    private String mOptionPointcolor;
-    private String mOptionPointopacity;
-    private String mOptionPointoutlinewidth;
-    private String mOptionPointoutlinecolor;
-
-	private RGBColor mLinecolor;
-    private double mLinewidth;
-    private double mPointsize;
-    private Shape mPointshape;
-    private RGBColor mPointcolor;
-    private double mPointopacity;
-    private double mPointoutlinewidth;
-    private RGBColor mPointoutlinecolor;
-
-    private static Shape parseShape(String s) {
-        s = s.toLowerCase();
-        if (s.equals("circle"))   { return Shape.CIRCLE;   }
-        if (s.equals("square"))   { return Shape.SQUARE;   }
-        if (s.equals("triangle")) { return Shape.TRIANGLE; }
-        if (s.equals("diamond"))  { return Shape.DIAMOND;  }
-        if (s.equals("star"))     { return Shape.STAR;     }
-        if (s.equals("plus"))     { return Shape.PLUS;     }
-        if (s.equals("x"))        { return Shape.X;        }
-        return Shape.CIRCLE;
+    public static enum Shape {
+        circle,
+        square,
+        triangle,
+        diamond,
+        star,
+        plus,
+        x;
     }
+
+    public static enum Option {
+        linecolor,
+        linewidth,
+        pointsize,
+        pointshape,
+        pointcolor,
+        pointopacity,
+        pointoutlinewidth,
+        pointoutlinecolor;
+    }
+    /*
+    public Option parseOption(String name) throws IllegalArgumentException {
+        return (Option)super.parseOption(Option.values(), name);
+    }
+    */
+
+	private RGBColor mLinecolor           = new RGBColor(0,0,0);
+    private double   mLinewidth           = 1;
+    private double   mPointsize           = 0;
+    private Shape    mPointshape          = Shape.circle;
+    private RGBColor mPointcolor          = new RGBColor(0,0,0);
+    private double   mPointopacity        = 1.0;
+    private double   mPointoutlinewidth   = 0;
+    private RGBColor mPointoutlinecolor   = new RGBColor(0,0,0);
 
     ArrayList<double[]> mPoints;
     double[] mPrevPoint;
@@ -42,33 +45,50 @@ public class PointLineRenderer extends Renderer {
     public PointLineRenderer(Plot parent,
                              org.multigraph.jaxb.Renderer state) {
         super(parent, state);
-        for (org.multigraph.jaxb.RendererOption option : state.getOption()) {
-            String optionName = option.getName();
-            String optionValue = option.getValue();
-            if (optionName.equals("linecolor")) {
-                mOptionLinecolor = optionValue;
-                mLinecolor = new RGBColor(optionValue);
-            } else if (optionName.equals("linewidth")) {
-                mOptionLinewidth = optionValue;
-                mLinewidth = Double.parseDouble(optionValue);
-            } else if (optionName.equals("pointsize")) {
-                mOptionPointsize = optionValue;
-                mPointsize = Double.parseDouble(optionValue);
-            } else if (optionName.equals("pointshape")) {
-                mOptionPointshape = optionValue;
-                mPointshape = parseShape(optionValue);
-            } else if (optionName.equals("pointcolor")) {
-                mOptionPointcolor = optionValue;
-                mPointcolor = new RGBColor(optionValue);
-            } else if (optionName.equals("pointopacity")) {
-                mOptionPointopacity = optionValue;
-                mPointopacity = Double.parseDouble(optionValue);
-            } else if (optionName.equals("pointoutlinewidth")) {
-                mOptionPointoutlinewidth = optionValue;
-                mPointoutlinewidth = Double.parseDouble(optionValue);
-            } else if (optionName.equals("pointoutlinecolor")) {
-                mOptionPointoutlinecolor = optionValue;
-                mPointoutlinecolor = new RGBColor(optionValue);
+        for (org.multigraph.jaxb.RendererOption jaxbOption : state.getOption()) {
+            String name        = jaxbOption.getName();
+            String stringValue = jaxbOption.getValue();
+            Double min         = jaxbOption.isSetMin() ? jaxbOption.getMin() : null;
+            Double max         = jaxbOption.isSetMax() ? jaxbOption.getMax() : null;
+            Option option;
+            try {
+                option = Option.valueOf(name);
+            } catch (Exception e) {
+                System.err.printf("ignoring unrecognized option for PointLineRenderer: %s\n", name);
+                continue;
+            }
+            switch (option) {
+            case linecolor:
+                setOption(option, mLinecolor = new RGBColor(stringValue), stringValue, min, max);
+                break;
+            case pointcolor:
+                setOption(option, mPointcolor = new RGBColor(stringValue), stringValue, min, max);
+                break;
+            case pointoutlinecolor:
+                setOption(option, mPointoutlinecolor = new RGBColor(stringValue), stringValue, min, max);
+                break;
+            case linewidth:
+                setOption(option, mLinewidth = Double.parseDouble(stringValue), stringValue, min, max);
+                break;
+            case pointsize:
+                setOption(option, mPointsize = Double.parseDouble(stringValue), stringValue, min, max);
+                break;
+            case pointopacity:
+                setOption(option, mPointopacity = Double.parseDouble(stringValue), stringValue, min, max);
+                break;
+            case pointoutlinewidth:
+                setOption(option, mPointoutlinewidth = Double.parseDouble(stringValue), stringValue, min, max);
+                break;
+            case pointshape:
+                Shape shape;
+                try {
+                    shape = Shape.valueOf(stringValue);
+                } catch (Exception e) {
+                    System.err.printf("unknown pointshape '%s' for PointLineRenderer\n", stringValue);
+                    break;
+                }
+                setOption(option, mPointshape = shape, stringValue, min, max);
+                break;
             }
         }
         mPoints    = new ArrayList<double[]>();

@@ -106,6 +106,18 @@ public class GraphicsContext {
         g.fillRect(r.x, r.y, r.width, r.height);
     }
 
+    public void drawPolygon(DPoint vertices[]) {
+        if (vertices == null) { return; }
+        Path2D.Float path = new Path2D.Float();
+        Point firstPoint = new Point();
+        boolean first = true;
+        for (DPoint dp : vertices) {...
+            if (first) {
+                pointToAWTPixels(firstPoint, vertices[0].x, vertices[0].y);
+        path.moveTo(firstPoint);
+        path.moveTo(firstPoint.x
+    }
+
     public void drawLine(double x1, double y1, double x2, double y2) {
         Point p1 = new Point();
         Point p2 = new Point();

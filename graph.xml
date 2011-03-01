@@ -14,7 +14,6 @@
       <horizontalaxis ref="xaxis"><variable ref="year"/></horizontalaxis>
       <verticalaxis ref="yaxis"><variable ref="temp1"/></verticalaxis>
       <renderer type="pointline">
-        <option name="linewidth" value="1"/>
         <option name="linecolor" value="0xff00ff"/>
       </renderer>
     </plot>
@@ -22,7 +21,7 @@
       <horizontalaxis ref="xaxis"><variable ref="year"/></horizontalaxis>
       <verticalaxis ref="yaxis"><variable ref="temp2"/></verticalaxis>
       <renderer type="pointline">
-        <option name="linewidth" value="1"/>
+        <option name="linewidth" value="8"/>
         <option name="linecolor" value="0xff0000"/>
       </renderer>
     </plot>

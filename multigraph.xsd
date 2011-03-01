@@ -82,8 +82,8 @@
     <xsd:attribute name="position"    type="xsd:int"    default="0"/>
     <xsd:attribute name="length"      type="xsd:double" default="1.0"/>
     <xsd:attribute name="base"        type="xsd:string" default="-1 1"/>
-    <xsd:attribute name="min"         type="DataValueOrAuto" default="auto"/>
-    <xsd:attribute name="max"         type="DataValueOrAuto" default="auto"/>
+    <xsd:attribute name="min"         type="DataValueString" default="auto"/>
+    <xsd:attribute name="max"         type="DataValueString" default="auto"/>
     <xsd:attribute name="tickmin"     type="xsd:int"    default="-3"/>
     <xsd:attribute name="tickmax"     type="xsd:int"    default="-3"/>
     <xsd:attribute name="linewidth"   type="xsd:int"    default="1"/>
@@ -106,7 +106,7 @@
     </xsd:restriction>
   </xsd:simpleType>
 
-  <xsd:simpleType name="DataValueOrAuto">
+  <xsd:simpleType name="DataValueString">
     <xsd:annotation>
     <xsd:appinfo>
       <jxb:javaType name="org.multigraph.DataValue.String"
@@ -221,6 +221,8 @@
   <xsd:complexType name="RendererOption">
     <xsd:attribute name="name"  type="xsd:string" use="required"/>
     <xsd:attribute name="value" type="xsd:string" use="required"/>
+    <xsd:attribute name="min"   type="xsd:double"/>
+    <xsd:attribute name="max"   type="xsd:double"/>
   </xsd:complexType>
 
   <xsd:complexType name="Data">
