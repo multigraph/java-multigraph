@@ -44,6 +44,10 @@ public abstract class Renderer {
         return getOption(key, null);
     }
 
+    public boolean isSetOption(Enum key) {
+        return mOptions.containsKey(key);
+    }
+
     public Object getOption(Enum key, Double value) {
         Option opt = getOptionObject(key,value);
         if (opt != null) {

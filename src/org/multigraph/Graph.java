@@ -26,10 +26,18 @@ public class Graph {
     private ArrayList<Data> mData;
     private ArrayList<Plot> mPlots;
 	
+    private void prepareState() {
+    	if (!mState.isSetPlotarea())   { mState.setPlotarea(   new org.multigraph.jaxb.Plotarea() );   }
+    	if (!mState.isSetWindow())     { mState.setWindow(     new org.multigraph.jaxb.Window() );     }
+    	if (!mState.isSetBackground()) { mState.setBackground( new org.multigraph.jaxb.Background() ); }
+    }
+
 	public Graph(org.multigraph.jaxb.Graph state, int width, int height) {
 		this.mState = state;
 		this.mWidth = width;
 		this.mHeight = height;
+        prepareState();
+
 		computeDims();
 
         this.mAxes = new ArrayList<Axis>();

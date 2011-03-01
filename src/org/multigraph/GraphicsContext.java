@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.BasicStroke;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.Stack;
 
@@ -106,16 +107,48 @@ public class GraphicsContext {
         g.fillRect(r.x, r.y, r.width, r.height);
     }
 
-    public void drawPolygon(DPoint vertices[]) {
-        if (vertices == null) { return; }
+    public Path2D createAWTPath(DPoint vertices[]) {
+        if (vertices == null) { return null; }
         Path2D.Float path = new Path2D.Float();
-        Point firstPoint = new Point();
+        Point p = new Point();
+        Point firstPoint = null;
         boolean first = true;
-        for (DPoint dp : vertices) {...
+        for (DPoint dp : vertices) {
+            pointToAWTPixels(p, dp.getX(), dp.getY());
             if (first) {
-                pointToAWTPixels(firstPoint, vertices[0].x, vertices[0].y);
-        path.moveTo(firstPoint);
-        path.moveTo(firstPoint.x
+                path.moveTo(p.x, p.y);
+                firstPoint = new Point(p);
+                first = false;
+            } else {
+                path.lineTo(p.x, p.y);
+            }
+        }
+        path.lineTo(firstPoint.x, firstPoint.y);
+        return path;
+    }
+
+    public void drawPolygon(DPoint vertices[]) {
+        Path2D path = createAWTPath(vertices);
+        g.draw(path);
+    }
+
+    public void fillPolygon(DPoint vertices[]) {
+        Path2D path = createAWTPath(vertices);
+        g.fill(path);
+    }
+
+    public void drawCircle(double x, double y, double pixelRadius) {
+        Point p = new Point();
+        pointToAWTPixels(p, x, y);
+        int r = (int)Math.round(pixelRadius);
+        g.drawArc(p.x-r, p.y-r, 2*r, 2*r, 0, 360);
+    }
+
+    public void fillCircle(double x, double y, double pixelRadius) {
+        Point p = new Point();
+        pointToAWTPixels(p, x, y);
+        int r = (int)Math.round(pixelRadius);
+        g.fillArc(p.x-r, p.y-r, 2*r, 2*r, 0, 360);
     }
 
     public void drawLine(double x1, double y1, double x2, double y2) {

@@ -6,6 +6,11 @@ public class DPoint {
     private String yString = null;
     private double x;
     private double y;
+    
+    public DPoint(double x, double y) {
+    	this.x = x;
+    	this.y = y;
+    }
 
     public DPoint(String string) {
         String coords[] = string.split("[ ,]+");

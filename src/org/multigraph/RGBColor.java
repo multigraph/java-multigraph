@@ -8,6 +8,9 @@ public class RGBColor {
     private int g;
     private int b;
 
+    public static final RGBColor BLACK = new RGBColor(0,0,0);
+    public static final RGBColor WHITE = new RGBColor(0,0,0);
+
     public RGBColor(String string) {
         this.r = Integer.parseInt(string.substring(2,4), 16);
         this.g = Integer.parseInt(string.substring(4,6), 16);
