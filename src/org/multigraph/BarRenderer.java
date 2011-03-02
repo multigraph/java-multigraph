@@ -18,12 +18,12 @@ public class BarRenderer extends Renderer {
     private RGBColor     mFillcolor     = RGBColor.BLACK;
     private RGBColor     mLinecolor     = RGBColor.BLACK;
     private DataInterval mBarwidth      = new DataInterval.Number(1.0);
-    private DataInterval mBaroffset     = new DataInterval.Number(0.0);
+    private double       mBaroffset     = 0.0;
     private double       mFillopacity   = 1.0;
     private double       mLinewidth     = 1.0;
     private Double       mBarbase       = null;
     private int          mHidelines     = 2;
-
+    
     public BarRenderer(Plot parent,
                        org.multigraph.jaxb.Renderer state) {
         super(parent, state);
@@ -50,7 +50,7 @@ public class BarRenderer extends Renderer {
                 setOption(option, mBarwidth = DataInterval.create(parent.getHorizontalAxis().getType(), stringValue), stringValue, min, max);
                 break;
             case baroffset:
-                setOption(option, mBaroffset = DataInterval.create(parent.getHorizontalAxis().getType(), stringValue), stringValue, min, max);
+                setOption(option, mBaroffset = Double.parseDouble(stringValue), stringValue, min, max);
                 break;
             case fillopacity:
                 setOption(option, mFillopacity = Double.parseDouble(stringValue), stringValue, min, max);
@@ -69,9 +69,29 @@ public class BarRenderer extends Renderer {
         }
     }
 
+    private double mBarPixelWidth;
+    private double mBarPixelOffset;
+    private double mBarPixelBase;
+    
     //@override 
     public void begin(GraphicsContext g) {
+		mBarPixelWidth = mBarwidth.getDoubleValue() * mHorizontalAxis.getAxisToDataRatio(); 
+      if (mBarPixelWidth < 1) { mBarPixelWidth = 1; }
+      mBarPixelOffset = mBarPixelWidth * mBaroffset; 
+      mBarPixelBase = 0;
+      if (this.isSetOption(Option.barbase)) {
+        mBarPixelBase = mVerticalAxis.dataValueToAxisValue(mBarbase); 
+      }
+      _barGroups = [];
+      _currentBarGroup = null;
+      _prevCorner = null;
+      if (_barpixelWidth > _hidelines) {
+        _drawLines = true;
+      } else {
+        _drawLines = false;
+      }
     }
+
 
     //@override
     public void dataPoint(GraphicsContext g, DataValue[] datap) {

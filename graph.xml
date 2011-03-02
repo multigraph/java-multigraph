@@ -27,7 +27,7 @@
       <horizontalaxis ref="xaxis"><variable ref="year"/></horizontalaxis>
       <verticalaxis ref="yaxis"><variable ref="temp2"/></verticalaxis>
       <renderer type="pointline">
-        <option name="pointsize" value="2"/>
+        <option name="pointsize" value="3"/>
         <option name="pointshape" value="triangle"/>
         <option name="pointcolor" value="0x000000"/>
         <option name="pointoutlinecolor" value="0xff9999"/>

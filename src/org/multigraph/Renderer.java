@@ -18,13 +18,15 @@ public abstract class Renderer {
         }
     }
 
-    private Axis mHorizontalAxis;
-    private Axis mVerticalAxis;
+    protected Plot mPlot;
+    protected Axis mHorizontalAxis;
+    protected Axis mVerticalAxis;
 
     private HashMap<Enum,ArrayList<Option>> mOptions;
 
     protected Renderer(Plot parent,
                        org.multigraph.jaxb.Renderer state) {
+    	mPlot           = parent;
         mHorizontalAxis = parent.getHorizontalAxis();
         mVerticalAxis   = parent.getVerticalAxis();
         mOptions        = new HashMap<Enum,ArrayList<Option>>();

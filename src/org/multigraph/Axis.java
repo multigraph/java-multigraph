@@ -143,6 +143,9 @@ public class Axis {
     public double dataValueToAxisValue(DataValue v) {
         return mAxisToDataRatio * ( v.getDoubleValue() - mDataMin.getDoubleValue() ) + mMinOffset + mParallelOffset;
     }
+    public double dataValueToAxisValue(double v) {
+        return mAxisToDataRatio * ( v                  - mDataMin.getDoubleValue() ) + mMinOffset + mParallelOffset;
+    }
 
     public DataValue axisValueToDataValue(double v) {
         return DataValue.create(mType, (v - mMinOffset - mParallelOffset) / mAxisToDataRatio + mDataMin.getDoubleValue());
