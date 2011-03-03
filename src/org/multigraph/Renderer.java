@@ -43,13 +43,17 @@ public abstract class Renderer {
     }
 
     public Object getOption(Enum key) {
-        return getOption(key, null);
+        return getOption(key, (Double)null);
     }
 
     public boolean isSetOption(Enum key) {
         return mOptions.containsKey(key);
     }
 
+    public Object getOption(Enum key, DataValue value) {
+    	if (value == null) { return getOption(key, (Double)null); }
+    	return getOption(key, value.getDoubleValue());
+    }
     public Object getOption(Enum key, Double value) {
         Option opt = getOptionObject(key,value);
         if (opt != null) {
@@ -58,6 +62,10 @@ public abstract class Renderer {
         return null;
     }
 
+    public Object getOptionStringValue(Enum key, DataValue value) {
+    	if (value == null) { return getOptionStringValue(key, (Double)null); }
+    	return getOptionStringValue(key, value.getDoubleValue());
+    }
     public Object getOptionStringValue(Enum key, Double value) {
         Option opt = getOptionObject(key,value);
         if (opt != null) {
@@ -103,6 +111,22 @@ public abstract class Renderer {
         }
         return output;
   	}
+
+  	public double[] transformPoint(double[] input) {
+        double output[] = new double[input.length];
+		output[0] = mHorizontalAxis.dataValueToAxisValue(input[0]);
+        for (int i = 1; i<input.length; ++i) {
+            output[i] = mVerticalAxis.dataValueToAxisValue(input[i]);
+        }
+        return output;
+  	}
+
+  	public double[] transformPoint(double x, double y) {
+        double output[] = new double[2];
+		output[0] = mHorizontalAxis.dataValueToAxisValue(x);
+        output[1] = mVerticalAxis.dataValueToAxisValue(y);
+        return output;
+  	}
   	
   	public static Renderer create(Plot parent, org.multigraph.jaxb.Renderer state) {
         Renderer renderer = null;
@@ -110,10 +134,10 @@ public abstract class Renderer {
   		case POINTLINE:
   			renderer = new PointLineRenderer(parent, state);
             break;
-/*
-       case BAR:
-           return new BarRenderer(parent, state);
-*/
+  		case BAR:
+  			renderer = new BarRenderer(parent, state);
+            break;
+
   		}
   		return renderer;
   	}

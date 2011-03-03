@@ -13,6 +13,11 @@
     <plot>
       <horizontalaxis ref="xaxis"><variable ref="year"/></horizontalaxis>
       <verticalaxis ref="yaxis"><variable ref="temp1"/></verticalaxis>
+      <renderer type="bar">
+        <option name="linecolor" value="0xff0000"/>
+        <option name="fillcolor" value="0xffffff"/>
+      </renderer>
+<!--
       <renderer type="pointline">
         <option name="pointsize" value="2"/>
         <option name="pointshape" value="square"/>
@@ -22,6 +27,7 @@
         <option name="linewidth" value="1"/>
         <option name="linecolor" value="0xff00ff"/>
       </renderer>
+-->
     </plot>
     <plot>
       <horizontalaxis ref="xaxis"><variable ref="year"/></horizontalaxis>
