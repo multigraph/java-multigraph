@@ -165,14 +165,14 @@ public class Labeler {
 
         //@override 
         public DataValue peekNext() {
-            return new DataValue.Number(mCurrent);
+            return new Number(mCurrent);
         }
         
         //@override
         public DataValue next() {
             double val = mCurrent;
             mCurrent += mSpacing;    
-            return new DataValue.Number(val);
+            return new Number(val);
         }
 
     }

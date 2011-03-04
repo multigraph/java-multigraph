@@ -3,14 +3,12 @@
  */
 package org.multigraph.datatypes.number;
 
-import org.multigraph.DataValue;
-
 public class Formatter extends org.multigraph.Formatter {
     private String mFormatString;
     public Formatter(String formatString) {
         mFormatString = formatString;
     }
-    public String format(DataValue value) {
+    public String format(org.multigraph.DataValue value) {
     	try {
     		return String.format(mFormatString, value.getDoubleValue());
     	} catch (java.util.IllegalFormatConversionException e) {

@@ -3,7 +3,8 @@ package org.multigraph;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.multigraph.DataValue.Number;
+import org.multigraph.datatypes.number.Number;
+
 
 public abstract class Formatter {
 

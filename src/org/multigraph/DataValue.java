@@ -1,5 +1,7 @@
 package org.multigraph;
 
+import org.multigraph.datatypes.number.Number;
+
 
 public abstract class DataValue {
 
@@ -31,36 +33,6 @@ public abstract class DataValue {
     public boolean eq(DataValue x) { return compareTo(x) == 0; }
     public boolean ge(DataValue x) { return compareTo(x) >= 0; }
     public boolean gt(DataValue x) { return compareTo(x) >  0; }
-
-    /**
-     * DataValue.Number is the DataValue type that represents a basic numerical value.  The
-     * value is stored as a double.
-     */
-    
-    public static class Number extends DataValue {
-        protected double value;
-        public Number() {}
-        public Number(double value) {
-           	this.value = value;
-        }
-        public Number(java.lang.String value) {
-        	try {
-        		this.value = java.lang.Double.parseDouble(value);
-        	} catch (Exception e) {
-        		this.value = 0;
-        	}
-        }
-        public double getDoubleValue() {
-            return value;
-        }
-        public java.lang.String getStringValue() {
-            return java.lang.String.format("%f", value);
-        }
-        public int compareTo(DataValue x) {
-        	return (new Double(this.value)).compareTo(((Number)x).value);
-        }
-    }
-
 
     /**
      * DataValue.String is a utility type that is intended for holding
@@ -103,7 +75,7 @@ public abstract class DataValue {
         public DataValue toDataValue(DataType type) {
         	switch (type) {
         	case NUMBER:
-        		return new DataValue.Number(this.value);
+        		return new Number(this.value);
         	}
     		return null;	
         }
