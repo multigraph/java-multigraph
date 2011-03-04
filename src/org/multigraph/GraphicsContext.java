@@ -1,60 +1,72 @@
 package org.multigraph;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.BasicStroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Stack;
 
 public class GraphicsContext {
 
-    Graphics2D g;
-    Stack<AffineTransform> transformStack;
+    Graphics2D mGraphics2D;
+    Font mFont;
+    FontMetrics mFontMetrics;
+    Stack<AffineTransform> mTransformStack;
+
+    public GraphicsContext(Graphics2D g) {
+        this.mGraphics2D = g;
+        this.mTransformStack = new Stack<AffineTransform>();
+        mTransformStack.push(new AffineTransform());
+        mFont = new Font("SansSerif", Font.PLAIN, 12);
+        mGraphics2D.setFont(mFont);
+        mFontMetrics = mGraphics2D.getFontMetrics();
+    }
 
     public void printStack(String msg) {
-        System.out.printf("[%s] top of stack: %s\n", msg, transformStack.peek().toString());
+        System.out.printf("[%s] top of stack: %s\n", msg, mTransformStack.peek().toString());
     }
     
     public AffineTransform getTransform() {
-    	return transformStack.peek();
+    	return mTransformStack.peek();
     }
     
     public void scale(double sx, double sy) {
-    	transformStack.peek().scale(sx,sy);
+    	mTransformStack.peek().scale(sx,sy);
+    }
+    
+    public void rotate(double radians) {
+    	mTransformStack.peek().rotate(radians);
     }
     
     public void translate(double tx, double ty) {
-    	transformStack.peek().translate(tx, ty);
+    	mTransformStack.peek().translate(tx, ty);
     }
     
     public void concatTransform(AffineTransform M) {
-    	transformStack.peek().concatenate(M);
+    	mTransformStack.peek().concatenate(M);
     }
     
     public void preConcatTransform(AffineTransform M) {
-    	transformStack.peek().preConcatenate(M);
+    	mTransformStack.peek().preConcatenate(M);
     }
     
     public void pushTransform(AffineTransform T) {
-    	transformStack.push(T);
+    	mTransformStack.push(T);
     }
     
     public void pushTransform() {
-    	transformStack.push(new AffineTransform(transformStack.peek()));
+    	mTransformStack.push(new AffineTransform(mTransformStack.peek()));
     }
     
     public AffineTransform popTransform() {
-    	return transformStack.pop();
+    	return mTransformStack.pop();
     }
     
-    public GraphicsContext(Graphics2D g) {
-        this.g = g;
-        this.transformStack = new Stack<AffineTransform>();
-        transformStack.push(new AffineTransform());
-    }
-
     private void pointToAWTPixels(Point p, double x, double y) {
         Point2D.Double ptSrc = new Point2D.Double(x,y);
         getTransform().transform(ptSrc, p);
@@ -76,11 +88,41 @@ public class GraphicsContext {
     }
 
     public void setColor(RGBColor color) {
-        g.setColor(color.getAWTColor());
+        mGraphics2D.setColor(color.getAWTColor());
     }
 
     public void setLineWidth(double width) {
-        g.setStroke(new BasicStroke((float)width));
+        mGraphics2D.setStroke(new BasicStroke((float)width));
+    }
+    
+    public void drawString(String string,
+    					   double baseX,     double baseY,
+    					   double anchorX,   double anchorY,
+    					   double positionX, double positionY,
+    					   double angle) {
+    	Rectangle2D bounds = mFontMetrics.getStringBounds(string, mGraphics2D);
+    	double ax = (anchorX + 1) * bounds.getWidth()  / 2;
+    	double ay = (anchorY + 1) * bounds.getHeight() / 2;
+    	Point base = new Point();
+    	pointToAWTPixels(base, baseX, baseY);
+    	AffineTransform t = mGraphics2D.getTransform();
+    	/*
+    	mGraphics2D.translate(p.x, p.y);
+    	mGraphics2D.rotate(angle);
+    	mGraphics2D.drawString(string, -Math.round(ax+positionX), Math.round(ay-positionY));
+    	*/
+
+    	mGraphics2D.translate(base.x+positionX, base.y-positionY);
+    	mGraphics2D.rotate(angle);
+    	mGraphics2D.translate(-ax, ay);
+    	mGraphics2D.drawString(string, 0, 0);
+    	
+    	
+    	mGraphics2D.setTransform(t);
+    }
+
+    public void drawString(String string, double x, double y) {
+    	drawString(string, x, y, -1,-1,  0,0,  0);
     }
 
     private class AWTRect {
@@ -99,12 +141,12 @@ public class GraphicsContext {
 
     public void drawRect(double x0, double y0, double x1, double y1) {
         AWTRect r = new AWTRect(x0,y0,x1,y1);
-        g.drawRect(r.x, r.y, r.width, r.height);
+        mGraphics2D.drawRect(r.x, r.y, r.width, r.height);
     }
 
     public void fillRect(double x0, double y0, double x1, double y1) {
         AWTRect r = new AWTRect(x0,y0,x1,y1);
-        g.fillRect(r.x, r.y, r.width, r.height);
+        mGraphics2D.fillRect(r.x, r.y, r.width, r.height);
     }
 
     public Path2D createAWTPath(DPoint vertices[]) {
@@ -129,26 +171,26 @@ public class GraphicsContext {
 
     public void drawPolygon(DPoint vertices[]) {
         Path2D path = createAWTPath(vertices);
-        g.draw(path);
+        mGraphics2D.draw(path);
     }
 
     public void fillPolygon(DPoint vertices[]) {
         Path2D path = createAWTPath(vertices);
-        g.fill(path);
+        mGraphics2D.fill(path);
     }
 
     public void drawCircle(double x, double y, double pixelRadius) {
         Point p = new Point();
         pointToAWTPixels(p, x, y);
         int r = (int)Math.round(pixelRadius);
-        g.drawArc(p.x-r, p.y-r, 2*r, 2*r, 0, 360);
+        mGraphics2D.drawArc(p.x-r, p.y-r, 2*r, 2*r, 0, 360);
     }
 
     public void fillCircle(double x, double y, double pixelRadius) {
         Point p = new Point();
         pointToAWTPixels(p, x, y);
         int r = (int)Math.round(pixelRadius);
-        g.fillArc(p.x-r, p.y-r, 2*r, 2*r, 0, 360);
+        mGraphics2D.fillArc(p.x-r, p.y-r, 2*r, 2*r, 0, 360);
     }
 
     public void drawLine(double x1, double y1, double x2, double y2) {
@@ -156,7 +198,7 @@ public class GraphicsContext {
         Point p2 = new Point();
         pointToAWTPixels(p1, x1, y1);
         pointToAWTPixels(p2, x2, y2);
-        g.drawLine(p1.x, p1.y, p2.x, p2.y);
+        mGraphics2D.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
 
 

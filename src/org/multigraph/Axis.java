@@ -147,6 +147,9 @@ public class Axis {
         return mAxisToDataRatio * ( v                  - mDataMin.getDoubleValue() ) + mMinOffset + mParallelOffset;
     }
 
+    public double axisValueToDataValueDouble(double v) {
+        return                         (v - mMinOffset - mParallelOffset) / mAxisToDataRatio + mDataMin.getDoubleValue();
+    }
     public DataValue axisValueToDataValue(double v) {
         return DataValue.create(mType, (v - mMinOffset - mParallelOffset) / mAxisToDataRatio + mDataMin.getDoubleValue());
     }
@@ -213,7 +216,24 @@ public class Axis {
           // ... NYI ...
 
           // render the tick marks and labels
-          // ... NYI ...
+          if (mLabelers.size() > 0 && mDensity <= 1.5) {
+              int tickThickness = 1;
+              g.setLineWidth(tickThickness);
+              g.setColor(mState.getColor());
+              mLabeler.prepare(mDataMin, mDataMax);
+              while (mLabeler.hasNext()) {
+                  DataValue v = mLabeler.next();
+                  double    a = dataValueToAxisValue(v);
+                  if (mOrientation == AxisOrientation.HORIZONTAL) {
+                      g.drawLine(a, mPerpOffset+mState.getTickmax(), a, mPerpOffset+mState.getTickmin());
+                  } else {
+                      g.drawLine(mPerpOffset+mState.getTickmin(), a, mPerpOffset+mState.getTickmax(), a);
+                  }
+                  mLabeler.renderLabel(g, this, v);
+              }
+          }
+          break;
+
       }
 
     }

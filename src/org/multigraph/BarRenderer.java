@@ -123,13 +123,17 @@ public class BarRenderer extends Renderer {
     private double[] mPrevCorner;
     private boolean mDrawLines;
     private double mPixelEdgeTolerance = 1;
+    private double mBarbaseAxisValue;
 
     //@override 
     public void begin(GraphicsContext g) {
-        if (!this.isSetOption(Option.barbase)) {
+    	if (this.isSetOption(Option.barbase)) {
+    		mBarbaseAxisValue = mVerticalAxis.dataValueToAxisValue(mBarbase);
+    	} else {
             // if barbase is not explicitly set, set it to the y-axis coordinate equivalent of the height of the
             // horizontal axis
-            mBarbase = mVerticalAxis.axisValueToDataValue(mHorizontalAxis.getParallelOffset()).getDoubleValue();
+			mBarbaseAxisValue = mHorizontalAxis.getPerpOffset();
+            mBarbase          = mVerticalAxis.axisValueToDataValueDouble(mBarbaseAxisValue);
         }
         mBarGroups = new ArrayList<ArrayList<double[]>>();
         mCurrentBarGroup = new ArrayList<double[]>();
@@ -204,9 +208,9 @@ public class BarRenderer extends Renderer {
             //   horizontal line @ y from x(next) to x
             g.drawLine(barGroup.get(1)[0],  barGroup.get(0)[1],  barGroup.get(0)[0], barGroup.get(0)[1]);
             //   vertical line @ x from y to base
-            g.drawLine(barGroup.get(0)[0],  barGroup.get(0)[1],  barGroup.get(0)[0], mBarbase);
+            g.drawLine(barGroup.get(0)[0],  barGroup.get(0)[1],  barGroup.get(0)[0], mBarbaseAxisValue);
             //   horizontal line @ base from x to x(next)
-            g.drawLine(barGroup.get(0)[0],  mBarbase,            barGroup.get(1)[0], mBarbase);
+            g.drawLine(barGroup.get(0)[0],  mBarbaseAxisValue,   barGroup.get(1)[0], mBarbaseAxisValue);
 
             for (int i=1; i<n-1; ++i) {
                 // For intermediate points, draw 3 lines:
@@ -222,12 +226,12 @@ public class BarRenderer extends Renderer {
                 //         x     x(next)
                 //
                 //   vertical line @ x from min to max of (y, y(next), base)
-                g.drawLine(barGroup.get(i)[0],  Math.min(Math.min(barGroup.get(i-1)[1], barGroup.get(i)[1]), mBarbase),
-                           barGroup.get(i)[0],  Math.max(Math.max(barGroup.get(i-1)[1], barGroup.get(i)[1]), mBarbase));
+                g.drawLine(barGroup.get(i)[0],  Math.min(Math.min(barGroup.get(i-1)[1], barGroup.get(i)[1]), mBarbaseAxisValue),
+                           barGroup.get(i)[0],  Math.max(Math.max(barGroup.get(i-1)[1], barGroup.get(i)[1]), mBarbaseAxisValue));
                 //   horizontal line @ y(next) from x to x(next)
                 g.drawLine(barGroup.get(i)[0],  barGroup.get(i)[1],  barGroup.get(i+1)[0], barGroup.get(i)[1]);
                 //   horizontal line @ base from x to x(next)
-                g.drawLine(barGroup.get(i)[0],  mBarbase,            barGroup.get(i+1)[0], mBarbase);
+                g.drawLine(barGroup.get(i)[0],  mBarbaseAxisValue,            barGroup.get(i+1)[0], mBarbaseAxisValue);
             }
             // For last point, draw one line:
             //
@@ -239,7 +243,7 @@ public class BarRenderer extends Renderer {
             //         x     x(next)
             //
             //   vertical line @ x from base to y
-            g.drawLine(barGroup.get(n-1)[0], barGroup.get(n-1)[1],    barGroup.get(n-1)[0], mBarbase);
+            g.drawLine(barGroup.get(n-1)[0], barGroup.get(n-1)[1],    barGroup.get(n-1)[0], mBarbaseAxisValue);
         }
     }
 

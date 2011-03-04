@@ -43,6 +43,7 @@ public class Labeler {
     protected DPoint       mPosition;
     protected double       mAngle;
     protected DPoint       mAnchor;
+    protected Formatter    mFormatter;
 
     public Labeler(String formatString, DPoint position, double angle, DPoint anchor) {
         mFormatString = formatString;
@@ -84,6 +85,7 @@ public class Labeler {
             mEnd                 = 0;
             mLabelWidthPixels    = 0;
             mPixelsPerInchFactor = 60.0/ 72.0;
+            mFormatter           = new Formatter.Number(formatString);
         }
 
         //@override
@@ -98,7 +100,27 @@ public class Labeler {
         }
 
         //@override
-        public void renderLabel(GraphicsContext g, Axis axis, DataValue value) {}
+        public void renderLabel(GraphicsContext g, Axis axis, DataValue value) {
+            double a = axis.dataValueToAxisValue(value);
+            double baseX, baseY;
+            if (axis.getOrientation() == AxisOrientation.VERTICAL) {
+            	//px = axis.getPerpOffset() + mPosition.getX();
+                //py = a + mPosition.getY();
+                baseX = axis.getPerpOffset();
+                baseY = a;
+            } else {
+                //px = a + mPosition.getX();
+                //py = axis.getPerpOffset() + mPosition.getY();
+                baseX = a;
+                baseY = axis.getPerpOffset();
+            }
+            g.drawString(mFormatter.format(value),
+                         baseX, baseY,
+                         mAnchor.getX(), mAnchor.getY(),
+                         mPosition.getX(), mPosition.getY(),
+                         mAngle * Math.PI / 180.0);
+        }
+
 
         private static double gmod(double m, double n) {
     		int sign = 1;

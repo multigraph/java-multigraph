@@ -85,7 +85,7 @@
     <xsd:attribute name="min"         type="DataValueString" default="auto"/>
     <xsd:attribute name="max"         type="DataValueString" default="auto"/>
     <xsd:attribute name="tickmin"     type="xsd:int"    default="-3"/>
-    <xsd:attribute name="tickmax"     type="xsd:int"    default="-3"/>
+    <xsd:attribute name="tickmax"     type="xsd:int"    default="3"/>
     <xsd:attribute name="linewidth"   type="xsd:int"    default="1"/>
     <xsd:attribute name="color"       type="RGBColor"   default="0x000000"/>
     <xsd:attribute name="orientation" type="AxisOrientation" default="unknown"/>

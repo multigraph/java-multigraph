@@ -23,6 +23,9 @@ public class UITest extends JPanel
                         implements ActionListener, KeyListener {
     protected JButton reloadButton;
     
+    public static final int WIDTH  = 800;
+    public static final int HEIGHT = 600;
+    
     private MyCanvas canvas;
     private int width, height;
     private GraphicsContext g;
@@ -42,7 +45,10 @@ public class UITest extends JPanel
 
 		@Override
 		public void paint(Graphics g) {
+			long t0 = System.currentTimeMillis();
             multigraph.render(new GraphicsContext((Graphics2D)g));
+            long t1 = System.currentTimeMillis();
+            System.out.printf("multigraph rendered in %1dms\n", t1-t0);
 			//g.drawImage(image, 0, 0, Color.GREEN, null);
 		}
     	
@@ -62,8 +68,8 @@ public class UITest extends JPanel
 
         reloadButton.setToolTipText("Click this button to reload the MUGL file.");
 
-        width = 800;
-        height = 600;
+        width = WIDTH;
+        height = HEIGHT;
         
         canvas = new MyCanvas();
         canvas.setSize(width, height);
@@ -86,11 +92,13 @@ public class UITest extends JPanel
     
     private void reload() {
     	try {
+    		long t0 = System.currentTimeMillis();
     		InputStream inputStream = new FileInputStream("graph.xml");
     		Multigraph multigraph = new Multigraph(inputStream, width, height);
     		inputStream.close();
     		canvas.setMultigraph(multigraph);
-    		System.out.println("MUGL loaded.");
+    		long t1 = System.currentTimeMillis();
+    		System.out.printf("MUGL loaded in %1dms\n", t1-t0);
     	} catch (Exception e) {
     		System.out.println(e);
     		System.out.println(e.getMessage());

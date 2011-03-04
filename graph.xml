@@ -3,21 +3,26 @@
     <window border="2" bordercolor="0xffffff"/>
     <background color="0x000000"/>
     <plotarea border="0"/>
-    <horizontalaxis id="xaxis" position="0" base="-1,.5" min="1875" max="2005" tickmax="0" tickmin="-14" color="0xffffff">
+    <horizontalaxis id="xaxis" position="0" base="-1,.5" min="1875" max="2005" color="0xffffff">
+      <labels format="%1d" anchor="0 1" position="0 -5" angle="0"/>
       <grid visible="true"  color="0x333333"/>
     </horizontalaxis>
-    <verticalaxis id="yaxis" position="0" min="11" max="14" tickmax="0" tickmin="-4" highlightstyle="labels"  color="0xfffffff">
-      <labels format="%.2f"  start="0" spacing="50 20 10 5 2 1 0.5 0.2 0.1 0.05 0.02 0.01"/>
+    <verticalaxis id="yaxis" position="0" min="11" max="14" highlightstyle="labels"  color="0xfffffff">
+      <labels format="%.1f"  anchor="1 0" position="-7 2" start="0" spacing="50 20 10 5 2 1 0.5 0.2 0.1 0.05 0.02 0.01"/>
       <grid visible="true" color="0x333333"/>
     </verticalaxis>
     <plot>
+      <horizontalaxis ref="xaxis"><variable ref="year2"/></horizontalaxis>
+      <verticalaxis ref="yaxis"><variable ref="temp4"/></verticalaxis>
+      <renderer type="bar">
+        <option name="linecolor" value="0xff00ff"/>
+        <option name="fillcolor" value="0xffff00"/>
+        <option name="baroffset" value="0.5"/>
+      </renderer>
+    </plot>
+    <plot>
       <horizontalaxis ref="xaxis"><variable ref="year"/></horizontalaxis>
       <verticalaxis ref="yaxis"><variable ref="temp1"/></verticalaxis>
-      <renderer type="bar">
-        <option name="linecolor" value="0xff0000"/>
-        <option name="fillcolor" value="0xffffff"/>
-      </renderer>
-<!--
       <renderer type="pointline">
         <option name="pointsize" value="2"/>
         <option name="pointshape" value="square"/>
@@ -27,7 +32,6 @@
         <option name="linewidth" value="1"/>
         <option name="linecolor" value="0xff00ff"/>
       </renderer>
--->
     </plot>
     <plot>
       <horizontalaxis ref="xaxis"><variable ref="year"/></horizontalaxis>
@@ -38,7 +42,7 @@
         <option name="pointcolor" value="0x000000"/>
         <option name="pointoutlinecolor" value="0xff9999"/>
         <option name="pointoutlinewidth" value="1"/>
-        <option name="linewidth" value="1"/>
+        <option name="linewidth" value="2"/>
         <option name="linecolor" value="0xff0000"/>
       </renderer>
     </plot>
@@ -46,8 +50,8 @@
       <horizontalaxis ref="xaxis"><variable ref="year"/></horizontalaxis>
       <verticalaxis ref="yaxis"><variable ref="temp3"/></verticalaxis>
       <renderer type="pointline">
-        <option name="pointsize" value="2"/>
-        <option name="pointshape" value="circle"/>
+        <option name="pointsize" value="5"/>
+        <option name="pointshape" value="diamond"/>
         <option name="pointcolor" value="0xb06809"/>
         <option name="pointoutlinecolor" value="0xffffff"/>
         <option name="pointoutlinewidth" value="1"/>
@@ -213,6 +217,25 @@
 1997,12.864743,13.331759,13.934343
 1998,12.737249,13.400461,13.847519
 1999,12.850643,13.480520,13.939724
+      </values>
+    </data>
+    <data>
+      <variables>
+        <variable id="year2"  column="0"/>
+        <variable id="temp4" column="1"/>
+      </variables>
+      <values>
+1900,11.5
+1925,12.0
+1950,11.5
+1951,12.0
+1952,12.5
+1953,13.0
+1954,13.5
+1955,13.0
+1975,11.0
+1976,12.0
+1990,11.0
       </values>
     </data>
   </graph>
