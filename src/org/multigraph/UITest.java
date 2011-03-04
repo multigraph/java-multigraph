@@ -93,7 +93,7 @@ public class UITest extends JPanel
     private void reload() {
     	try {
     		long t0 = System.currentTimeMillis();
-    		InputStream inputStream = new FileInputStream("graph.xml");
+    		InputStream inputStream = new FileInputStream("graph2.xml");
     		Multigraph multigraph = new Multigraph(inputStream, width, height);
     		inputStream.close();
     		canvas.setMultigraph(multigraph);

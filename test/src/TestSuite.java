@@ -11,6 +11,8 @@ import org.multigraph.DataIterator;
 import org.multigraph.DataValue;
 import org.multigraph.DataVariable;
 import org.multigraph.DataType;
+import org.multigraph.Datetime;
+import org.multigraph.Formatter;
 
 public class TestSuite {
 
@@ -29,8 +31,26 @@ public class TestSuite {
         return sb.toString();
     }
     
-    @Test public void test1() {
+    private void checkDate(String format, String s) {
+		Datetime d = new Datetime(s);
+		Formatter.Datetime f = new Formatter.Datetime(format);
+		String fs = f.format(d);
+		assertEquals(s, fs);
+    }
+    
+    @Test public void testDataValue_1() {
     	try {
+    		checkDate("%Y%M%D%H", "2011030100");
+    		checkDate("%Y%M%D%H%i", "201103010002");
+    		checkDate("%Y%M", "201103");
+    	} catch (Exception e) {
+            Assert.fail(e.toString());
+        }
+    }
+    
+    @Test public void testDatetime_1() {
+    	try {
+    		
     		ArrayList<DataVariable> vars = new ArrayList<DataVariable>();
     		vars.add(new DataVariable("x", 0, DataType.NUMBER));
     		vars.add(new DataVariable("y", 1, DataType.NUMBER));
@@ -58,6 +78,8 @@ public class TestSuite {
             } catch (Exception e) {
             	Assert.fail(e.toString());
             }
-        }
+        }    
+    
+    
 
 }

@@ -62,17 +62,13 @@ public class Labeler {
     
     
     public static class Number extends Labeler {
-
         private double mCurrent;
         private double mEnd;
-          
         private double mSpacingPixels;
         private double mLabelWidthPixels;
         private double mPixelsPerInchFactor;
-
-        private int mLastTextLabelWidth  = 25;
-        private int mLastTextLabelHeight = 25;
-
+        private int    mLastTextLabelWidth  = 25;
+        private int    mLastTextLabelHeight = 25;
         private double mSpacing;
         private double mStart;
 
@@ -85,7 +81,7 @@ public class Labeler {
             mEnd                 = 0;
             mLabelWidthPixels    = 0;
             mPixelsPerInchFactor = 60.0/ 72.0;
-            mFormatter           = new Formatter.Number(formatString);
+            mFormatter           = new Number(formatString);
         }
 
         //@override
@@ -120,7 +116,6 @@ public class Labeler {
                          mPosition.getX(), mPosition.getY(),
                          mAngle * Math.PI / 180.0);
         }
-
 
         private static double gmod(double m, double n) {
     		int sign = 1;
