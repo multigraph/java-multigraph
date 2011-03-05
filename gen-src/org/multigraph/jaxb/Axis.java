@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.multigraph.AxisOrientation;
 import org.multigraph.DataType;
 import org.multigraph.RGBColor;
+import org.multigraph.datatypes.string.StringValue;
 
 
 /**
@@ -77,10 +78,10 @@ public class Axis {
     protected java.lang.String base;
     @XmlAttribute(name = "min")
     @XmlJavaTypeAdapter(Adapter4 .class)
-    protected org.multigraph.DataValue.String min;
+    protected org.multigraph.datatypes.string.StringValue min;
     @XmlAttribute(name = "max")
     @XmlJavaTypeAdapter(Adapter4 .class)
-    protected org.multigraph.DataValue.String max;
+    protected org.multigraph.datatypes.string.StringValue max;
     @XmlAttribute(name = "tickmin")
     protected Integer tickmin;
     @XmlAttribute(name = "tickmax")
@@ -322,7 +323,7 @@ public class Axis {
      *     {@link java.lang.String }
      *     
      */
-    public org.multigraph.DataValue.String getMin() {
+    public org.multigraph.datatypes.string.StringValue getMin() {
         if (min == null) {
             return new Adapter4().unmarshal("auto");
         } else {
@@ -338,7 +339,7 @@ public class Axis {
      *     {@link java.lang.String }
      *     
      */
-    public void setMin(org.multigraph.DataValue.String value) {
+    public void setMin(org.multigraph.datatypes.string.StringValue value) {
         this.min = value;
     }
 
@@ -354,7 +355,7 @@ public class Axis {
      *     {@link java.lang.String }
      *     
      */
-    public org.multigraph.DataValue.String getMax() {
+    public org.multigraph.datatypes.string.StringValue getMax() {
         if (max == null) {
             return new Adapter4().unmarshal("auto");
         } else {
@@ -370,7 +371,7 @@ public class Axis {
      *     {@link java.lang.String }
      *     
      */
-    public void setMax(org.multigraph.DataValue.String value) {
+    public void setMax(org.multigraph.datatypes.string.StringValue value) {
         this.max = value;
     }
 

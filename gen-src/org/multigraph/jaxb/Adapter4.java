@@ -10,17 +10,19 @@ package org.multigraph.jaxb;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.multigraph.datatypes.string.StringValue;
+
 public class Adapter4
-    extends XmlAdapter<java.lang.String, org.multigraph.DataValue.String>
+    extends XmlAdapter<java.lang.String, org.multigraph.datatypes.string.StringValue>
 {
 
 
-    public org.multigraph.DataValue.String unmarshal(java.lang.String value) {
-        return (org.multigraph.DataValue.String.parse(value));
+    public org.multigraph.datatypes.string.StringValue unmarshal(java.lang.String value) {
+        return (org.multigraph.datatypes.string.StringValue.parse(value));
     }
 
-    public java.lang.String marshal(org.multigraph.DataValue.String value) {
-        return (org.multigraph.DataValue.String.toString(value));
+    public java.lang.String marshal(org.multigraph.datatypes.string.StringValue value) {
+        return (org.multigraph.datatypes.string.StringValue.toString(value));
     }
 
 }

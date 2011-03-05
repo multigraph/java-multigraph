@@ -25,6 +25,8 @@ public class UITest extends JPanel
     
     public static final int WIDTH  = 800;
     public static final int HEIGHT = 600;
+    //public static final String MUGLFILE = "graph2.xml";
+    public static final String MUGLFILE = "graph.xml";
     
     private MyCanvas canvas;
     private int width, height;
@@ -93,7 +95,7 @@ public class UITest extends JPanel
     private void reload() {
     	try {
     		long t0 = System.currentTimeMillis();
-    		InputStream inputStream = new FileInputStream("graph2.xml");
+    		InputStream inputStream = new FileInputStream(MUGLFILE);
     		Multigraph multigraph = new Multigraph(inputStream, width, height);
     		inputStream.close();
     		canvas.setMultigraph(multigraph);

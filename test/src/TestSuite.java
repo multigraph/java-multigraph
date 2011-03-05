@@ -11,8 +11,8 @@ import org.multigraph.DataIterator;
 import org.multigraph.DataValue;
 import org.multigraph.DataVariable;
 import org.multigraph.DataType;
-import org.multigraph.Datetime;
-import org.multigraph.Formatter;
+import org.multigraph.datatypes.datetime.DatetimeValue;
+import org.multigraph.datatypes.datetime.DatetimeFormatter;
 
 public class TestSuite {
 
@@ -32,8 +32,8 @@ public class TestSuite {
     }
     
     private void checkDate(String format, String s) {
-		Datetime d = new Datetime(s);
-		Formatter.Datetime f = new Formatter.Datetime(format);
+		DatetimeValue d = new DatetimeValue(s);
+		DatetimeFormatter f = new DatetimeFormatter(format);
 		String fs = f.format(d);
 		assertEquals(s, fs);
     }

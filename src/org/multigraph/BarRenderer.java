@@ -2,6 +2,8 @@ package org.multigraph;
 
 import java.util.ArrayList;
 
+import org.multigraph.datatypes.number.NumberInterval;
+
 public class BarRenderer extends Renderer {
 
     public static enum Option {
@@ -17,7 +19,7 @@ public class BarRenderer extends Renderer {
 
     private RGBColor     mFillcolor     = RGBColor.BLACK;
     private RGBColor     mLinecolor     = RGBColor.BLACK;
-    private DataInterval mBarwidth      = new DataInterval.Number(1.0);
+    private DataInterval mBarwidth      = new NumberInterval(1.0);
     private double       mBaroffset     = 0.0;
     private double       mFillopacity   = 1.0;
     private double       mLinewidth     = 1.0;

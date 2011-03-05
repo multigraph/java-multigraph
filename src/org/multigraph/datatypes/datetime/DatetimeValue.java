@@ -1,14 +1,16 @@
-package org.multigraph;
+package org.multigraph.datatypes.datetime;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.multigraph.DataValue;
 
 /**
  * DataValue.Number is the DataValue type that represents a basic numerical value.  The
  * value is stored as a double.
  */
 
-public class Datetime extends DataValue {
+public class DatetimeValue extends DataValue {
 	
 	private static final SimpleDateFormat mSDF4  = new SimpleDateFormat("yyyy");
 	private static final SimpleDateFormat mSDF6  = new SimpleDateFormat("yyyyMM");
@@ -20,11 +22,11 @@ public class Datetime extends DataValue {
 	
     protected Date mValue;
 
-    public Datetime() {}
-    public Datetime(double value) {
+    public DatetimeValue() {}
+    public DatetimeValue(double value) {
        	this.mValue = new Date((long)value);
     }
-    public Datetime(java.lang.String value) {
+    public DatetimeValue(java.lang.String value) {
     	try {
     		switch (value.length()) {
     		case 4:
@@ -60,6 +62,6 @@ public class Datetime extends DataValue {
         return mValue.toString(); // NYI
     }
     public int compareTo(DataValue x) {
-    	return (new Long(this.mValue.getTime())).compareTo(((Datetime)x).mValue.getTime());
+    	return (new Long(this.mValue.getTime())).compareTo(((DatetimeValue)x).mValue.getTime());
     }
 }

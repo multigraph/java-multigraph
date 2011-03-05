@@ -1,14 +1,17 @@
+package org.multigraph.datatypes.number;
+
 /**
  * 
  */
-package org.multigraph.datatypes.number;
 
-public class Formatter extends org.multigraph.Formatter {
+import org.multigraph.*;
+
+public class NumberFormatter extends Formatter {
     private String mFormatString;
-    public Formatter(String formatString) {
+    public NumberFormatter(String formatString) {
         mFormatString = formatString;
     }
-    public String format(org.multigraph.DataValue value) {
+    public String format(DataValue value) {
     	try {
     		return String.format(mFormatString, value.getDoubleValue());
     	} catch (java.util.IllegalFormatConversionException e) {

@@ -2,6 +2,8 @@ package org.multigraph;
 
 import java.util.ArrayList;
 
+import org.multigraph.datatypes.number.NumberLabeler;
+
 public class Axis {
 	
 	private org.multigraph.jaxb.Axis mState;
@@ -113,7 +115,7 @@ public class Axis {
             	String hlabelSpacings[] = mState.getLabels().getLabel().get(k).getSpacing().split("[ \t]+");
             	for (int j=0; j<hlabelSpacings.length; ++j) {
                     double spacing = Double.parseDouble(hlabelSpacings[j]);
-                    Labeler labeler = new Labeler.Number(spacing, 
+                    Labeler labeler = new NumberLabeler(spacing, 
                                                          mState.getLabels().getLabel().get(k).getFormat(),
                                                          Double.parseDouble(mState.getLabels().getLabel().get(k).getStart()),
                                                          mState.getLabels().getLabel().get(k).getPosition(),
@@ -127,7 +129,7 @@ public class Axis {
     		String hlabelSpacings[] = mState.getLabels().getSpacing().split("[ \t]+");
     		for (int k=0; k<hlabelSpacings.length; ++k) {
                 double spacing = Double.parseDouble(hlabelSpacings[k]);
-                Labeler labeler = new Labeler.Number(spacing, 
+                Labeler labeler = new NumberLabeler(spacing, 
                         mState.getLabels().getFormat(),
                         Double.parseDouble(mState.getLabels().getStart()),
                         mState.getLabels().getPosition(),
