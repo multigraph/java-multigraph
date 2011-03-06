@@ -103,6 +103,7 @@ public class UITest extends JPanel
     		System.out.printf("MUGL loaded in %1dms\n", t1-t0);
     	} catch (Exception e) {
     		System.out.println(e);
+    		e.printStackTrace();
     		System.out.println(e.getMessage());
     	}
     }

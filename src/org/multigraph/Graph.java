@@ -32,7 +32,7 @@ public class Graph {
     	if (!mState.isSetBackground()) { mState.setBackground( new org.multigraph.jaxb.Background() ); }
     }
 
-	public Graph(org.multigraph.jaxb.Graph state, int width, int height) {
+	public Graph(org.multigraph.jaxb.Graph state, int width, int height) throws DataTypeException {
 		this.mState = state;
 		this.mWidth = width;
 		this.mHeight = height;

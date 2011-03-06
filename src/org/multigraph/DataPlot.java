@@ -6,7 +6,7 @@ public class DataPlot extends Plot {
     
     public DataPlot(Graph parent, org.multigraph.jaxb.Plot state, 
     				Data data, String[] variableIds, Axis haxis, Axis vaxis,
-    				String legendLabel) {
+    				String legendLabel) throws DataTypeException {
       super(parent, state, haxis, vaxis, legendLabel);
       mData        = data;
       mVariableIds = variableIds;

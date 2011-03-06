@@ -28,7 +28,7 @@ public class BarRenderer extends Renderer {
 
 
     public BarRenderer(Plot parent,
-                       org.multigraph.jaxb.Renderer state) {
+                       org.multigraph.jaxb.Renderer state) throws DataTypeException {
         super(parent, state);
         for (org.multigraph.jaxb.RendererOption jaxbOption : state.getOption()) {
             String name        = jaxbOption.getName();

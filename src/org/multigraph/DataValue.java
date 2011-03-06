@@ -1,33 +1,40 @@
 package org.multigraph;
 
 import org.multigraph.datatypes.number.NumberValue;
+import org.multigraph.datatypes.datetime.DatetimeValue;
 
 
 public abstract class DataValue {
 
     public abstract double getDoubleValue();
-    public abstract java.lang.String getStringValue();
+    public abstract String toString();
 
-    public static DataValue create(DataType type, java.lang.String string) {
+    public static DataValue create(DataType type, java.lang.String string) throws DataTypeException {
         switch (type) {
         case NUMBER:
             return new NumberValue(string);
+        case DATETIME:
+            return new DatetimeValue(string);
         default:
-            return null;
+            throw new DataTypeException(String.format("DataValue.create: unknown DataType ('%s') when converting string '%s' to DataValue",
+                                                      type.toString(), string));
         }
     }
 
-    public static DataValue create(DataType type, double value) {
+    public static DataValue create(DataType type, double value) throws DataTypeException {
         switch (type) {
         case NUMBER:
             return new NumberValue(value);
+        case DATETIME:
+            return new DatetimeValue(value);
         default:
-            return null;
+            throw new DataTypeException(String.format("DataValue.create: unknown DataType ('%s') when converting double '%f' to DataValue",
+                                                      type.toString(), value));
         }
     }
 
     public abstract int compareTo(DataValue x);
-
+    
     public boolean lt(DataValue x) { return compareTo(x) <  0; }
     public boolean le(DataValue x) { return compareTo(x) <= 0; }
     public boolean eq(DataValue x) { return compareTo(x) == 0; }

@@ -80,7 +80,7 @@ public class Axis {
     	if (!mState.isSetLabels()) { mState.setLabels(new org.multigraph.jaxb.Labels() ); }
     }
 
-    public Axis(Graph parent, org.multigraph.jaxb.Axis state) {
+    public Axis(Graph parent, org.multigraph.jaxb.Axis state) throws DataTypeException {
         this.mParent      = parent;
         this.mState       = state;
         this.mOrientation = state.getOrientation();
@@ -105,7 +105,7 @@ public class Axis {
     }
 
 
-    private void buildLabelers() {
+    private void buildLabelers() throws DataTypeException {
     	this.mLabelers = new ArrayList<Labeler>();
     	int numLabelSubtags = mState.getLabels()!=null ? mState.getLabels().getLabel().size() : 0; 
     	if (numLabelSubtags > 0) {
@@ -114,13 +114,23 @@ public class Axis {
             for(int k = 0; k < numLabelSubtags; ++k) {
             	String hlabelSpacings[] = mState.getLabels().getLabel().get(k).getSpacing().split("[ \t]+");
             	for (int j=0; j<hlabelSpacings.length; ++j) {
-                    double spacing = Double.parseDouble(hlabelSpacings[j]);
+            		DataInterval spacing = DataInterval.create(mType, hlabelSpacings[j]);
+            		DataValue start = DataValue.create(mType, mState.getLabels().getLabel().get(k).getStart());
+                    Labeler labeler = Labeler.create(mType,
+                                                     spacing, 
+                                                     mState.getLabels().getLabel().get(k).getFormat(),
+                                                     start,
+                                                     mState.getLabels().getLabel().get(k).getPosition(),
+                                                     mState.getLabels().getLabel().get(k).getAngle(),
+                                                     mState.getLabels().getLabel().get(k).getAnchor());
+                    /*
                     Labeler labeler = new NumberLabeler(spacing, 
                                                          mState.getLabels().getLabel().get(k).getFormat(),
                                                          Double.parseDouble(mState.getLabels().getLabel().get(k).getStart()),
                                                          mState.getLabels().getLabel().get(k).getPosition(),
                                                          mState.getLabels().getLabel().get(k).getAngle(),
                                                          mState.getLabels().getLabel().get(k).getAnchor());
+                    */
                     this.mLabelers.add(labeler);
                 }
             }
@@ -128,13 +138,23 @@ public class Axis {
     		// This is the case where we have no <label> tags nested inside the <labels> tag
     		String hlabelSpacings[] = mState.getLabels().getSpacing().split("[ \t]+");
     		for (int k=0; k<hlabelSpacings.length; ++k) {
-                double spacing = Double.parseDouble(hlabelSpacings[k]);
+    			DataInterval spacing = DataInterval.create(mType, hlabelSpacings[k]);
+    			DataValue start = DataValue.create(mType, mState.getLabels().getStart());
+                Labeler labeler = Labeler.create(mType,
+                                                 spacing, 
+                                                 mState.getLabels().getFormat(),
+                                                 start,
+                                                 mState.getLabels().getPosition(),
+                                                 mState.getLabels().getAngle(),
+                                                 mState.getLabels().getAnchor());
+                /*
                 Labeler labeler = new NumberLabeler(spacing, 
                         mState.getLabels().getFormat(),
                         Double.parseDouble(mState.getLabels().getStart()),
                         mState.getLabels().getPosition(),
                         mState.getLabels().getAngle(),
                         mState.getLabels().getAnchor());
+                */
                 this.mLabelers.add(labeler);
     		}
     	}
@@ -152,7 +172,7 @@ public class Axis {
     public double axisValueToDataValueDouble(double v) {
         return                         (v - mMinOffset - mParallelOffset) / mAxisToDataRatio + mDataMin.getDoubleValue();
     }
-    public DataValue axisValueToDataValue(double v) {
+    public DataValue axisValueToDataValue(double v) throws DataTypeException {
         return DataValue.create(mType, (v - mMinOffset - mParallelOffset) / mAxisToDataRatio + mDataMin.getDoubleValue());
     }
 

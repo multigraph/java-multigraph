@@ -53,7 +53,7 @@ public class ArrayData extends Data {
         return new DataValue[] { min, max };
 	}
 
-	public void parseText(String text) {
+	public void parseText(String text) throws DataTypeException {
 		String lines[] = text.split("\n");
 		mNumRows = 0;
 		mNumCols = 0;

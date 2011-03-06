@@ -27,7 +27,7 @@ public abstract class Plot {
 
     public abstract void render(GraphicsContext g);
 
-	public static Plot create(Graph parent, org.multigraph.jaxb.Plot state) {
+	public static Plot create(Graph parent, org.multigraph.jaxb.Plot state) throws DataTypeException {
 		Axis haxis = parent.findAxisById(state.getHorizontalaxis().getRef());
 		Axis vaxis = parent.findAxisById(state.getVerticalaxis().getRef());
 		ArrayList<String> varids = new ArrayList<String>();

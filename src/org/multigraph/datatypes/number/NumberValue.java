@@ -8,25 +8,25 @@ import org.multigraph.*;
  */
 
 public class NumberValue extends DataValue {
-    protected double value;
-    public NumberValue() {}
+    protected double mValue;
+
     public NumberValue(double value) {
-       	this.value = value;
+       	this.mValue = value;
     }
     public NumberValue(java.lang.String value) {
     	try {
-    		this.value = java.lang.Double.parseDouble(value);
+    		this.mValue = java.lang.Double.parseDouble(value);
     	} catch (Exception e) {
-    		this.value = 0;
+    		this.mValue = 0;
     	}
     }
     public double getDoubleValue() {
-        return value;
+        return mValue;
     }
-    public java.lang.String getStringValue() {
-        return java.lang.String.format("%f", value);
+    public java.lang.String toString() {
+        return java.lang.String.format("%f", mValue);
     }
     public int compareTo(DataValue x) {
-    	return (new Double(this.value)).compareTo(((NumberValue)x).value);
+    	return (new Double(this.mValue)).compareTo(((NumberValue)x).mValue);
     }
 }

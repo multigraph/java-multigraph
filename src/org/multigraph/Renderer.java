@@ -128,7 +128,7 @@ public abstract class Renderer {
         return output;
   	}
   	
-  	public static Renderer create(Plot parent, org.multigraph.jaxb.Renderer state) {
+  	public static Renderer create(Plot parent, org.multigraph.jaxb.Renderer state) throws DataTypeException {
         Renderer renderer = null;
   		switch (state.getType()) {
   		case POINTLINE:

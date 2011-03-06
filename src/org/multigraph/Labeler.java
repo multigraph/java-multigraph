@@ -1,6 +1,9 @@
 package org.multigraph;
 
 
+import org.multigraph.datatypes.number.NumberLabeler;
+import org.multigraph.datatypes.datetime.DatetimeLabeler;
+
 // Labeler:
 // 
 // A Labeler object renders text labels for values along an axis in a
@@ -61,6 +64,22 @@ public class Labeler {
 	public DataValue    next() { return null;}
     public DataValue    peekNext() { return null; }
     
-    
+    public static Labeler create(DataType type,
+    					  DataInterval spacing,
+    					  String format,
+    					  DataValue start,
+    					  DPoint position,
+    					  double angle,
+    					  DPoint anchor) throws DataTypeException {
+    	switch (type) {
+    		case NUMBER:
+    			return new NumberLabeler(spacing.getDoubleValue(), format, start.getDoubleValue(),
+    	                position, angle, anchor);
+            default:
+                throw new DataTypeException(String.format("Labeler.create: unknown DataType ('%s')", type.toString()));
+    	}
+    }
+    	
+
     
 }

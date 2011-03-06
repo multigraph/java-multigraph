@@ -1,8 +1,10 @@
 package org.multigraph.datatypes.string;
 
 import org.multigraph.DataType;
+import org.multigraph.DataTypeException;
 import org.multigraph.DataValue;
 import org.multigraph.datatypes.number.NumberValue;
+import org.multigraph.datatypes.datetime.DatetimeValue;
 
 /**
  * DataValue.String is a utility type that is intended for holding
@@ -19,35 +21,40 @@ import org.multigraph.datatypes.number.NumberValue;
  */
 
 public class StringValue extends DataValue {
-    protected java.lang.String value;
-    public StringValue() {}
+    protected java.lang.String mValue;
+    
     public StringValue(java.lang.String value) {
-        this.value = value;
+        this.mValue = value;
     }
     public double getDoubleValue() {
         return 0;
     }
-    public java.lang.String getStringValue() {
-        return value;
-    }
     public int compareTo(DataValue x) {
-    	return this.value.compareTo(((StringValue)x).value);
+    	return this.mValue.compareTo(((StringValue)x).mValue);
     }
     public static StringValue parse(java.lang.String string) {
     	return new StringValue(string);
     }
+    public String toString() {
+    	return mValue;
+    }
     public static java.lang.String toString(StringValue d) {
-    	return d.getStringValue();
+    	return d.toString();
     }
     public boolean isAuto() {
-    	return this.value.toLowerCase().equals("auto");
+    	return this.mValue.toLowerCase().equals("auto");
     }
-    public DataValue toDataValue(DataType type) {
+    public DataValue toDataValue(DataType type) throws DataTypeException {
     	switch (type) {
     	case NUMBER:
-    		return new NumberValue(this.value);
+    		return new NumberValue(this.mValue);
+    	case DATETIME:
+    		return new DatetimeValue(this.mValue);
+        default:
+            throw new DataTypeException(String.format("StringValue.toDataValue: unknown DataType ('%s') when converting string '%s' to DataValue",
+                                                      type.toString(), this.mValue));
+
     	}
-		return null;	
     }
 
 }

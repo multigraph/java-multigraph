@@ -56,7 +56,7 @@ public class Multigraph {
 		init(mugl, width, height);
 	}
 	
-	private void init(org.multigraph.jaxb.Graph mugl, int width, int height) {		
+	private void init(org.multigraph.jaxb.Graph mugl, int width, int height) throws DataTypeException {		
 		this.mState = mugl;
         this.mWidth = width;
         this.mHeight = height;
