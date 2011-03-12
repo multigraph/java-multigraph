@@ -1,7 +1,8 @@
 package org.multigraph.datatypes.datetime;
 
-import org.multigraph.DataInterval;
 import org.multigraph.DataTypeException;
+import org.multigraph.datatypes.DataInterval;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -23,7 +24,8 @@ public class DatetimeInterval extends DataInterval {
             DAY("D"),
             HOUR("H"),
             MINUTE("m"),
-            SECOND("s");
+            SECOND("s"),
+            MILLISECOND("ms");
         private final String value;
         Unit(String v) {
             value = v;
@@ -49,9 +51,17 @@ public class DatetimeInterval extends DataInterval {
     private double mMeasure;
     private String mMeasureString;
     private Unit mUnit;
-    private static Pattern mMeasureAndUnitPattern = Pattern.compile("\\s*([0-9eE\\.\\+\\-]+)\\s*([YMDHms])\\s*");
+    private static Pattern mMeasureAndUnitPattern = Pattern.compile("\\s*([0-9eE\\.\\+\\-]+)\\s*([YMDHms]+)\\s*");
     private static Pattern mMeasureOnlyPattern    = Pattern.compile("\\s*([0-9eE\\.\\+\\-]+)\\s*");
 
+    public Unit getUnit() { return mUnit; }
+    
+    public DatetimeInterval(double ms) throws DataTypeException {
+    	mValue = (long)ms;
+    	mMeasure = ms;
+    	mMeasureString = Double.toString(ms);
+    	mUnit = Unit.MILLISECOND;
+    }
 
     public DatetimeInterval(String string) throws DataTypeException {
         Matcher m = mMeasureAndUnitPattern.matcher(string);

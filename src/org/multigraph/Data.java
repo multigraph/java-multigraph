@@ -2,6 +2,8 @@ package org.multigraph;
 
 import java.util.ArrayList;
 
+import org.multigraph.datatypes.DataValue;
+
 /**
  * This is the (abstract) superclass for classes that Multigraph
  * uses for loading, storing, and managing data to be plotted.  When

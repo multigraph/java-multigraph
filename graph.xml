@@ -50,7 +50,7 @@
       <horizontalaxis ref="xaxis"><variable ref="year"/></horizontalaxis>
       <verticalaxis ref="yaxis"><variable ref="temp3"/></verticalaxis>
       <renderer type="pointline">
-        <option name="pointsize" value="5"/>
+        <option name="pointsize" value="3"/>
         <option name="pointshape" value="diamond"/>
         <option name="pointcolor" value="0xb06809"/>
         <option name="pointoutlinecolor" value="0xffffff"/>

@@ -5,6 +5,8 @@ package org.multigraph.datatypes.number;
  */
 
 import org.multigraph.*;
+import org.multigraph.datatypes.DataValue;
+import org.multigraph.datatypes.Formatter;
 
 public class NumberFormatter extends Formatter {
     private String mFormatString;

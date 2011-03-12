@@ -1,6 +1,7 @@
 package org.multigraph.datatypes.number;
 
 import org.multigraph.*;
+import org.multigraph.datatypes.DataValue;
 
 /**
  * DataValue.Number is the DataValue type that represents a basic numerical value.  The

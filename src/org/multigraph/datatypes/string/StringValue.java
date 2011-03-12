@@ -1,8 +1,8 @@
 package org.multigraph.datatypes.string;
 
-import org.multigraph.DataType;
 import org.multigraph.DataTypeException;
-import org.multigraph.DataValue;
+import org.multigraph.datatypes.DataType;
+import org.multigraph.datatypes.DataValue;
 import org.multigraph.datatypes.number.NumberValue;
 import org.multigraph.datatypes.datetime.DatetimeValue;
 

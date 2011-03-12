@@ -1,10 +1,140 @@
 package org.multigraph.datatypes.datetime;
 
 import org.multigraph.*;
+import org.multigraph.datatypes.DataValue;
+import org.multigraph.datatypes.Formatter;
+import org.multigraph.datatypes.Labeler;
 
-public class DatetimeLabeler 
-//extends Labeler
- {
+public class DatetimeLabeler extends Labeler
+{
+    private DatetimeInterval mSpacing;
+	private DatetimeValue    mStart;
+    private TurboDate        mCurrentTurboDate;
+    private DatetimeValue    mEnd;
+    private double           mLabelWidthPixels;
+    private double           mPixelsPerInchFactor;
+    private double           mLastTextLabelWidth;
+    private double           mLastTextLabelHeight;
+    private double           mMSSpacing;
+    private int              mStep;
+    private TurboDate        mStartTurboDate;
+    private TurboDate        mFirstTickTurboDate;
+
+
+    public DatetimeLabeler(DatetimeInterval spacing,
+                           Formatter formatter,
+                           DatetimeValue start,
+                           DPoint position,
+                           double angle,
+                           DPoint anchor) {
+        super(formatter, position, angle, anchor);
+        mSpacing             = spacing;
+        mStart               = start;
+        mCurrentTurboDate    = null;
+        mEnd                 = null;
+        mLabelWidthPixels    = 0;
+        mPixelsPerInchFactor = 0.8 * (60.0 / 72.0);
+        mLastTextLabelWidth  = 25;
+        mLastTextLabelHeight = 25;
+        mStep                = 0;
+        mStartTurboDate      = new TurboDate(mStart.getDoubleValue());
+        mMSSpacing           = spacing.getDoubleValue();
+    }
+
+	@Override
+    public double getLabelDensity(Axis axis) {
+        double absAngle          = Math.abs(mAngle) * 3.14156 / 180;
+        double labelPixels       = (axis.getOrientation() == AxisOrientation.HORIZONTAL)
+            ? mLastTextLabelHeight * Math.sin(absAngle) + mLastTextLabelWidth * Math.cos(absAngle)
+            : mLastTextLabelHeight * Math.cos(absAngle) + mLastTextLabelWidth * Math.sin(absAngle);
+        double spacingPixels     = mMSSpacing * Math.abs(axis.getAxisToDataRatio());
+        double density           = labelPixels / spacingPixels;
+        return density;
+	}
+
+	@Override
+	public boolean hasNext() {
+        return mCurrentTurboDate.getTimeInMillis() <= mEnd.getDoubleValue();
+    }
+
+	@Override
+    public DataValue next() {
+        DataValue val = new DatetimeValue(mCurrentTurboDate.getTimeInMillis());
+        ++mStep;
+        mCurrentTurboDate = mFirstTickTurboDate.clone();
+        mCurrentTurboDate.add(mSpacing.getUnit(), mStep * mSpacing.getDoubleValue());
+        return val;
+    }		
+
+    //@override 
+    public DataValue peekNext() {
+        return new DatetimeValue(mCurrentTurboDate.getTimeInMillis());
+    }
+
+	@Override
+	public void prepare(DataValue min, DataValue max) {
+        int direction = max.compareTo(min);
+        TurboDate dataStartTurboDate = (direction > 0) ? new TurboDate(min.getDoubleValue()) : new TurboDate(max.getDoubleValue());
+        mFirstTickTurboDate = dataStartTurboDate.firstTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue(), mSpacing.getUnit());
+        /*
+        switch (mSpacing.getUnit()) {
+
+        case YEAR:
+            mFirstTickTurboDate = dataStartTurboDate.firstYearSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
+            break;
+
+        case MONTH:
+            mFirstTickTurboDate = dataStartTurboDate.firstMonthSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
+            break;
+
+        case DAY:
+            mFirstTickTurboDate = dataStartTurboDate.firstDaySpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
+            break;
+
+        case HOUR:
+            mFirstTickTurboDate = dataStartTurboDate.firstHourSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
+            break;
+
+        case MINUTE:
+            mFirstTickTurboDate = dataStartTurboDate.firstMinuteSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
+            break;
+
+        case SECOND:
+            mFirstTickTurboDate = dataStartTurboDate.firstSecondSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
+            break;
+
+        case MILLISECOND:
+        default:
+            mFirstTickTurboDate = dataStartTurboDate.firstMillisecondSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
+            break;
+        }
+        */
+        mCurrentTurboDate = mFirstTickTurboDate.clone();
+        mEnd = (DatetimeValue)((direction > 0) ? max : min);
+        mStep = 0;
+	}
+
+	@Override
+	public void renderLabel(GraphicsContext g, Axis axis, DataValue value) {
+        double a = axis.dataValueToAxisValue(value);
+        double baseX, baseY;
+        if(axis.getOrientation() == AxisOrientation.VERTICAL) {
+            baseX = axis.getPerpOffset() + mPosition.getX();
+            baseY = a + mPosition.getY();
+        } else {
+            baseX = a + mPosition.getX();
+            baseY = axis.getPerpOffset() + mPosition.getY();
+        }
+        String string = mFormatter.format(value);
+        g.drawString(string,
+                     baseX, baseY,
+                     mAnchor.getX(),   mAnchor.getY(),
+                     mPosition.getX(), mPosition.getY(),
+                     mAngle * Math.PI / 180.0);
+        Box bounds = g.getStringBounds(string);
+        mLastTextLabelWidth  = bounds.getWidth();
+        mLastTextLabelHeight = bounds.getHeight();
+	}
 //
 //    private var _startUTCms:Number;
 //    private var _startTurboDate:TurboDate;

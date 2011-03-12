@@ -2,6 +2,8 @@ package org.multigraph;
 
 import java.util.ArrayList;
 
+import org.multigraph.datatypes.DataValue;
+
 public class ArrayDataIterator extends DataIterator {
 
     private ArrayList<Integer> mColumnIndices;

@@ -1,4 +1,4 @@
-package org.multigraph;
+package org.multigraph.datatypes;
 
 public enum DataType {
 	

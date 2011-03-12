@@ -2,6 +2,8 @@ package org.multigraph;
 
 import java.util.ArrayList;
 
+import org.multigraph.datatypes.DataInterval;
+import org.multigraph.datatypes.DataValue;
 import org.multigraph.datatypes.number.NumberInterval;
 
 public class BarRenderer extends Renderer {

@@ -2,6 +2,10 @@ package org.multigraph;
 
 import java.util.ArrayList;
 
+import org.multigraph.datatypes.DataInterval;
+import org.multigraph.datatypes.DataValue;
+import org.multigraph.datatypes.DataType;
+import org.multigraph.datatypes.Labeler;
 import org.multigraph.datatypes.number.NumberLabeler;
 
 public class Axis {
@@ -69,8 +73,8 @@ public class Axis {
 
     //private DataValue.Type mType = DataValue.Type.UNKNOWN;
     //public DataValue.Type getType() { return mType; }
-    private org.multigraph.DataType mType = org.multigraph.DataType.NUMBER;
-    public org.multigraph.DataType getType() { return mType; }
+    private org.multigraph.datatypes.DataType mType = org.multigraph.datatypes.DataType.NUMBER;
+    public org.multigraph.datatypes.DataType getType() { return mType; }
 
     private AxisOrientation mOrientation;
     public AxisOrientation getOrientation() { return mOrientation; }
@@ -112,7 +116,11 @@ public class Axis {
     		// This is the case where we have <labels><label>...</label>...</labels>,
     		// i.e. single <label> tags nested inside the <labels> tag
             for(int k = 0; k < numLabelSubtags; ++k) {
-            	String hlabelSpacings[] = mState.getLabels().getLabel().get(k).getSpacing().split("[ \t]+");
+                String spacingAttrValue = mState.getLabels().getLabel().get(k).getSpacing();
+                if (spacingAttrValue==null && mType==DataType.DATETIME) {
+                    spacingAttrValue = mState.getLabels().DEFAULT_DATETIME_SPACING;
+                }
+            	String hlabelSpacings[] = spacingAttrValue.split("[ \t]+");
             	for (int j=0; j<hlabelSpacings.length; ++j) {
             		DataInterval spacing = DataInterval.create(mType, hlabelSpacings[j]);
             		DataValue start = DataValue.create(mType, mState.getLabels().getLabel().get(k).getStart());
@@ -123,20 +131,18 @@ public class Axis {
                                                      mState.getLabels().getLabel().get(k).getPosition(),
                                                      mState.getLabels().getLabel().get(k).getAngle(),
                                                      mState.getLabels().getLabel().get(k).getAnchor());
-                    /*
-                    Labeler labeler = new NumberLabeler(spacing, 
-                                                         mState.getLabels().getLabel().get(k).getFormat(),
-                                                         Double.parseDouble(mState.getLabels().getLabel().get(k).getStart()),
-                                                         mState.getLabels().getLabel().get(k).getPosition(),
-                                                         mState.getLabels().getLabel().get(k).getAngle(),
-                                                         mState.getLabels().getLabel().get(k).getAnchor());
-                    */
                     this.mLabelers.add(labeler);
                 }
             }
     	} else {
     		// This is the case where we have no <label> tags nested inside the <labels> tag
-    		String hlabelSpacings[] = mState.getLabels().getSpacing().split("[ \t]+");
+            String spacingAttrValue = null; 
+            if (!mState.getLabels().isSetSpacing() && mType==DataType.DATETIME) {
+            	spacingAttrValue = mState.getLabels().DEFAULT_DATETIME_SPACING;
+            } else {
+            	spacingAttrValue = mState.getLabels().getSpacing();
+            }
+            String hlabelSpacings[] = spacingAttrValue.split("[ \t]+");
     		for (int k=0; k<hlabelSpacings.length; ++k) {
     			DataInterval spacing = DataInterval.create(mType, hlabelSpacings[k]);
     			DataValue start = DataValue.create(mType, mState.getLabels().getStart());
@@ -147,14 +153,6 @@ public class Axis {
                                                  mState.getLabels().getPosition(),
                                                  mState.getLabels().getAngle(),
                                                  mState.getLabels().getAnchor());
-                /*
-                Labeler labeler = new NumberLabeler(spacing, 
-                        mState.getLabels().getFormat(),
-                        Double.parseDouble(mState.getLabels().getStart()),
-                        mState.getLabels().getPosition(),
-                        mState.getLabels().getAngle(),
-                        mState.getLabels().getAnchor());
-                */
                 this.mLabelers.add(labeler);
     		}
     	}

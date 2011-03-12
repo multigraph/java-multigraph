@@ -1,8 +1,12 @@
-package org.multigraph;
+package org.multigraph.datatypes;
 
 
-import org.multigraph.datatypes.number.NumberLabeler;
-import org.multigraph.datatypes.datetime.DatetimeLabeler;
+import org.multigraph.Axis;
+import org.multigraph.DPoint;
+import org.multigraph.DataTypeException;
+import org.multigraph.GraphicsContext;
+import org.multigraph.datatypes.number.*;
+import org.multigraph.datatypes.datetime.*;
 
 // Labeler:
 // 
@@ -38,43 +42,53 @@ import org.multigraph.datatypes.datetime.DatetimeLabeler;
 //         Draws a text label at the given data value location, on the
 //         given axis, in the given sprite.
 
-public class Labeler {
+public abstract class Labeler {
 	
     //protected DataInterval mSpacing;
     //protected DataValue    mStart;
 
-    protected String       mFormatString;
     protected DPoint       mPosition;
     protected double       mAngle;
     protected DPoint       mAnchor;
     protected Formatter    mFormatter;
 
-    public Labeler(String formatString, DPoint position, double angle, DPoint anchor) {
-        mFormatString = formatString;
+    public Labeler(Formatter formatter, DPoint position, double angle, DPoint anchor) {
         mPosition     = position;
         mAngle        = angle;
         mAnchor       = anchor;
+        mFormatter    = formatter;
     }
 
 
-    public double       getLabelDensity(Axis axis) { return 0; }
-    public void         renderLabel(GraphicsContext g, Axis axis, DataValue value) {}
-	public void         prepare(DataValue min, DataValue max) {}
-	public boolean      hasNext() { return false; }
-	public DataValue    next() { return null;}
-    public DataValue    peekNext() { return null; }
+    public abstract double       getLabelDensity(Axis axis);
+    public abstract void         renderLabel(GraphicsContext g, Axis axis, DataValue value);
+	public abstract void         prepare(DataValue min, DataValue max);
+	public abstract boolean      hasNext();
+	public abstract DataValue    next();
+    public abstract DataValue    peekNext();
     
     public static Labeler create(DataType type,
-    					  DataInterval spacing,
-    					  String format,
-    					  DataValue start,
-    					  DPoint position,
-    					  double angle,
-    					  DPoint anchor) throws DataTypeException {
+                                 DataInterval spacing,
+                                 String format,
+                                 DataValue start,
+                                 DPoint position,
+                                 double angle,
+                                 DPoint anchor) throws DataTypeException {
     	switch (type) {
-    		case NUMBER:
-    			return new NumberLabeler(spacing.getDoubleValue(), format, start.getDoubleValue(),
-    	                position, angle, anchor);
+		case NUMBER:
+			return new NumberLabeler(spacing.getDoubleValue(),
+                                     Formatter.create(DataType.NUMBER, format),
+                                     start.getDoubleValue(),
+                                     position,
+                                     angle,
+                                     anchor);
+		case DATETIME:
+			return new DatetimeLabeler((DatetimeInterval)spacing,
+                                     Formatter.create(DataType.DATETIME, format),
+                                     (DatetimeValue)start,
+                                     position,
+                                     angle,
+                                     anchor);
             default:
                 throw new DataTypeException(String.format("Labeler.create: unknown DataType ('%s')", type.toString()));
     	}

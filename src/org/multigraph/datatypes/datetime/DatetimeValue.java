@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.multigraph.DataValue;
+import org.multigraph.datatypes.DataValue;
 
 /**
  * DataValue.Number is the DataValue type that represents a basic numerical value.  The
@@ -50,8 +50,12 @@ public class DatetimeValue extends DataValue {
     //protected Date mValue;
 	protected double mValue;
 
+    public DatetimeValue(long value) {
+       	this.mValue = (double)(value);
+    }
     public DatetimeValue(double value) {
-       	this.mValue = (double)((new Date((long)value)).getTime());
+       	//this.mValue = (double)((new Date((long)value)).getTime());
+        this.mValue = value;
     }
     public DatetimeValue(java.lang.String value) {
     	try {
@@ -84,6 +88,9 @@ public class DatetimeValue extends DataValue {
     }
     public double getDoubleValue() {
         return mValue;
+    }
+    public Date getDateValue() {
+    	return new Date((long)mValue);
     }
     public java.lang.String toString() {
     	return mSDF16.format(new Date((long)mValue));

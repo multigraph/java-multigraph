@@ -95,6 +95,11 @@ public class GraphicsContext {
         mGraphics2D.setStroke(new BasicStroke((float)width));
     }
     
+    public Box getStringBounds(String string) {
+    	Rectangle2D bounds = mFontMetrics.getStringBounds(string, mGraphics2D);
+        return new Box(bounds.getWidth(), bounds.getHeight());
+    }
+
     public void drawString(String string,
     					   double baseX,     double baseY,
     					   double anchorX,   double anchorY,

@@ -3,6 +3,8 @@ package org.multigraph;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import org.multigraph.datatypes.DataValue;
+
 public class ArrayData extends Data {
 
     private int mNumRows;

@@ -1,5 +1,8 @@
 package org.multigraph;
 
+import org.multigraph.datatypes.DataType;
+import org.multigraph.datatypes.DataValue;
+
 public class DataVariable {
 
 	private String mId;

@@ -4,7 +4,7 @@
     <background color="0x000000"/>
     <plotarea border="0"/>
     <horizontalaxis type="datetime" id="xaxis" position="0" base="-1,.5" min="1875" max="2005" color="0xffffff">
-      <labels format="%Y" anchor="0 1" position="0 -5" angle="0"/>
+      <labels format="%n %Y" anchor="0 1" position="0 -5" angle="0"/>
       <grid visible="true"  color="0x333333"/>
     </horizontalaxis>
     <verticalaxis id="yaxis" position="0" min="11" max="14" highlightstyle="labels"  color="0xfffffff">

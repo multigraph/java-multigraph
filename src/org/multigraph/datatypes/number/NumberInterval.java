@@ -3,7 +3,7 @@
  */
 package org.multigraph.datatypes.number;
 
-import org.multigraph.DataInterval;
+import org.multigraph.datatypes.DataInterval;
 
 public class NumberInterval extends DataInterval {
 

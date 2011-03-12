@@ -6,9 +6,10 @@ package org.multigraph.datatypes.number;
 import org.multigraph.Axis;
 import org.multigraph.AxisOrientation;
 import org.multigraph.DPoint;
-import org.multigraph.DataValue;
 import org.multigraph.GraphicsContext;
-import org.multigraph.Labeler;
+import org.multigraph.datatypes.DataValue;
+import org.multigraph.datatypes.Formatter;
+import org.multigraph.datatypes.Labeler;
 
 public class NumberLabeler extends Labeler {
     private double mCurrent;
@@ -21,16 +22,15 @@ public class NumberLabeler extends Labeler {
     private double mSpacing;
     private double mStart;
 
-    public NumberLabeler(double spacing, String formatString, double start,
+    public NumberLabeler(double spacing, Formatter formatter, double start,
                          DPoint position, double angle, DPoint anchor) {
-        super(formatString, position, angle, anchor);
+        super(formatter, position, angle, anchor);
         mSpacing             = spacing;
         mStart               = start;
         mCurrent             = 0;
         mEnd                 = 0;
         mLabelWidthPixels    = 0;
         mPixelsPerInchFactor = 60.0/ 72.0;
-        mFormatter           = new NumberFormatter(formatString);
     }
 
     //@override

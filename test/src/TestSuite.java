@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.multigraph.ArrayData;
 import org.multigraph.DataIterator;
-import org.multigraph.DataValue;
 import org.multigraph.DataVariable;
-import org.multigraph.DataType;
+import org.multigraph.datatypes.DataType;
+import org.multigraph.datatypes.DataValue;
 import org.multigraph.datatypes.datetime.DatetimeValue;
 import org.multigraph.datatypes.datetime.DatetimeFormatter;
 

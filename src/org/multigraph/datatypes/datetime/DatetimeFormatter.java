@@ -6,8 +6,8 @@ package org.multigraph.datatypes.datetime;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.multigraph.DataValue;
-import org.multigraph.Formatter;
+import org.multigraph.datatypes.DataValue;
+import org.multigraph.datatypes.Formatter;
 
 public class DatetimeFormatter extends Formatter {
 
@@ -34,9 +34,7 @@ public class DatetimeFormatter extends Formatter {
 	private static final SimpleDateFormat mFormatter_P = new SimpleDateFormat("a");
 
 	public String format(DataValue value) {
-		//Date date = ((Datetime)value).getDate();
-		Date date = null;
-		//  FIX THAT!!!
+		Date date = ((DatetimeValue)value).getDateValue();
 		StringBuffer sb = new StringBuffer();
         int index = 0;
 		while (index < mFormatString.length()) {

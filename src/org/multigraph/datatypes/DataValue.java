@@ -1,5 +1,6 @@
-package org.multigraph;
+package org.multigraph.datatypes;
 
+import org.multigraph.DataTypeException;
 import org.multigraph.datatypes.number.NumberValue;
 import org.multigraph.datatypes.datetime.DatetimeValue;
 

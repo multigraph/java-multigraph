@@ -1,5 +1,7 @@
 package org.multigraph;
 
+import org.multigraph.datatypes.DataValue;
+
 public class DataPlot extends Plot {
     private Data mData;
     private String[] mVariableIds;
