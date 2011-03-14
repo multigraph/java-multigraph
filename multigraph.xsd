@@ -170,7 +170,7 @@
     <xsd:attribute name="angle"    type="xsd:double"/>
     <xsd:attribute name="position" type="DPoint"/>
     <xsd:attribute name="anchor"   type="DPoint"/>
-    <xsd:attribute name="spacing" use="required"/>
+    <xsd:attribute name="spacing"  type="xsd:string" use="required"/>
   </xsd:complexType>
 
   <xsd:complexType name="Grid">
