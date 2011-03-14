@@ -22,8 +22,10 @@ public abstract class Data {
 
     /**
      * Create a new Data object with the given array of DataVariable instances.
+     * This constructor is protected to prevent external use.  Use the 'create'
+     * factory method to create instances instead.
      */
-    public Data(ArrayList<DataVariable> variables) {
+    protected Data(ArrayList<DataVariable> variables) {
         mVariables = variables;
     }
 

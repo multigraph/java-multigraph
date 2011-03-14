@@ -49,7 +49,7 @@
   </xsd:complexType>
 
   <xsd:complexType name="Background">
-    <xsd:attribute name="color"       type="RGBColor"/>
+    <xsd:attribute name="color"       type="RGBColor" default="0xffffff"/>
   </xsd:complexType>
 
   <xsd:complexType name="Plotarea">

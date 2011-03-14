@@ -134,6 +134,8 @@ public abstract class Renderer {
         Renderer renderer = null;
   		switch (state.getType()) {
   		case POINTLINE:
+  		case LINE:
+  		case POINT:
   			renderer = new PointLineRenderer(parent, state);
             break;
   		case BAR:

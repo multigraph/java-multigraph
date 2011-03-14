@@ -25,6 +25,7 @@
     <zoom min="1.0"/>
     <grid color="0xeeeeee"/>
   </verticalaxis>
+<!--
   <plot>
     <legend visible="false"/>
     <verticalaxis ref="y"><constant value="0"/></verticalaxis>
@@ -33,6 +34,7 @@
       <option name="linewidth" value="1"/>
     </renderer>
   </plot>
+-->
   <plot>
     <legend label="Yearly average"/>
     <horizontalaxis ref="x"><variable ref="a_datetime"/></horizontalaxis>

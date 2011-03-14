@@ -82,9 +82,12 @@ public class Axis {
     private void prepareState() {
     	if (!mState.isSetGrid()) { mState.setGrid( new org.multigraph.jaxb.Grid() ); }
     	if (!mState.isSetLabels()) { mState.setLabels(new org.multigraph.jaxb.Labels() ); }
+        if (mState.getLabels().getLabel().isEmpty()) {
+            mState.getLabels().getLabel().add(new org.multigraph.jaxb.Label());
+        }
     }
 
-    public Axis(Graph parent, org.multigraph.jaxb.Axis state) throws DataTypeException {
+    public Axis(Graph parent, org.multigraph.jaxb.Axis state) throws DataTypeException  {
         this.mParent      = parent;
         this.mState       = state;
         this.mOrientation = state.getOrientation();
@@ -111,6 +114,8 @@ public class Axis {
 
     private void buildLabelers() throws DataTypeException {
     	this.mLabelers = new ArrayList<Labeler>();
+
+    	////////////////////////////////////////////////////////////////////////
     	int numLabelSubtags = mState.getLabels()!=null ? mState.getLabels().getLabel().size() : 0; 
     	if (numLabelSubtags > 0) {
     		// This is the case where we have <labels><label>...</label>...</labels>,
@@ -121,21 +126,45 @@ public class Axis {
                     spacingAttrValue = mState.getLabels().DEFAULT_DATETIME_SPACING;
                 }
             	String hlabelSpacings[] = spacingAttrValue.split("[ \t]+");
+
+                String format = ( mState.getLabels().getLabel().get(k).isSetFormat()
+                                  ? mState.getLabels().getLabel().get(k).getFormat()
+                                  : mState.getLabels().getFormat() );
+                DataValue start = ( mState.getLabels().getLabel().get(k).isSetStart()
+                                    ? DataValue.create(mType, mState.getLabels().getLabel().get(k).getStart())
+                                    : DataValue.create(mType, mState.getLabels().getStart()) );
+                DPoint position = ( mState.getLabels().getLabel().get(k).isSetPosition()
+                                    ? mState.getLabels().getLabel().get(k).getPosition()
+                                    : mState.getLabels().getPosition() );
+                double angle = ( mState.getLabels().getLabel().get(k).isSetAngle()
+                                 ? mState.getLabels().getLabel().get(k).getAngle()
+                                 : mState.getLabels().getAngle() );
+                DPoint anchor = ( mState.getLabels().getLabel().get(k).isSetAnchor()
+                                  ? mState.getLabels().getLabel().get(k).getAnchor()
+                                  : mState.getLabels().getAnchor() );
             	for (int j=0; j<hlabelSpacings.length; ++j) {
             		DataInterval spacing = DataInterval.create(mType, hlabelSpacings[j]);
-            		DataValue start = DataValue.create(mType, mState.getLabels().getLabel().get(k).getStart());
                     Labeler labeler = Labeler.create(this,
                     		                         mType,
                                                      spacing, 
-                                                     mState.getLabels().getLabel().get(k).getFormat(),
+                                                     format,
                                                      start,
-                                                     mState.getLabels().getLabel().get(k).getPosition(),
-                                                     mState.getLabels().getLabel().get(k).getAngle(),
-                                                     mState.getLabels().getLabel().get(k).getAnchor());
+                                                     position,
+                                                     angle,
+                                                     anchor);
                     this.mLabelers.add(labeler);
                 }
             }
     	} else {
+
+            ///
+            /// This better not happen any more; prepareState() has ensured we have at least one <label> subelement
+            /// inside a <labels> element.
+            ///
+    		System.out.printf("Axis.java.buildLabels(): labels state error!!!!\n");
+
+
+/*
     		// This is the case where we have no <label> tags nested inside the <labels> tag
             String spacingAttrValue = null; 
             if (!mState.getLabels().isSetSpacing() && mType==DataType.DATETIME) {
@@ -157,8 +186,12 @@ public class Axis {
                                                  mState.getLabels().getAnchor());
                 this.mLabelers.add(labeler);
     		}
+*/
+
+
     	}
-    	
+    	////////////////////////////////////////////////////////////////////////
+
     	/*
     	if (mOrientation == AxisOrientation.HORIZONTAL) {
     	for (Labeler lab : mLabelers) {
