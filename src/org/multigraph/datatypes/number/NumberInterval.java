@@ -23,7 +23,7 @@ public class NumberInterval extends DataInterval {
         return value;
     }
 
-    public String getStringValue() {
+    public String toString() {
         return String.format("%f", value);
     }
 

@@ -127,7 +127,7 @@ public class DatetimeInterval extends DataInterval {
 	}
 
 	@Override
-	public String getStringValue() {
+	public String toString() {
         return String.format("%s%s", mMeasureString, mUnit.toString());
 	}
 

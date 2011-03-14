@@ -7,7 +7,7 @@ import org.multigraph.datatypes.datetime.DatetimeInterval;
 public abstract class DataInterval {
 
     public abstract double getDoubleValue();
-    public abstract String getStringValue();
+    public abstract String toString();
 
     public static DataInterval create(DataType type, String string) throws DataTypeException {
         switch (type) {

@@ -51,7 +51,7 @@ public class Axis {
         mDataMin = min;
         mHaveDataMin = true;
         if (mHaveDataMin && mHaveDataMax) {
-            mAxisToDataRatio = (mLength - mMaxOffset - mMaxOffset) / (mDataMax.getDoubleValue() - mDataMax.getDoubleValue());
+            mAxisToDataRatio = (mLength - mMaxOffset - mMaxOffset) / (mDataMax.getDoubleValue() - mDataMin.getDoubleValue());
         }
     }
 
@@ -124,7 +124,8 @@ public class Axis {
             	for (int j=0; j<hlabelSpacings.length; ++j) {
             		DataInterval spacing = DataInterval.create(mType, hlabelSpacings[j]);
             		DataValue start = DataValue.create(mType, mState.getLabels().getLabel().get(k).getStart());
-                    Labeler labeler = Labeler.create(mType,
+                    Labeler labeler = Labeler.create(this,
+                    		                         mType,
                                                      spacing, 
                                                      mState.getLabels().getLabel().get(k).getFormat(),
                                                      start,
@@ -146,7 +147,8 @@ public class Axis {
     		for (int k=0; k<hlabelSpacings.length; ++k) {
     			DataInterval spacing = DataInterval.create(mType, hlabelSpacings[k]);
     			DataValue start = DataValue.create(mType, mState.getLabels().getStart());
-                Labeler labeler = Labeler.create(mType,
+                Labeler labeler = Labeler.create(this,
+                		                         mType,
                                                  spacing, 
                                                  mState.getLabels().getFormat(),
                                                  start,
@@ -156,6 +158,14 @@ public class Axis {
                 this.mLabelers.add(labeler);
     		}
     	}
+    	
+    	if (mOrientation == AxisOrientation.HORIZONTAL) {
+    	for (Labeler lab : mLabelers) {
+    		((org.multigraph.datatypes.datetime.DatetimeLabeler)lab).dump();
+    	}
+    	}
+    	
+    	
     }
 
 
@@ -180,10 +190,10 @@ public class Axis {
         // that the labelers list is ordered in increasing order of label density.
         // This function sets the _labeler and _density private properties.
         mLabeler = mLabelers.get(0);
-        mDensity = mLabeler.getLabelDensity(this);
+        mDensity = mLabeler.getLabelDensity();
         if (mDensity < 0.8) {
             for (int i = 1; i < mLabelers.size(); i++) {
-                double density = mLabelers.get(i).getLabelDensity(this);
+                double density = mLabelers.get(i).getLabelDensity();
                 if (density > 0.8) { break; }
                 mLabeler = mLabelers.get(i);
                 mDensity = density;
@@ -249,7 +259,7 @@ public class Axis {
                   } else {
                       g.drawLine(mPerpOffset+mState.getTickmin(), a, mPerpOffset+mState.getTickmax(), a);
                   }
-                  mLabeler.renderLabel(g, this, v);
+                  mLabeler.renderLabel(g, v);
               }
           }
           break;

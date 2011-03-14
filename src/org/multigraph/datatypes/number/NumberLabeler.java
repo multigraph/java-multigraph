@@ -22,9 +22,9 @@ public class NumberLabeler extends Labeler {
     private double mSpacing;
     private double mStart;
 
-    public NumberLabeler(double spacing, Formatter formatter, double start,
+    public NumberLabeler(Axis axis, double spacing, Formatter formatter, double start,
                          DPoint position, double angle, DPoint anchor) {
-        super(formatter, position, angle, anchor);
+        super(axis, formatter, position, angle, anchor);
         mSpacing             = spacing;
         mStart               = start;
         mCurrent             = 0;
@@ -34,30 +34,30 @@ public class NumberLabeler extends Labeler {
     }
 
     //@override
-    public double getLabelDensity(Axis axis) {
+    public double getLabelDensity() {
         double absAngle          = Math.abs(mAngle) * Math.PI / 180;
-        double labelPixels       = (axis.getOrientation() == AxisOrientation.HORIZONTAL) 
+        double labelPixels       = (mAxis.getOrientation() == AxisOrientation.HORIZONTAL) 
             ? mLastTextLabelHeight * Math.sin(absAngle) + mLastTextLabelWidth * Math.cos(absAngle)
             : mLastTextLabelHeight * Math.cos(absAngle) + mLastTextLabelWidth * Math.sin(absAngle);
-        double spacingPixels     = mSpacing * Math.abs(axis.getAxisToDataRatio());
+        double spacingPixels     = mSpacing * Math.abs(mAxis.getAxisToDataRatio());
         double density           = labelPixels / spacingPixels;
         return density;
     }
 
     //@override
-    public void renderLabel(GraphicsContext g, Axis axis, DataValue value) {
-        double a = axis.dataValueToAxisValue(value);
+    public void renderLabel(GraphicsContext g, DataValue value) {
+        double a = mAxis.dataValueToAxisValue(value);
         double baseX, baseY;
-        if (axis.getOrientation() == AxisOrientation.VERTICAL) {
+        if (mAxis.getOrientation() == AxisOrientation.VERTICAL) {
         	//px = axis.getPerpOffset() + mPosition.getX();
             //py = a + mPosition.getY();
-            baseX = axis.getPerpOffset();
+            baseX = mAxis.getPerpOffset();
             baseY = a;
         } else {
             //px = a + mPosition.getX();
             //py = axis.getPerpOffset() + mPosition.getY();
             baseX = a;
-            baseY = axis.getPerpOffset();
+            baseY = mAxis.getPerpOffset();
         }
         g.drawString(mFormatter.format(value),
                      baseX, baseY,

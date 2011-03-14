@@ -21,13 +21,14 @@ public class DatetimeLabeler extends Labeler
     private TurboDate        mFirstTickTurboDate;
 
 
-    public DatetimeLabeler(DatetimeInterval spacing,
+    public DatetimeLabeler(Axis axis,
+    					   DatetimeInterval spacing,
                            Formatter formatter,
                            DatetimeValue start,
                            DPoint position,
                            double angle,
                            DPoint anchor) {
-        super(formatter, position, angle, anchor);
+        super(axis, formatter, position, angle, anchor);
         mSpacing             = spacing;
         mStart               = start;
         mCurrentTurboDate    = null;
@@ -42,14 +43,19 @@ public class DatetimeLabeler extends Labeler
     }
 
 	@Override
-    public double getLabelDensity(Axis axis) {
+    public double getLabelDensity() {
         double absAngle          = Math.abs(mAngle) * 3.14156 / 180;
-        double labelPixels       = (axis.getOrientation() == AxisOrientation.HORIZONTAL)
+        double labelPixels       = (mAxis.getOrientation() == AxisOrientation.HORIZONTAL)
             ? mLastTextLabelHeight * Math.sin(absAngle) + mLastTextLabelWidth * Math.cos(absAngle)
             : mLastTextLabelHeight * Math.cos(absAngle) + mLastTextLabelWidth * Math.sin(absAngle);
-        double spacingPixels     = mMSSpacing * Math.abs(axis.getAxisToDataRatio());
+        double spacingPixels     = mMSSpacing * Math.abs(mAxis.getAxisToDataRatio());
         double density           = labelPixels / spacingPixels;
         return density;
+	}
+	
+	public void dump() {
+		double density = getLabelDensity();
+	    System.out.printf("DatetimeLabeler with spacing %s reporting density %f\n", mSpacing.toString(), density);
 	}
 
 	@Override
@@ -115,15 +121,15 @@ public class DatetimeLabeler extends Labeler
 	}
 
 	@Override
-	public void renderLabel(GraphicsContext g, Axis axis, DataValue value) {
-        double a = axis.dataValueToAxisValue(value);
+	public void renderLabel(GraphicsContext g, DataValue value) {
+        double a = mAxis.dataValueToAxisValue(value);
         double baseX, baseY;
-        if(axis.getOrientation() == AxisOrientation.VERTICAL) {
-            baseX = axis.getPerpOffset() + mPosition.getX();
+        if(mAxis.getOrientation() == AxisOrientation.VERTICAL) {
+            baseX = mAxis.getPerpOffset() + mPosition.getX();
             baseY = a + mPosition.getY();
         } else {
             baseX = a + mPosition.getX();
-            baseY = axis.getPerpOffset() + mPosition.getY();
+            baseY = mAxis.getPerpOffset() + mPosition.getY();
         }
         String string = mFormatter.format(value);
         g.drawString(string,

@@ -47,12 +47,14 @@ public abstract class Labeler {
     //protected DataInterval mSpacing;
     //protected DataValue    mStart;
 
+	protected Axis         mAxis;
     protected DPoint       mPosition;
     protected double       mAngle;
     protected DPoint       mAnchor;
     protected Formatter    mFormatter;
 
-    public Labeler(Formatter formatter, DPoint position, double angle, DPoint anchor) {
+    public Labeler(Axis axis, Formatter formatter, DPoint position, double angle, DPoint anchor) {
+    	mAxis         = axis;
         mPosition     = position;
         mAngle        = angle;
         mAnchor       = anchor;
@@ -60,14 +62,15 @@ public abstract class Labeler {
     }
 
 
-    public abstract double       getLabelDensity(Axis axis);
-    public abstract void         renderLabel(GraphicsContext g, Axis axis, DataValue value);
+    public abstract double       getLabelDensity();
+    public abstract void         renderLabel(GraphicsContext g, DataValue value);
 	public abstract void         prepare(DataValue min, DataValue max);
 	public abstract boolean      hasNext();
 	public abstract DataValue    next();
     public abstract DataValue    peekNext();
     
-    public static Labeler create(DataType type,
+    public static Labeler create(Axis axis,
+    		                     DataType type,
                                  DataInterval spacing,
                                  String format,
                                  DataValue start,
@@ -76,14 +79,16 @@ public abstract class Labeler {
                                  DPoint anchor) throws DataTypeException {
     	switch (type) {
 		case NUMBER:
-			return new NumberLabeler(spacing.getDoubleValue(),
+			return new NumberLabeler(axis,
+									 spacing.getDoubleValue(),
                                      Formatter.create(DataType.NUMBER, format),
                                      start.getDoubleValue(),
                                      position,
                                      angle,
                                      anchor);
 		case DATETIME:
-			return new DatetimeLabeler((DatetimeInterval)spacing,
+			return new DatetimeLabeler(axis,
+									 (DatetimeInterval)spacing,
                                      Formatter.create(DataType.DATETIME, format),
                                      (DatetimeValue)start,
                                      position,
