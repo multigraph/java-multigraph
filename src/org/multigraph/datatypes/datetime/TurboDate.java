@@ -1,6 +1,7 @@
 package org.multigraph.datatypes.datetime;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class TurboDate {
   	
@@ -12,14 +13,15 @@ public class TurboDate {
 
     public TurboDate(long time) {
         mCalendar = Calendar.getInstance();
+        mCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
         mCalendar.setTimeInMillis(time);
     }
 
     public long getYear() {
         return mCalendar.get(Calendar.YEAR);
     }
-    public long getMonth() {
-        return mCalendar.get(Calendar.MONTH);
+    public long getMonth() {    	
+        return mCalendar.get(Calendar.MONTH) + 1; // java.util.Calendar's MONTH is 0-based 
     }
     public long getDay() {
         return mCalendar.get(Calendar.DAY_OF_MONTH);
@@ -37,6 +39,10 @@ public class TurboDate {
         return mCalendar.get(Calendar.MILLISECOND);
     }
 
+    public String toString() {
+    	return String.format("%04d-%02d-%02d %02d:%02d:%02d",
+    			getYear(), getMonth(), getDay(), getHour(), getMinute(), getSecond());
+    }
 
     public long getTimeInMillis() {
         return mCalendar.getTimeInMillis();

@@ -5,6 +5,7 @@ package org.multigraph.datatypes.datetime;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.multigraph.datatypes.DataValue;
 import org.multigraph.datatypes.Formatter;
@@ -16,22 +17,43 @@ public class DatetimeFormatter extends Formatter {
         mFormatString = formatString;
     }
 
-	private static final SimpleDateFormat mFormatter_d = new SimpleDateFormat("d");
-	private static final SimpleDateFormat mFormatter_D = new SimpleDateFormat("dd");
-	private static final SimpleDateFormat mFormatter_m = new SimpleDateFormat("M");
-	private static final SimpleDateFormat mFormatter_M = new SimpleDateFormat("MM");
-	private static final SimpleDateFormat mFormatter_Y = new SimpleDateFormat("yyyy");
-	private static final SimpleDateFormat mFormatter_y = new SimpleDateFormat("yy");
-	private static final SimpleDateFormat mFormatter_W = new SimpleDateFormat("EEEE");
-	private static final SimpleDateFormat mFormatter_w = new SimpleDateFormat("EEE");
-	private static final SimpleDateFormat mFormatter_N = new SimpleDateFormat("MMMM");
-	private static final SimpleDateFormat mFormatter_n = new SimpleDateFormat("MMM");
-	private static final SimpleDateFormat mFormatter_H = new SimpleDateFormat("HH");
-	private static final SimpleDateFormat mFormatter_h = new SimpleDateFormat("h");
-	private static final SimpleDateFormat mFormatter_i = new SimpleDateFormat("mm");
-	private static final SimpleDateFormat mFormatter_s = new SimpleDateFormat("ss");
-	private static final SimpleDateFormat mFormatter_S = new SimpleDateFormat("SSS");
-	private static final SimpleDateFormat mFormatter_P = new SimpleDateFormat("a");
+	private static SimpleDateFormat mFormatter_d;
+	private static SimpleDateFormat mFormatter_D;
+	private static SimpleDateFormat mFormatter_m;
+	private static SimpleDateFormat mFormatter_M;
+	private static SimpleDateFormat mFormatter_Y;
+	private static SimpleDateFormat mFormatter_y;
+	private static SimpleDateFormat mFormatter_W;
+	private static SimpleDateFormat mFormatter_w;
+	private static SimpleDateFormat mFormatter_N;
+	private static SimpleDateFormat mFormatter_n;
+	private static SimpleDateFormat mFormatter_H;
+	private static SimpleDateFormat mFormatter_h;
+	private static SimpleDateFormat mFormatter_i;
+	private static SimpleDateFormat mFormatter_s;
+	private static SimpleDateFormat mFormatter_S;
+	private static SimpleDateFormat mFormatter_P;
+
+    static {
+    	TimeZone utc = TimeZone.getTimeZone("GMT");
+        mFormatter_d = new SimpleDateFormat("d");        mFormatter_d.setTimeZone(utc);
+        mFormatter_D = new SimpleDateFormat("dd");       mFormatter_D.setTimeZone(utc);
+        mFormatter_m = new SimpleDateFormat("M");        mFormatter_m.setTimeZone(utc);
+        mFormatter_M = new SimpleDateFormat("MM");       mFormatter_M.setTimeZone(utc);
+        mFormatter_Y = new SimpleDateFormat("yyyy");     mFormatter_Y.setTimeZone(utc);
+        mFormatter_y = new SimpleDateFormat("yy");       mFormatter_y.setTimeZone(utc);
+        mFormatter_W = new SimpleDateFormat("EEEE");     mFormatter_W.setTimeZone(utc);
+        mFormatter_w = new SimpleDateFormat("EEE");      mFormatter_w.setTimeZone(utc);
+        mFormatter_N = new SimpleDateFormat("MMMM");     mFormatter_N.setTimeZone(utc);
+        mFormatter_n = new SimpleDateFormat("MMM");      mFormatter_n.setTimeZone(utc);
+        mFormatter_H = new SimpleDateFormat("HH");       mFormatter_H.setTimeZone(utc);
+        mFormatter_h = new SimpleDateFormat("h");        mFormatter_h.setTimeZone(utc);
+        mFormatter_i = new SimpleDateFormat("mm");       mFormatter_i.setTimeZone(utc);
+        mFormatter_s = new SimpleDateFormat("ss");       mFormatter_s.setTimeZone(utc);
+        mFormatter_S = new SimpleDateFormat("SSS");      mFormatter_S.setTimeZone(utc);
+        mFormatter_P = new SimpleDateFormat("a");        mFormatter_P.setTimeZone(utc);
+    }
+
 
 	public String format(DataValue value) {
 		Date date = ((DatetimeValue)value).getDateValue();

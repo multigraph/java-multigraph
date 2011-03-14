@@ -159,11 +159,13 @@ public class Axis {
     		}
     	}
     	
+    	/*
     	if (mOrientation == AxisOrientation.HORIZONTAL) {
     	for (Labeler lab : mLabelers) {
     		((org.multigraph.datatypes.datetime.DatetimeLabeler)lab).dump();
     	}
     	}
+    	*/
     	
     	
     }

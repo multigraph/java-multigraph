@@ -13,6 +13,8 @@ import org.multigraph.datatypes.DataType;
 import org.multigraph.datatypes.DataValue;
 import org.multigraph.datatypes.datetime.DatetimeValue;
 import org.multigraph.datatypes.datetime.DatetimeFormatter;
+import org.multigraph.datatypes.datetime.DatetimeInterval;
+import org.multigraph.datatypes.datetime.TurboDate;
 
 public class TestSuite {
 
@@ -38,6 +40,50 @@ public class TestSuite {
 		assertEquals(s, fs);
     }
     
+    @Test public void testTurboDate_1() {
+    	try {
+            DatetimeValue dtv = new DatetimeValue("2011" + "03" + "31" + "13" + "00");
+            TurboDate td = new TurboDate(dtv.getDoubleValue());
+            assertEquals(td.getYear(),   2011);
+            assertEquals(td.getMonth(),  3);
+            assertEquals(td.getDay(),    31);
+            assertEquals(td.getHour(),   13);
+            assertEquals(td.getMinute(), 0);
+
+            td.add(DatetimeInterval.Unit.YEAR, 1);
+            assertEquals(td.getYear(),   2012);
+            assertEquals(td.getMonth(),  3);
+            assertEquals(td.getDay(),    31);
+            assertEquals(td.getHour(),   13);
+            assertEquals(td.getMinute(), 0);
+            
+            td.add(DatetimeInterval.Unit.YEAR, -1);
+            assertEquals(td.getYear(),   2011);
+            assertEquals(td.getMonth(),  3);
+            assertEquals(td.getDay(),    31);
+            assertEquals(td.getHour(),   13);
+            assertEquals(td.getMinute(), 0);
+            
+            td.add(DatetimeInterval.Unit.DAY, 1);
+            assertEquals(td.getYear(),   2011);
+            assertEquals(td.getMonth(),  4);
+            assertEquals(td.getDay(),    1);
+            assertEquals(td.getHour(),   13);
+            assertEquals(td.getMinute(), 0);
+            
+            td.add(DatetimeInterval.Unit.DAY, -1);
+            assertEquals(td.getYear(),   2011);
+            assertEquals(td.getMonth(),  3);
+            assertEquals(td.getDay(),    31);
+            assertEquals(td.getHour(),   13);
+            assertEquals(td.getMinute(), 0);
+            
+            
+    	} catch (Exception e) {
+            Assert.fail(e.toString());
+        }
+    }
+
     @Test public void testDataValue_1() {
     	try {
     		checkDate("%Y%M%D%H", "2011030100");

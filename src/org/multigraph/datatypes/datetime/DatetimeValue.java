@@ -13,13 +13,13 @@ import org.multigraph.datatypes.DataValue;
 
 public class DatetimeValue extends DataValue {
 
-    public static final int MillisecondsInOneSecond = 1000;
-    public static final int MillisecondsInOneMinute = 1000 * 60;
-    public static final int MillisecondsInOneHour   = 1000 * 60 * 60;
-    public static final int MillisecondsInOneDay    = 1000 * 60 * 60 * 24;
-    public static final int MillisecondsInOneWeek   = 1000 * 60 * 60 * 24 * 7;
-    public static final int MillisecondsInOneMonth  = 1000 * 60 * 60 * 24 * 30;
-    public static final int MillisecondsInOneYear   = 1000 * 60 * 60 * 24 * 365;
+    public static final long MillisecondsInOneSecond = 1000L;
+    public static final long MillisecondsInOneMinute = 1000L * 60L;
+    public static final long MillisecondsInOneHour   = 1000L * 60L * 60L;
+    public static final long MillisecondsInOneDay    = 1000L * 60L * 60L * 24L;
+    public static final long MillisecondsInOneWeek   = 1000L * 60L * 60L * 24L * 7L;
+    public static final long MillisecondsInOneMonth  = 1000L * 60L * 60L * 24L * 30L;
+    public static final long MillisecondsInOneYear   = 1000L * 60L * 60L * 24L * 365L;
 	
 	private static SimpleDateFormat mSDF4;
 	private static SimpleDateFormat mSDF6;
@@ -35,15 +35,15 @@ public class DatetimeValue extends DataValue {
         mSDF4.setTimeZone(utc);
         mSDF6  = new SimpleDateFormat("yyyyMM");
         mSDF6.setTimeZone(utc);
-        mSDF8  = new SimpleDateFormat("yyyyMMDD");
+        mSDF8  = new SimpleDateFormat("yyyyMMdd");
         mSDF8.setTimeZone(utc);
-        mSDF10 = new SimpleDateFormat("yyyyMMDDHH");
+        mSDF10 = new SimpleDateFormat("yyyyMMddHH");
         mSDF10.setTimeZone(utc);
-        mSDF12 = new SimpleDateFormat("yyyyMMDDHHmm");
+        mSDF12 = new SimpleDateFormat("yyyyMMddHHmm");
         mSDF12.setTimeZone(utc);
-        mSDF14 = new SimpleDateFormat("yyyyMMDDHHmmss");
+        mSDF14 = new SimpleDateFormat("yyyyMMddHHmmss");
         mSDF14.setTimeZone(utc);
-        mSDF16 = new SimpleDateFormat("yyyyMMDDHHmmss.S");
+        mSDF16 = new SimpleDateFormat("yyyyMMddHHmmss.S");
         mSDF16.setTimeZone(utc);
     }
 	
@@ -70,6 +70,14 @@ public class DatetimeValue extends DataValue {
     			this.mValue = mSDF8.parse(value).getTime();
     			break;
     		case 10:
+    			/*
+    			Date d = mSDF10.parse(value);
+    			String s = mSDF10.format(d);
+    			System.out.printf("string '%s' parses to Date '%s' and formats back to string '%s'\n", value, d.toString(), s);
+    			long t = d.getTime();
+    			System.out.printf("     ms time = %d\n", t);
+    			this.mValue = t;
+    			*/
     			this.mValue = mSDF10.parse(value).getTime();
     			break;
     		case 12:

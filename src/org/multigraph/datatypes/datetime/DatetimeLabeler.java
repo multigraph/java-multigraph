@@ -19,8 +19,7 @@ public class DatetimeLabeler extends Labeler
     private int              mStep;
     private TurboDate        mStartTurboDate;
     private TurboDate        mFirstTickTurboDate;
-
-
+    
     public DatetimeLabeler(Axis axis,
     					   DatetimeInterval spacing,
                            Formatter formatter,
@@ -35,27 +34,52 @@ public class DatetimeLabeler extends Labeler
         mEnd                 = null;
         mLabelWidthPixels    = 0;
         mPixelsPerInchFactor = 0.8 * (60.0 / 72.0);
-        mLastTextLabelWidth  = 25;
-        mLastTextLabelHeight = 25;
+        mLastTextLabelWidth  = 60;
+        mLastTextLabelHeight = 14;
         mStep                = 0;
         mStartTurboDate      = new TurboDate(mStart.getDoubleValue());
         mMSSpacing           = spacing.getDoubleValue();
     }
 
-	@Override
+
+    /**
+     * spacingPixels = number of pixels between tick marks
+     * 
+     * -------------|-------------|-------------|-------------|-------------|-------------
+     *              Jan 1 2011    Jan 2 2011    Jan 3 2011    Jan 4 2011    Jan 5 2011    
+     * 
+     * labelPixels = width of a typical label, in pixels
+     * 
+     * density = ratio of labelPixels / spacingPixels
+     * 
+     * So density &lt; 1 means the labels don't overlap
+     *    density = 1 means they just barely touch
+     *    density &gt; 1 means they overlap
+     * 
+     * In practice this is an estimate, since not all labels have the same length
+     * (for example "Jan 9 2001" and "Jan 10 2011").
+     */
+    @Override
     public double getLabelDensity() {
+        double absAngle          = Math.abs(mAngle) * 3.14156 / 180;
+        double labelPixels       = (mAxis.getOrientation() == AxisOrientation.HORIZONTAL)
+        ? mLastTextLabelHeight * Math.sin(absAngle) + mLastTextLabelWidth * Math.cos(absAngle)
+        : mLastTextLabelHeight * Math.cos(absAngle) + mLastTextLabelWidth * Math.sin(absAngle);
+        double spacingPixels     = mMSSpacing * Math.abs(mAxis.getAxisToDataRatio());
+        double density           = labelPixels / spacingPixels;
+        return density;
+	}
+
+	public void dump() {
         double absAngle          = Math.abs(mAngle) * 3.14156 / 180;
         double labelPixels       = (mAxis.getOrientation() == AxisOrientation.HORIZONTAL)
             ? mLastTextLabelHeight * Math.sin(absAngle) + mLastTextLabelWidth * Math.cos(absAngle)
             : mLastTextLabelHeight * Math.cos(absAngle) + mLastTextLabelWidth * Math.sin(absAngle);
         double spacingPixels     = mMSSpacing * Math.abs(mAxis.getAxisToDataRatio());
         double density           = labelPixels / spacingPixels;
-        return density;
-	}
-	
-	public void dump() {
-		double density = getLabelDensity();
-	    System.out.printf("DatetimeLabeler with spacing %s reporting density %f\n", mSpacing.toString(), density);
+
+	    System.out.printf("DatetimeLabeler with spacing %s reporting density %f = %f / %f\n", mSpacing.toString(), density,
+                          labelPixels, spacingPixels);
 	}
 
 	@Override
@@ -68,7 +92,7 @@ public class DatetimeLabeler extends Labeler
         DataValue val = new DatetimeValue(mCurrentTurboDate.getTimeInMillis());
         ++mStep;
         mCurrentTurboDate = mFirstTickTurboDate.clone();
-        mCurrentTurboDate.add(mSpacing.getUnit(), mStep * mSpacing.getDoubleValue());
+        mCurrentTurboDate.add(mSpacing.getUnit(), mStep * mSpacing.getMeasure());
         return val;
     }		
 
@@ -81,40 +105,7 @@ public class DatetimeLabeler extends Labeler
 	public void prepare(DataValue min, DataValue max) {
         int direction = max.compareTo(min);
         TurboDate dataStartTurboDate = (direction > 0) ? new TurboDate(min.getDoubleValue()) : new TurboDate(max.getDoubleValue());
-        mFirstTickTurboDate = dataStartTurboDate.firstTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue(), mSpacing.getUnit());
-        /*
-        switch (mSpacing.getUnit()) {
-
-        case YEAR:
-            mFirstTickTurboDate = dataStartTurboDate.firstYearSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
-            break;
-
-        case MONTH:
-            mFirstTickTurboDate = dataStartTurboDate.firstMonthSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
-            break;
-
-        case DAY:
-            mFirstTickTurboDate = dataStartTurboDate.firstDaySpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
-            break;
-
-        case HOUR:
-            mFirstTickTurboDate = dataStartTurboDate.firstHourSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
-            break;
-
-        case MINUTE:
-            mFirstTickTurboDate = dataStartTurboDate.firstMinuteSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
-            break;
-
-        case SECOND:
-            mFirstTickTurboDate = dataStartTurboDate.firstSecondSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
-            break;
-
-        case MILLISECOND:
-        default:
-            mFirstTickTurboDate = dataStartTurboDate.firstMillisecondSpacingTickAtOrAfter(mStartTurboDate, mSpacing.getDoubleValue());
-            break;
-        }
-        */
+        mFirstTickTurboDate = dataStartTurboDate.firstTickAtOrAfter(mStartTurboDate, mSpacing.getMeasure(), mSpacing.getUnit());
         mCurrentTurboDate = mFirstTickTurboDate.clone();
         mEnd = (DatetimeValue)((direction > 0) ? max : min);
         mStep = 0;

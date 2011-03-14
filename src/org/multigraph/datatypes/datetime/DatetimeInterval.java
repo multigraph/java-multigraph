@@ -8,14 +8,16 @@ import java.util.regex.Matcher;
 
 public class DatetimeInterval extends DataInterval {
 
-    private static final int mMillisecondsInOneSecond = 1000;
-    private static final int mMillisecondsInOneMinute = 1000 * 60;
-    private static final int mMillisecondsInOneHour   = 1000 * 60 * 60;
-    private static final int mMillisecondsInOneDay    = 1000 * 60 * 60 * 24;
-    private static final int mMillisecondsInOneWeek   = 1000 * 60 * 60 * 24 * 7;
-    private static final int mMillisecondsInOneMonth  = 1000 * 60 * 60 * 24 * 30;
-    private static final int mMillisecondsInOneYear   = 1000 * 60 * 60 * 24 * 365;
-
+	/*
+    private static final long mMillisecondsInOneSecond = 1000;
+    private static final long mMillisecondsInOneMinute = 1000 * 60;
+    private static final long mMillisecondsInOneHour   = 1000 * 60 * 60;
+    private static final long mMillisecondsInOneDay    = 1000 * 60 * 60 * 24;
+    private static final long mMillisecondsInOneWeek   = 1000 * 60 * 60 * 24 * 7;
+    private static final long mMillisecondsInOneMonth  = 1000 * 60 * 60 * 24 * 30;
+    private static final long mMillisecondsInOneYear   = 1000 * 60 * 60 * 24 * 365;
+*/
+	
     public enum Unit {
         UNKNOWN("unknown"),
             YEAR("Y"),
@@ -54,6 +56,7 @@ public class DatetimeInterval extends DataInterval {
     private static Pattern mMeasureAndUnitPattern = Pattern.compile("\\s*([0-9eE\\.\\+\\-]+)\\s*([YMDHms]+)\\s*");
     private static Pattern mMeasureOnlyPattern    = Pattern.compile("\\s*([0-9eE\\.\\+\\-]+)\\s*");
 
+    public double getMeasure() { return mMeasure; }
     public Unit getUnit() { return mUnit; }
     
     public DatetimeInterval(double ms) throws DataTypeException {
@@ -128,7 +131,7 @@ public class DatetimeInterval extends DataInterval {
 
 	@Override
 	public String toString() {
-        return String.format("%s%s", mMeasureString, mUnit.toString());
+        return String.format("%s%s", mMeasureString, mUnit.value);
 	}
 
 }
