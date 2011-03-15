@@ -8,7 +8,6 @@ import org.multigraph.datatypes.Labeler;
 /**
  * An implementation of org.multigraph.datatypes.Labeler for DatetimeValues.
  */
-
 public class DatetimeLabeler extends Labeler
 {
     private DatetimeMeasure mSpacing;

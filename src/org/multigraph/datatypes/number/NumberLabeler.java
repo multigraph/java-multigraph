@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.multigraph.datatypes.number;
 
 import org.multigraph.Axis;
@@ -11,6 +8,9 @@ import org.multigraph.datatypes.DataValue;
 import org.multigraph.datatypes.Formatter;
 import org.multigraph.datatypes.Labeler;
 
+/**
+ * An implementation of org.multigraph.datatypes.Labeler for NumberValues.
+ */
 public class NumberLabeler extends Labeler {
     private double mCurrent;
     private double mEnd;
@@ -33,7 +33,7 @@ public class NumberLabeler extends Labeler {
         mPixelsPerInchFactor = 60.0/ 72.0;
     }
 
-    //@override
+    @Override
     public double getLabelDensity() {
         double absAngle          = Math.abs(mAngle) * Math.PI / 180;
         double labelPixels       = (mAxis.getOrientation() == AxisOrientation.HORIZONTAL) 
@@ -44,7 +44,7 @@ public class NumberLabeler extends Labeler {
         return density;
     }
 
-    //@override
+    @Override
     public void renderLabel(GraphicsContext g, DataValue value) {
         double a = mAxis.dataValueToAxisValue(value);
         double baseX, baseY;
@@ -76,7 +76,7 @@ public class NumberLabeler extends Labeler {
 		return sign * ( m - f * n );
     }
 
-    //@override
+    @Override
     public void prepare(DataValue dataMin, DataValue dataMax) {
         double min = dataMin.getRealValue();
         double max = dataMax.getRealValue();
@@ -107,17 +107,17 @@ public class NumberLabeler extends Labeler {
 		}
     }
 
-    //@override
+    @Override
     public boolean hasNext() {
         return mCurrent <= mEnd;
       }
 
-    //@override 
+    @Override 
     public DataValue peekNext() {
         return new NumberValue(mCurrent);
     }
     
-    //@override
+    @Override
     public DataValue next() {
         double val = mCurrent;
         mCurrent += mSpacing;    

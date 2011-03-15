@@ -8,7 +8,7 @@ import java.util.TimeZone;
 import org.multigraph.datatypes.DataValue;
 
 /**
- * DataValue.Datetime is the DataValue type for DataType.DATETIME.  It
+ * DatetimeValue is the DataValue implementation for the DATETIME DataType.  It
  * represents a moment in time, in the UTC (GMT) time zone, with
  * milliscond precision.  The value is stored internally as a double
  * that represents the number of milliseconds since the epoch.

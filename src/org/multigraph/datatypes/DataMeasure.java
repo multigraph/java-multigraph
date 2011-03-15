@@ -16,6 +16,15 @@ import org.multigraph.datatypes.datetime.DatetimeMeasure;
  * have different lengths.  This abstract superclass exists so that
  * data-type-specific subclasses can implement whatever details are
  * needed for measurements of that data type.
+ * <p>
+ * Regardless of the specific underlying data type, every DataMeasure
+ * corresponds to a particular real number that can generally be used
+ * to represent its length along a real number axis corresponding to its
+ * data type.  The getRealValue() method returns that number.  Note that this
+ * number may not exactly represent the length of the measure in all cases (see
+ * the comments about months above); it is intended to be the "typical",
+ * or most common, length of the measure.  If you need to be precise, then
+ * you'll have to work with the specific subclass.
  */
 public abstract class DataMeasure {
 
