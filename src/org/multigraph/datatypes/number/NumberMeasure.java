@@ -3,23 +3,23 @@
  */
 package org.multigraph.datatypes.number;
 
-import org.multigraph.datatypes.DataInterval;
+import org.multigraph.datatypes.DataMeasure;
 
-public class NumberInterval extends DataInterval {
+public class NumberMeasure extends DataMeasure {
 
     protected double value;
 
-    public NumberInterval() {}
+    public NumberMeasure() {}
 
-    public NumberInterval(double value) {
+    public NumberMeasure(double value) {
        	this.value = value;
     }
 
-    public NumberInterval(String value) {
+    public NumberMeasure(String value) {
         this.value = Double.parseDouble(value);
     }
 
-    public double getDoubleValue() {
+    public double getRealValue() {
         return value;
     }
 

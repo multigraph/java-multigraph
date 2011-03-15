@@ -1,0 +1,15 @@
+<mugl>
+  <graph>
+    <window border="2" bordercolor="0xffffff"/>
+    <background color="0x000000"/>
+    <plotarea border="0"/>
+    <horizontalaxis type="datetime" id="xaxis" position="0" min="1999" max="2000" color="0xffffff">
+      <labels format="%n %d %Y" anchor="0 1" position="0 -5" angle="0"/>
+      <grid visible="false"  color="0x333333"/>
+    </horizontalaxis>
+    <verticalaxis id="yaxis" position="0" min="11" max="15" highlightstyle="labels"  color="0xfffffff">
+      <labels format="%.1f"  anchor="1 0" position="-7 2" angle="-20" start="0" spacing="50 20 10 5 2 1 0.5 0.2 0.1 0.05 0.02 0.01"/>
+      <grid visible="true" color="0x333333"/>
+    </verticalaxis>
+  </graph>
+</mugl>

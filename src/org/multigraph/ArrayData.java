@@ -33,7 +33,7 @@ public class ArrayData extends Data {
         for (int row=0; row<mNumRows; ++row) {
             System.out.printf("    [");
             for (int col=0; col<mNumCols; ++col) {
-                System.out.printf("%s%f", col==0 ? "" : ",", mValues[row][col].getDoubleValue());
+                System.out.printf("%s%f", col==0 ? "" : ",", mValues[row][col].getRealValue());
             }
             System.out.printf("]\n");
         }

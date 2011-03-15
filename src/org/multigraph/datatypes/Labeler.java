@@ -8,52 +8,28 @@ import org.multigraph.GraphicsContext;
 import org.multigraph.datatypes.number.*;
 import org.multigraph.datatypes.datetime.*;
 
-// Labeler:
-// 
-// A Labeler object renders text labels for values along an axis in a
-// given format and at a given spacing from each other.  This is an
-// abstract superclass; specific subclasses implement labelers for
-// various specific data types such as number and datetime.
-// 
-//     labelDensity(axis:Axis)
-//         Returns a number between 0 and 1 representing (an estimate
-//         of) how "dense" the labels that this labeler would put on
-//         the given axis would be, with 0 representing the least
-//         density, i.e. no labels at all, and 1 meaning that the
-//         labels completely run together, touching or overlapping
-//         each other.  (This density refers to the text labels
-//         themselves, not the tick marks.)
-// 
-//     prepare(dataMin:Number, dataMax:Number)
-//         Prepares the labeler for stepping through a sequence of
-//         labels in a given range of data values.
-// 
-//     hasNext()
-//         Indicates whether there are any more values to be stepped
-//         through in the range specified in the last call to
-//         prepare(...).
-// 
-//     next()
-//         Returns the next value in the sequence of values being
-//         stepped through in the range specified in the last call to
-//         prepare(...).
-// 
-//     renderLabel(sprite:Sprite, axis:Axis, value:Number)
-//         Draws a text label at the given data value location, on the
-//         given axis, in the given sprite.
-
+/**
+ * The Labeler class is responsible for choosing the positions of tick marks
+ * and labels along an axis, and for rendering the labels.  Each Labeler instance
+ * is associated with a particular Axis and label/tick spacing, as well as a Formatter
+ * object for converting axis data values to strings, and positioning information
+ * for the labels.
+ * <p>
+ * This is an abstract superclass.  The real work is done in DataType-specific
+ * subclasses.
+ */
 public abstract class Labeler {
 	
-    //protected DataInterval mSpacing;
-    //protected DataValue    mStart;
-
 	protected Axis         mAxis;
     protected DPoint       mPosition;
     protected double       mAngle;
     protected DPoint       mAnchor;
     protected Formatter    mFormatter;
 
-    public Labeler(Axis axis, Formatter formatter, DPoint position, double angle, DPoint anchor) {
+    /**
+     * Protected constructor, only to be used in subclasses.
+     */
+    protected Labeler(Axis axis, Formatter formatter, DPoint position, double angle, DPoint anchor) {
     	mAxis         = axis;
         mPosition     = position;
         mAngle        = angle;
@@ -61,34 +37,75 @@ public abstract class Labeler {
         mFormatter    = formatter;
     }
 
+    /**
+     * Return a number that measures how "dense" the labels generated
+     * by this labeler would be along its axis.  The number represents
+     * a ratio of the typical length of a label, divided by the
+     * distance between labels (which is the same as the distance
+     * between tick marks), both measured in pixels.  So a density near
+     * 0 represent sparse labeling, and the density approaches 1 as
+     * the labels fill more of the space along the axis.  A density of 1.0
+     * corresponds to each label exactly touching
+     * the next, and densities larger than 1.0 mean that labels
+     * overlap.
+     */
+    public abstract double getLabelDensity();
 
-    public abstract double       getLabelDensity();
-    public abstract void         renderLabel(GraphicsContext g, DataValue value);
-	public abstract void         prepare(DataValue min, DataValue max);
-	public abstract boolean      hasNext();
-	public abstract DataValue    next();
-    public abstract DataValue    peekNext();
+    /**
+     * Prepare this labeler for stepping along its axis between a given min and max value.
+     * After calling this, you can call the hasNext(), next(), and peekNext() methods
+     * to iterate through the values that this Labeler finds along its axis between this min
+     * and max value.  These values will be spaced and aligned according to the spacing and
+     * "start" values for this Labeler.
+     */
+	public abstract void prepare(DataValue min, DataValue max);
+
+    /**
+     * Indicate whether this Labeler can produce more values in the most recent
+     * range passed to prepare().
+     */
+	public abstract boolean hasNext();
+
+    /**
+     * Return this Labeler's next value along the axis according to its spacing, but
+     * do not update the internal counter to the next value.
+     */
+    public abstract DataValue peekNext();
+
+    /**
+     * Return this Labeler's next value along the axis according to its spacing, and
+     * update the internal counter to the next value.
+     */
+	public abstract DataValue next();
+
+    /**
+     * Draw the label associated with a given DataValue along the axis
+     */
+    public abstract void renderLabel(GraphicsContext g, DataValue value);
     
-    public static Labeler create(Axis axis,
-    		                     DataType type,
-                                 DataInterval spacing,
-                                 String format,
-                                 DataValue start,
-                                 DPoint position,
-                                 double angle,
-                                 DPoint anchor) throws DataTypeException {
+    /**
+     * Static factory method to create a Labeler instance for a given DataType
+     */
+    public static Labeler create(DataType     type,
+                                 Axis         axis,
+    		                     DataMeasure spacing,
+                                 String       format,
+                                 DataValue    start,
+                                 DPoint       position,
+                                 double       angle,
+                                 DPoint       anchor) throws DataTypeException {
     	switch (type) {
 		case NUMBER:
 			return new NumberLabeler(axis,
-									 spacing.getDoubleValue(),
+									 spacing.getRealValue(),
                                      Formatter.create(DataType.NUMBER, format),
-                                     start.getDoubleValue(),
+                                     start.getRealValue(),
                                      position,
                                      angle,
                                      anchor);
 		case DATETIME:
 			return new DatetimeLabeler(axis,
-									 (DatetimeInterval)spacing,
+									 (DatetimeMeasure)spacing,
                                      Formatter.create(DataType.DATETIME, format),
                                      (DatetimeValue)start,
                                      position,

@@ -78,8 +78,8 @@ public class NumberLabeler extends Labeler {
 
     //@override
     public void prepare(DataValue dataMin, DataValue dataMax) {
-        double min = dataMin.getDoubleValue();
-        double max = dataMax.getDoubleValue();
+        double min = dataMin.getRealValue();
+        double max = dataMax.getRealValue();
         int direction = (max >= min) ? 1 : -1;
         mCurrent = firstTick(min, max, mSpacing, mStart);
 		mEnd     = (direction > 0) ? max : min;

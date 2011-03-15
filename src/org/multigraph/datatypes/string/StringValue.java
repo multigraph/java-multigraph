@@ -26,7 +26,7 @@ public class StringValue extends DataValue {
     public StringValue(java.lang.String value) {
         this.mValue = value;
     }
-    public double getDoubleValue() {
+    public double getRealValue() {
         return 0;
     }
     public int compareTo(DataValue x) {

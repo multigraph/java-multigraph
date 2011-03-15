@@ -21,7 +21,7 @@ public class NumberValue extends DataValue {
     		this.mValue = 0;
     	}
     }
-    public double getDoubleValue() {
+    public double getRealValue() {
         return mValue;
     }
     public java.lang.String toString() {

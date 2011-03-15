@@ -54,7 +54,7 @@ public abstract class Renderer {
 
     public Object getOption(Enum key, DataValue value) {
     	if (value == null) { return getOption(key, (Double)null); }
-    	return getOption(key, value.getDoubleValue());
+    	return getOption(key, value.getRealValue());
     }
     public Object getOption(Enum key, Double value) {
         Option opt = getOptionObject(key,value);
@@ -66,7 +66,7 @@ public abstract class Renderer {
 
     public Object getOptionStringValue(Enum key, DataValue value) {
     	if (value == null) { return getOptionStringValue(key, (Double)null); }
-    	return getOptionStringValue(key, value.getDoubleValue());
+    	return getOptionStringValue(key, value.getRealValue());
     }
     public Object getOptionStringValue(Enum key, Double value) {
         Option opt = getOptionObject(key,value);

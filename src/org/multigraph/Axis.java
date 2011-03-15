@@ -2,7 +2,7 @@ package org.multigraph;
 
 import java.util.ArrayList;
 
-import org.multigraph.datatypes.DataInterval;
+import org.multigraph.datatypes.DataMeasure;
 import org.multigraph.datatypes.DataValue;
 import org.multigraph.datatypes.DataType;
 import org.multigraph.datatypes.Labeler;
@@ -51,7 +51,7 @@ public class Axis {
         mDataMin = min;
         mHaveDataMin = true;
         if (mHaveDataMin && mHaveDataMax) {
-            mAxisToDataRatio = (mLength - mMaxOffset - mMaxOffset) / (mDataMax.getDoubleValue() - mDataMin.getDoubleValue());
+            mAxisToDataRatio = (mLength - mMaxOffset - mMaxOffset) / (mDataMax.getRealValue() - mDataMin.getRealValue());
         }
     }
 
@@ -67,7 +67,7 @@ public class Axis {
         mDataMax = max;
         mHaveDataMax = true;
         if (mHaveDataMax && mHaveDataMax) {
-            mAxisToDataRatio = (mLength - mMaxOffset - mMaxOffset) / (mDataMax.getDoubleValue() - mDataMin.getDoubleValue());
+            mAxisToDataRatio = (mLength - mMaxOffset - mMaxOffset) / (mDataMax.getRealValue() - mDataMin.getRealValue());
         }
     }
 
@@ -150,9 +150,9 @@ public class Axis {
                                   ? mState.getLabels().getLabel().get(k).getAnchor()
                                   : mState.getLabels().getAnchor() );
             	for (int j=0; j<hlabelSpacings.length; ++j) {
-            		DataInterval spacing = DataInterval.create(mType, hlabelSpacings[j]);
-                    Labeler labeler = Labeler.create(this,
-                    		                         mType,
+            		DataMeasure spacing = DataMeasure.create(mType, hlabelSpacings[j]);
+                    Labeler labeler = Labeler.create(mType,
+                    								 this,
                                                      spacing, 
                                                      format,
                                                      start,
@@ -181,7 +181,7 @@ public class Axis {
             }
             String hlabelSpacings[] = spacingAttrValue.split("[ \t]+");
     		for (int k=0; k<hlabelSpacings.length; ++k) {
-    			DataInterval spacing = DataInterval.create(mType, hlabelSpacings[k]);
+    			DataMeasure spacing = DataMeasure.create(mType, hlabelSpacings[k]);
     			DataValue start = DataValue.create(mType, mState.getLabels().getStart());
                 Labeler labeler = Labeler.create(this,
                 		                         mType,
@@ -213,17 +213,17 @@ public class Axis {
 
 
     public double dataValueToAxisValue(DataValue v) {
-        return mAxisToDataRatio * ( v.getDoubleValue() - mDataMin.getDoubleValue() ) + mMinOffset + mParallelOffset;
+        return mAxisToDataRatio * ( v.getRealValue() - mDataMin.getRealValue() ) + mMinOffset + mParallelOffset;
     }
     public double dataValueToAxisValue(double v) {
-        return mAxisToDataRatio * ( v                  - mDataMin.getDoubleValue() ) + mMinOffset + mParallelOffset;
+        return mAxisToDataRatio * ( v                  - mDataMin.getRealValue() ) + mMinOffset + mParallelOffset;
     }
 
     public double axisValueToDataValueDouble(double v) {
-        return                         (v - mMinOffset - mParallelOffset) / mAxisToDataRatio + mDataMin.getDoubleValue();
+        return                         (v - mMinOffset - mParallelOffset) / mAxisToDataRatio + mDataMin.getRealValue();
     }
     public DataValue axisValueToDataValue(double v) throws DataTypeException {
-        return DataValue.create(mType, (v - mMinOffset - mParallelOffset) / mAxisToDataRatio + mDataMin.getDoubleValue());
+        return DataValue.create(mType, (v - mMinOffset - mParallelOffset) / mAxisToDataRatio + mDataMin.getRealValue());
     }
 
     private void prepareRender() {

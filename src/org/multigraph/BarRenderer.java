@@ -2,9 +2,9 @@ package org.multigraph;
 
 import java.util.ArrayList;
 
-import org.multigraph.datatypes.DataInterval;
+import org.multigraph.datatypes.DataMeasure;
 import org.multigraph.datatypes.DataValue;
-import org.multigraph.datatypes.number.NumberInterval;
+import org.multigraph.datatypes.number.NumberMeasure;
 
 public class BarRenderer extends Renderer {
 
@@ -21,7 +21,7 @@ public class BarRenderer extends Renderer {
 
     private RGBColor     mFillcolor     = RGBColor.BLACK;
     private RGBColor     mLinecolor     = RGBColor.BLACK;
-    private DataInterval mBarwidth      = new NumberInterval(1.0);
+    private DataMeasure mBarwidth      = new NumberMeasure(1.0);
     private double       mBaroffset     = 0.0;
     private double       mFillopacity   = 1.0;
     private double       mLinewidth     = 1.0;
@@ -52,7 +52,7 @@ public class BarRenderer extends Renderer {
                 setOption(option, mLinecolor = new RGBColor(stringValue), stringValue, min, max);
                 break;
             case barwidth:
-                setOption(option, mBarwidth = DataInterval.create(parent.getHorizontalAxis().getType(), stringValue), stringValue, min, max);
+                setOption(option, mBarwidth = DataMeasure.create(parent.getHorizontalAxis().getType(), stringValue), stringValue, min, max);
                 break;
             case baroffset:
                 setOption(option, mBaroffset = Double.parseDouble(stringValue), stringValue, min, max);
@@ -143,7 +143,7 @@ public class BarRenderer extends Renderer {
         mCurrentBarGroup = new ArrayList<double[]>();
         mPrevCorner = null;
 
-        double barPixelWidth = mBarwidth.getDoubleValue() * mHorizontalAxis.getAxisToDataRatio(); 
+        double barPixelWidth = mBarwidth.getRealValue() * mHorizontalAxis.getAxisToDataRatio(); 
         if (barPixelWidth < 1) { barPixelWidth = 1; }
         if (barPixelWidth > mHidelines) {
             mDrawLines = true;
@@ -161,8 +161,8 @@ public class BarRenderer extends Renderer {
         RGBColor barColor = (RGBColor)getOption(Option.fillcolor, datap[1]);
         g.setColor(barColor);
 
-        double[] ll_corner = transformPoint(datap[0].getDoubleValue() - mBaroffset       * mBarwidth.getDoubleValue(), mBarbase                  );
-        double[] ur_corner = transformPoint(datap[0].getDoubleValue() + (1 - mBaroffset) * mBarwidth.getDoubleValue(), datap[1].getDoubleValue() );
+        double[] ll_corner = transformPoint(datap[0].getRealValue() - mBaroffset       * mBarwidth.getRealValue(), mBarbase                  );
+        double[] ur_corner = transformPoint(datap[0].getRealValue() + (1 - mBaroffset) * mBarwidth.getRealValue(), datap[1].getRealValue() );
         g.fillRect(ll_corner[0], ll_corner[1], ur_corner[0], ur_corner[1]);
 
         double[] ul_corner = { ll_corner[0], ur_corner[1] };

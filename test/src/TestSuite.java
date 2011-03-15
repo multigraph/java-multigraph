@@ -11,10 +11,10 @@ import org.multigraph.DataIterator;
 import org.multigraph.DataVariable;
 import org.multigraph.datatypes.DataType;
 import org.multigraph.datatypes.DataValue;
+import org.multigraph.datatypes.datetime.CalendarField;
 import org.multigraph.datatypes.datetime.DatetimeValue;
 import org.multigraph.datatypes.datetime.DatetimeFormatter;
-import org.multigraph.datatypes.datetime.DatetimeInterval;
-import org.multigraph.datatypes.datetime.DatetimeCalculator;
+import org.multigraph.datatypes.datetime.DatetimeValueCalendar;
 
 public class TestSuite {
 
@@ -43,35 +43,35 @@ public class TestSuite {
     @Test public void testTurboDate_1() {
     	try {
             DatetimeValue dtv = new DatetimeValue("2011" + "03" + "31" + "13" + "00");
-            DatetimeCalculator td = new DatetimeCalculator(dtv.getDoubleValue());
+            DatetimeValueCalendar td = new DatetimeValueCalendar(dtv);
             assertEquals(td.getYear(),   2011);
             assertEquals(td.getMonth(),  3);
             assertEquals(td.getDay(),    31);
             assertEquals(td.getHour(),   13);
             assertEquals(td.getMinute(), 0);
 
-            td.add(DatetimeInterval.Unit.YEAR, 1);
+            td.add(CalendarField.YEAR, 1);
             assertEquals(td.getYear(),   2012);
             assertEquals(td.getMonth(),  3);
             assertEquals(td.getDay(),    31);
             assertEquals(td.getHour(),   13);
             assertEquals(td.getMinute(), 0);
             
-            td.add(DatetimeInterval.Unit.YEAR, -1);
+            td.add(CalendarField.YEAR, -1);
             assertEquals(td.getYear(),   2011);
             assertEquals(td.getMonth(),  3);
             assertEquals(td.getDay(),    31);
             assertEquals(td.getHour(),   13);
             assertEquals(td.getMinute(), 0);
             
-            td.add(DatetimeInterval.Unit.DAY, 1);
+            td.add(CalendarField.DAY, 1);
             assertEquals(td.getYear(),   2011);
             assertEquals(td.getMonth(),  4);
             assertEquals(td.getDay(),    1);
             assertEquals(td.getHour(),   13);
             assertEquals(td.getMinute(), 0);
             
-            td.add(DatetimeInterval.Unit.DAY, -1);
+            td.add(CalendarField.DAY, -1);
             assertEquals(td.getYear(),   2011);
             assertEquals(td.getMonth(),  3);
             assertEquals(td.getDay(),    31);
@@ -110,14 +110,14 @@ public class TestSuite {
     			Assert.fail("di has no first row");
     		}
     		DataValue v[] = di.next();
-    		assertEquals("position 0,0: ", v[0].getDoubleValue(), 10.0, 0.0001);
-    		assertEquals("position 0,1: ", v[1].getDoubleValue(), 11.0, 0.0001);
+    		assertEquals("position 0,0: ", v[0].getRealValue(), 10.0, 0.0001);
+    		assertEquals("position 0,1: ", v[1].getRealValue(), 11.0, 0.0001);
     		if (!di.hasNext()) {
     			Assert.fail("di has no second row");
     		}
     		v = di.next();
-    		assertEquals("position 0,0: ", v[0].getDoubleValue(), 12.0, 0.0001);
-    		assertEquals("position 0,1: ", v[1].getDoubleValue(), 13.0, 0.0001);
+    		assertEquals("position 0,0: ", v[0].getRealValue(), 12.0, 0.0001);
+    		assertEquals("position 0,1: ", v[1].getRealValue(), 13.0, 0.0001);
     		if (di.hasNext()) {
     			Assert.fail("di has a next when it shouldn't");
     		}
