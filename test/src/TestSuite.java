@@ -14,7 +14,7 @@ import org.multigraph.datatypes.DataValue;
 import org.multigraph.datatypes.datetime.DatetimeValue;
 import org.multigraph.datatypes.datetime.DatetimeFormatter;
 import org.multigraph.datatypes.datetime.DatetimeInterval;
-import org.multigraph.datatypes.datetime.TurboDate;
+import org.multigraph.datatypes.datetime.DatetimeCalculator;
 
 public class TestSuite {
 
@@ -43,7 +43,7 @@ public class TestSuite {
     @Test public void testTurboDate_1() {
     	try {
             DatetimeValue dtv = new DatetimeValue("2011" + "03" + "31" + "13" + "00");
-            TurboDate td = new TurboDate(dtv.getDoubleValue());
+            DatetimeCalculator td = new DatetimeCalculator(dtv.getDoubleValue());
             assertEquals(td.getYear(),   2011);
             assertEquals(td.getMonth(),  3);
             assertEquals(td.getDay(),    31);

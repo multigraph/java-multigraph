@@ -9,7 +9,7 @@ public class DatetimeLabeler extends Labeler
 {
     private DatetimeInterval mSpacing;
 	private DatetimeValue    mStart;
-    private TurboDate        mCurrentTurboDate;
+    private DatetimeCalculator        mCurrentTurboDate;
     private DatetimeValue    mEnd;
     private double           mLabelWidthPixels;
     private double           mPixelsPerInchFactor;
@@ -17,8 +17,8 @@ public class DatetimeLabeler extends Labeler
     private double           mLastTextLabelHeight;
     private double           mMSSpacing;
     private int              mStep;
-    private TurboDate        mStartTurboDate;
-    private TurboDate        mFirstTickTurboDate;
+    private DatetimeCalculator        mStartTurboDate;
+    private DatetimeCalculator        mFirstTickTurboDate;
     
     public DatetimeLabeler(Axis axis,
     					   DatetimeInterval spacing,
@@ -40,7 +40,7 @@ public class DatetimeLabeler extends Labeler
         //mLastTextLabelWidth  = 60;
         //mLastTextLabelHeight = 14;
         mStep                = 0;
-        mStartTurboDate      = new TurboDate(mStart.getDoubleValue());
+        mStartTurboDate      = new DatetimeCalculator(mStart.getDoubleValue());
         mMSSpacing           = spacing.getDoubleValue();
     }
 
@@ -107,7 +107,7 @@ public class DatetimeLabeler extends Labeler
 	@Override
 	public void prepare(DataValue min, DataValue max) {
         int direction = max.compareTo(min);
-        TurboDate dataStartTurboDate = (direction > 0) ? new TurboDate(min.getDoubleValue()) : new TurboDate(max.getDoubleValue());
+        DatetimeCalculator dataStartTurboDate = (direction > 0) ? new DatetimeCalculator(min.getDoubleValue()) : new DatetimeCalculator(max.getDoubleValue());
         mFirstTickTurboDate = dataStartTurboDate.firstTickAtOrAfter(mStartTurboDate, mSpacing.getMeasure(), mSpacing.getUnit());
         mCurrentTurboDate = mFirstTickTurboDate.clone();
         mEnd = (DatetimeValue)((direction > 0) ? max : min);

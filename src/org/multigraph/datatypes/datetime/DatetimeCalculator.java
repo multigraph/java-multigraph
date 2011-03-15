@@ -3,22 +3,36 @@ package org.multigraph.datatypes.datetime;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class TurboDate {
-  	
+/**
+ * This is a utility class for doing basic date arithmetic: extracting
+ * and/or adding date/time parts (days, months, years, hours, etc)
+ * from/to dates.  It is essentially a wrapper around
+ * java.util.Calendar, together with a function called
+ * "firstTickAtOrAfter()" that computes the first value on a datetime
+ * line that lines up with a given regular spacing.
+ *
+ * An instance of this class represents a specific datetime value
+ */
+public class DatetimeCalculator {
+
+    /**
+     * An internal Calendar instance.  This is what holds the specific
+     * date associated with this instance.
+     */
     private Calendar mCalendar;
 
-    public TurboDate(double time) {
+    public DatetimeCalculator(double time) {
         this((long)time);
     }
 
-    public TurboDate(long time) {
+    private DatetimeCalculator(long time) {
         mCalendar = Calendar.getInstance();
         mCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
         mCalendar.setTimeInMillis(time);
     }
 
     public long getYear() {
-        return mCalendar.get(Calendar.YEAR);
+    	return mCalendar.get(Calendar.YEAR);
     }
     public long getMonth() {    	
         return mCalendar.get(Calendar.MONTH) + 1; // java.util.Calendar's MONTH is 0-based 
@@ -48,8 +62,8 @@ public class TurboDate {
         return mCalendar.getTimeInMillis();
     }
 
-    public TurboDate clone() {
-        return new TurboDate(this.getTimeInMillis());
+    public DatetimeCalculator clone() {
+        return new DatetimeCalculator(this.getTimeInMillis());
     }
 
 
@@ -83,37 +97,8 @@ public class TurboDate {
             break;
         }
     }
-
-
-    public void addYears(int n) {
-        mCalendar.add(Calendar.YEAR, n);
-    }
-
-    public void addMonths(int n) {
-        mCalendar.add(Calendar.MONTH, n);
-    }
-
-    public void addDays(int n) {
-        mCalendar.add(Calendar.DAY_OF_MONTH, n);
-    }
-
-    public void addHours(int n) {
-        mCalendar.add(Calendar.HOUR, n);
-    }
-
-    public void addMinutes(int n) {
-        mCalendar.add(Calendar.MINUTE, n);
-    }
-
-    public void addSeconds(int n) {
-        mCalendar.add(Calendar.SECOND, n);
-    }
-
-    public void addMilliseconds(int n) {
-        mCalendar.add(Calendar.MILLISECOND, n);
-    }
-
-    public TurboDate firstTickAtOrAfter(TurboDate start, double measure, DatetimeInterval.Unit unit) {
+    
+    public DatetimeCalculator firstTickAtOrAfter(DatetimeCalculator start, double measure, DatetimeInterval.Unit unit) {
         switch (unit) {
         default:
         case MILLISECOND:
@@ -124,7 +109,7 @@ public class TurboDate {
             if (tms % measure != 0) {
                 ++d;
             }
-            return new TurboDate(startms + d * measure);
+            return new DatetimeCalculator(startms + d * measure);
         }
         case SECOND:
             return firstTickAtOrAfter(start, measure * DatetimeValue.MillisecondsInOneSecond, DatetimeInterval.Unit.MILLISECOND);
@@ -145,8 +130,8 @@ public class TurboDate {
             else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()>start.getMinute()) { ++d; }
             else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()==start.getMinute() && this.getSecond()==start.getSecond() && this.getMillisecond()>start.getMillisecond()) { ++d; }
             
-            TurboDate firstTick = start.clone();
-            firstTick.addMonths((int)(d * measure));
+            DatetimeCalculator firstTick = start.clone();
+            firstTick.add(DatetimeInterval.Unit.MONTH, (int)(d * measure));
             return firstTick;
         }
         case YEAR:
