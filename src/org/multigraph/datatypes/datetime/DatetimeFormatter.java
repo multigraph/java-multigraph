@@ -5,56 +5,178 @@ package org.multigraph.datatypes.datetime;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 import org.multigraph.datatypes.DataValue;
 import org.multigraph.datatypes.Formatter;
 
+/**
+ * The DatetimeFormatter formats DataValues of DataType.DATETIME (i.e. type DatetimeValue).
+ */
 public class DatetimeFormatter extends Formatter {
 
+    /**
+     * The format string for this Formatter.  In general, this string may contain
+     * any number of '%' conversion characters.
+     */
     private String mFormatString;
+
+    /**
+     * An internal reference to the UTC time zone object.
+     */
+    private static TimeZone mUTCTimeZone = TimeZone.getTimeZone("GMT");
+
+    /**
+     * A private internal class used by this Formatter to do the conversion associated
+     * with a single '%' conversion character.
+     */
+    private static class SingleConversionFormatter {
+        /**
+         * The SimpleDateFormat instance used to do the conversion.
+         */
+        private SimpleDateFormat mSimpleDateFormat;
+        /**
+         * The maximum string length returned by this single
+         * conversion; this is used to estimate the length of
+         * formatted strings.
+         */
+        private int mMaxLength;
+        /**
+         * Return the max string length.
+         */
+        public int getMaxLength() { return mMaxLength; }
+        public SingleConversionFormatter(int maxLength, SimpleDateFormat simpleDateFormat) {
+            mSimpleDateFormat  = simpleDateFormat;
+            mMaxLength         = maxLength;
+            if (mSimpleDateFormat != null) {
+                mSimpleDateFormat.setTimeZone(mUTCTimeZone);
+            }
+        }
+        /**
+         * Return the string that results from this single conversion.  This method gets
+         * overridden in anonymous subclasses below in situations where the conversion
+         * involves something more complex than a SimpleDateFormat conversion.
+         */
+        public String format(Date date) {
+            if (mSimpleDateFormat != null) {
+                return mSimpleDateFormat.format(date);
+            }
+            return "";
+        }
+    }
+
+    /**
+     * A private internal class used by this Formatter to store a
+     * static collection of SingleConversionFormatters, one for each
+     * possible '%' conversion character.  The purpose of defining
+     * this class is simply to create a putFormatter() method that is
+     * chainable (returns <code>this</code>), so that the HashMap can
+     * be populated with static initialization below.
+     */
+    private static class CharFormatterHashMap extends HashMap<Character,SingleConversionFormatter> {
+        public CharFormatterHashMap putFormatter(Character c, SingleConversionFormatter scf) {
+            this.put(c,scf);
+            return this;
+        }
+    }
+
+    /**
+     * This HashMap stores the SingleConversionFormatter associated
+     * with each possible '%' conversion character.  It is populated
+     * with a chain of putFormatter() calls here.  This is where we
+     * see the benefit of all the definitions above --- it lets us
+     * define everything associated each '%' conversion character (the
+     * '%' character itself, the max converted length, and the
+     * SimpleDateFormatter that does the conversion), in just this one
+     * place in this file.
+     */
+    private static CharFormatterHashMap charFormatters = new CharFormatterHashMap()
+        // Day without leading zeros:
+        .putFormatter('d', new SingleConversionFormatter(2, new SimpleDateFormat("d")))
+        // Day with leading zeros:
+        .putFormatter('D', new SingleConversionFormatter(2, new SimpleDateFormat("dd")))
+        // Month (numerical) without leading zeros:
+        .putFormatter('m', new SingleConversionFormatter(2, new SimpleDateFormat("M")))
+        // Month (numerical) with leading zeros:
+        .putFormatter('M', new SingleConversionFormatter(2, new SimpleDateFormat("MM")))
+        // Four digit year:
+        .putFormatter('Y', new SingleConversionFormatter(4, new SimpleDateFormat("yyyy")))
+        // Two digit year:
+        .putFormatter('y', new SingleConversionFormatter(2, new SimpleDateFormat("yy")))
+        // Weekday name (spelled out completely, like "Monday", etc):
+        .putFormatter('W', new SingleConversionFormatter(9, new SimpleDateFormat("EEEE")))
+        // Weekday name, 3-letter abbrev:
+        .putFormatter('w', new SingleConversionFormatter(3, new SimpleDateFormat("EEE")))
+        // Month name (spelled out completely, like "January", etc):
+        .putFormatter('N', new SingleConversionFormatter(9, new SimpleDateFormat("MMMM")))
+        // Month name -- 3 letter abbreviation:
+        .putFormatter('n', new SingleConversionFormatter(3, new SimpleDateFormat("MMM")))
+        // 24 hours:
+        .putFormatter('H', new SingleConversionFormatter(2, new SimpleDateFormat("HH")))
+        // 12 hours:
+        .putFormatter('h', new SingleConversionFormatter(2, new SimpleDateFormat("h")))
+        // Minutes:
+        .putFormatter('i', new SingleConversionFormatter(2, new SimpleDateFormat("mm")))
+        // Seconds:
+        .putFormatter('s', new SingleConversionFormatter(2, new SimpleDateFormat("ss")))
+        // deciseconds -- 10ths of second -- 1 char:
+        .putFormatter('v', new SingleConversionFormatter(1, new SimpleDateFormat("SSS")) {
+                public String format(Date date) {
+                    return Integer.toString(Integer.parseInt(super.format(date))/100);
+                }
+            })
+        // centiseconds -- 100ths of second -- 2 chars:
+        .putFormatter('V', new SingleConversionFormatter(2, new SimpleDateFormat("SSS")) {
+                public String format(Date date) {
+                    return Integer.toString(Integer.parseInt(super.format(date))/10);
+                }
+            })
+        // milliseconds -- 3 chars:
+        .putFormatter('q', new SingleConversionFormatter(3, new SimpleDateFormat("SSS")))
+        // AM or PM:
+        .putFormatter('P', new SingleConversionFormatter(2, new SimpleDateFormat("a")) {
+                public String format(Date date) {
+                    return super.format(date).toUpperCase();
+                }
+            })
+        // am or pm:
+        .putFormatter('p', new SingleConversionFormatter(2, new SimpleDateFormat("a")) {
+                public String format(Date date) {
+                    return super.format(date).toLowerCase();
+                }
+            })
+        // newline:
+        .putFormatter('L', new SingleConversionFormatter(0, null) {
+                public String format(Date date) {
+                    return "\n";
+                }
+            })
+        // '%':
+        .putFormatter('%', new SingleConversionFormatter(1, null) {
+                public String format(Date date) {
+                    return "%";
+                }
+            })
+        ;
+
+    /**
+     * Create a new DatetimeFormatter.
+     *
+     * @param formatString The format string for this formatter.
+     */
     public DatetimeFormatter(String formatString) {
         mFormatString = formatString;
     }
 
-	private static SimpleDateFormat mFormatter_d;
-	private static SimpleDateFormat mFormatter_D;
-	private static SimpleDateFormat mFormatter_m;
-	private static SimpleDateFormat mFormatter_M;
-	private static SimpleDateFormat mFormatter_Y;
-	private static SimpleDateFormat mFormatter_y;
-	private static SimpleDateFormat mFormatter_W;
-	private static SimpleDateFormat mFormatter_w;
-	private static SimpleDateFormat mFormatter_N;
-	private static SimpleDateFormat mFormatter_n;
-	private static SimpleDateFormat mFormatter_H;
-	private static SimpleDateFormat mFormatter_h;
-	private static SimpleDateFormat mFormatter_i;
-	private static SimpleDateFormat mFormatter_s;
-	private static SimpleDateFormat mFormatter_S;
-	private static SimpleDateFormat mFormatter_P;
 
-    static {
-    	TimeZone utc = TimeZone.getTimeZone("GMT");
-        mFormatter_d = new SimpleDateFormat("d");        mFormatter_d.setTimeZone(utc);
-        mFormatter_D = new SimpleDateFormat("dd");       mFormatter_D.setTimeZone(utc);
-        mFormatter_m = new SimpleDateFormat("M");        mFormatter_m.setTimeZone(utc);
-        mFormatter_M = new SimpleDateFormat("MM");       mFormatter_M.setTimeZone(utc);
-        mFormatter_Y = new SimpleDateFormat("yyyy");     mFormatter_Y.setTimeZone(utc);
-        mFormatter_y = new SimpleDateFormat("yy");       mFormatter_y.setTimeZone(utc);
-        mFormatter_W = new SimpleDateFormat("EEEE");     mFormatter_W.setTimeZone(utc);
-        mFormatter_w = new SimpleDateFormat("EEE");      mFormatter_w.setTimeZone(utc);
-        mFormatter_N = new SimpleDateFormat("MMMM");     mFormatter_N.setTimeZone(utc);
-        mFormatter_n = new SimpleDateFormat("MMM");      mFormatter_n.setTimeZone(utc);
-        mFormatter_H = new SimpleDateFormat("HH");       mFormatter_H.setTimeZone(utc);
-        mFormatter_h = new SimpleDateFormat("h");        mFormatter_h.setTimeZone(utc);
-        mFormatter_i = new SimpleDateFormat("mm");       mFormatter_i.setTimeZone(utc);
-        mFormatter_s = new SimpleDateFormat("ss");       mFormatter_s.setTimeZone(utc);
-        mFormatter_S = new SimpleDateFormat("SSS");      mFormatter_S.setTimeZone(utc);
-        mFormatter_P = new SimpleDateFormat("a");        mFormatter_P.setTimeZone(utc);
-    }
-
-
+    /**
+     * Convert a value to a string.
+     *
+     * @param value The value to be converted
+     * @returns The formatted String
+     */
+    @Override
 	public String format(DataValue value) {
 		Date date = ((DatetimeValue)value).getDateValue();
 		StringBuffer sb = new StringBuffer();
@@ -71,53 +193,53 @@ public class DatetimeFormatter extends Formatter {
 		return sb.toString();
 	}
 
+    /**
+     * Return the string that results from applying a single '%' character
+     * conversion to a date.
+     *
+     * @param c The '%' code
+     * @param date The date value
+     * @returns The formatted string
+     */
 	private static String formatSingleChar(char c, Date date) {
-		switch (c) {
-	        case 'd': // Day without leading zeros
-				return mFormatter_d.format(date);
-	        case 'D': // Day with leading zeros
-				return mFormatter_D.format(date);
-	        case 'm': // Month (numerical) without leading zeros
-	            return mFormatter_m.format(date);
-	        case 'M': // Month (numerical) with leading zeros
-	            return mFormatter_M.format(date);
-	        case 'Y': // Four digit year
-	            return mFormatter_Y.format(date);
-		    case 'y': // Two digit year
-	            return mFormatter_y.format(date);
-	        case 'W': // Weekday name
-	            return mFormatter_W.format(date);
-	        case 'w': // Weekday 3-letter abbrev
-	            return mFormatter_w.format(date);
-	        case 'N': // Month name
-	            return mFormatter_N.format(date);
-	        case 'n': // Month name -- 3 letter abbreviation
-	            return mFormatter_n.format(date);
-	        case 'H': // 24 hours
-	            return mFormatter_H.format(date);
-	        case 'h': // 12 hours
-	            return mFormatter_h.format(date);
-	        case 'i': // Minutes
-	            return mFormatter_i.format(date);
-	        case 's': // Seconds
-	            return mFormatter_s.format(date);
-            case 'v': // deciseconds -- 10ths of second -- 1 char
-				return Integer.toString(Integer.parseInt(mFormatter_S.format(date))/100);
-            case 'V': // centiseconds -- 100ths of second -- 2 chars
-				return Integer.toString(Integer.parseInt(mFormatter_S.format(date))/10);
-            case 'q': // milliseconds -- 1000ths of second -- 3 chars
-				return mFormatter_S.format(date);
-	        case 'P': // AM or PM
-				return mFormatter_P.format(date).toUpperCase();
-	        case 'p': // am or pm
-				return mFormatter_P.format(date).toLowerCase();
-	        case 'L': // newline
-	            return "\n";
-	        case '%':
-	            return "%";
-	        default:
-	            return new String(new char[] { c });
-		}
+        SingleConversionFormatter scf = charFormatters.get(c);
+        if (scf != null) {
+            return scf.format(date);
+        }
+        return new String(new char[] { c });
 	}
+
+    /**
+     * Return the maximum string length that this formatter generates.
+     */
+    @Override
+	public int getMaxLength() {
+        int length = 0;
+        int index = 0;
+		while (index < mFormatString.length()) {
+			if (mFormatString.charAt(index) == '%') {
+				++index;
+                length += maxLengthSingleChar(mFormatString.charAt(index));
+			} else {
+                length += 1;
+			}
+			++index;
+		}
+		return length;
+	}
+
+    /**
+     * Return the maximum length of a string generated by a single '%' conversion
+     * character.
+     */
+	private static int maxLengthSingleChar(char c) {
+        SingleConversionFormatter scf = charFormatters.get(c);
+        if (scf != null) {
+            return scf.getMaxLength();
+        }
+        return 1;
+	}
+
+
 
 }

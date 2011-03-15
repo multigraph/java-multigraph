@@ -154,60 +154,6 @@ public class TurboDate {
         }
     }
 
-    /*
-
-    // return the "first tick" date at or after this date, with ticks starting at "start"
-    // and occurring every daySpacing days
-    public TurboDate firstMillisecondSpacingTickAtOrAfter(TurboDate start, double msSpacing) {
-        long startms = start.getTimeInMillis();
-        long tms     = this.getTimeInMillis() - startms;
-        long d       = (long)(Math.floor( tms / msSpacing ));
-        if (tms % msSpacing != 0) {
-            ++d;
-        }
-        return new TurboDate(startms + d * msSpacing);
-    }
-
-    public TurboDate firstSecondSpacingTickAtOrAfter(TurboDate start, double secondSpacing) {
-        return firstMillisecondSpacingTickAtOrAfter(start, secondSpacing * DatetimeValue.MillisecondsInOneSecond);
-    }
-
-    public TurboDate firstMinuteSpacingTickAtOrAfter(TurboDate start, double minuteSpacing) {
-        return firstMillisecondSpacingTickAtOrAfter(start, minuteSpacing * DatetimeValue.MillisecondsInOneMinute);
-    }
-
-    public TurboDate firstHourSpacingTickAtOrAfter(TurboDate start, double hourSpacing) {
-        return firstMillisecondSpacingTickAtOrAfter(start, hourSpacing * DatetimeValue.MillisecondsInOneHour);
-    }
-
-    public TurboDate firstDaySpacingTickAtOrAfter(TurboDate start, double daySpacing) {
-        return firstMillisecondSpacingTickAtOrAfter(start, daySpacing * DatetimeValue.MillisecondsInOneDay);
-    }
-
-    // return the "first tick" date at or after this date, with ticks starting at "start"
-    // and occurring every monthSpacing months
-    public TurboDate firstMonthSpacingTickAtOrAfter(TurboDate start, double monthSpacing) {
-        long tmonths = 12 * (getYear() - start.getYear()) + (this.getMonth() - start.getMonth());
-        long d = (long)(Math.floor( tmonths / monthSpacing ));
-
-        if (tmonths % monthSpacing != 0) { ++d; }
-        else if (this.getDay()>start.getDay()) { ++d; }
-        else if (this.getDay()==start.getDay() && this.getHour()>start.getHour()) { ++d; }
-        else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()>start.getHour()) { ++d; }
-        else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()>start.getMinute()) { ++d; }
-        else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()==start.getMinute() && this.getSecond()==start.getSecond() && this.getMillisecond()>start.getMillisecond()) { ++d; }
-
-        TurboDate firstTick = start.clone();
-        firstTick.addMonths((int)(d * monthSpacing));
-        return firstTick;
-    }
-    // return the "first tick" date at or after this date, with ticks starting at "start"
-    // and occurring every yearSpacing years
-    public TurboDate firstYearSpacingTickAtOrAfter(TurboDate start, double yearSpacing) {
-        return firstMonthSpacingTickAtOrAfter(start, yearSpacing*12);
-    }
-    */
-
 }
 
       

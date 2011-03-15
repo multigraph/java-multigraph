@@ -25,8 +25,8 @@ public class UITest extends JPanel
     
     public static final int WIDTH  = 800;
     public static final int HEIGHT = 600;
-    public static final String MUGLFILE = "oceanheatcontent.xml";
-    //public static final String MUGLFILE = "graph2.xml";
+    //public static final String MUGLFILE = "oceanheatcontent.xml";
+    public static final String MUGLFILE = "graph2.xml";
     //public static final String MUGLFILE = "graph.xml";
     
     private MyCanvas canvas;

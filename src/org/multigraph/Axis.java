@@ -121,10 +121,17 @@ public class Axis {
     		// This is the case where we have <labels><label>...</label>...</labels>,
     		// i.e. single <label> tags nested inside the <labels> tag
             for(int k = 0; k < numLabelSubtags; ++k) {
-                String spacingAttrValue = mState.getLabels().getLabel().get(k).getSpacing();
+                String spacingAttrValue = null;
+                if (mState.getLabels().getLabel().get(k).isSetSpacing()) {
+                    spacingAttrValue = mState.getLabels().getLabel().get(k).getSpacing();
+                }
+                if (spacingAttrValue==null && mState.getLabels().isSetSpacing()) {
+                    spacingAttrValue = mState.getLabels().getSpacing();
+                }
                 if (spacingAttrValue==null && mType==DataType.DATETIME) {
                     spacingAttrValue = mState.getLabels().DEFAULT_DATETIME_SPACING;
                 }
+                // spacingAttrValue better not be null here!!!
             	String hlabelSpacings[] = spacingAttrValue.split("[ \t]+");
 
                 String format = ( mState.getLabels().getLabel().get(k).isSetFormat()
