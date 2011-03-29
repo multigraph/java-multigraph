@@ -11,6 +11,7 @@ import org.multigraph.*;
 
 public class Main {
 
+
     private static void setAxisOrientations(Graph graph) {
         for (HorizontalAxis haxis : graph.getHorizontalaxis()) {
             haxis.setOrientation(AxisOrientation.HORIZONTAL);
