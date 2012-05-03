@@ -25,10 +25,10 @@ public class UITest extends JPanel
     
     public static final int WIDTH  = 800;
     public static final int HEIGHT = 600;
-    //public static final String MUGLFILE = "oceanheatcontent.xml";
-    //public static final String MUGLFILE = "graph.xml";
-    //public static final String MUGLFILE = "graph2.xml";
-    public static final String MUGLFILE = "graph3.xml";
+    //public static String MUGLFILE = "oceanheatcontent.xml";
+    //public static String MUGLFILE = "graph.xml";
+    //public static String MUGLFILE = "graph2.xml";
+    public static String MUGLFILE = "graph3.xml";
     
     private MyCanvas canvas;
     private int width, height;
@@ -132,6 +132,13 @@ public class UITest extends JPanel
     }
 
     public static void main(String[] args) {
+
+	if (args.length > 0) {
+	    MUGLFILE = args[0];
+	}
+	System.out.printf("loading mugl file: %s\n", MUGLFILE);
+
+
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {

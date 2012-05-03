@@ -1,0 +1,26 @@
+This directory contains the Java Multigraph project.
+
+    src
+	Contains the Java source code
+
+    build.xml
+	Ant build file
+
+    ant-lib
+	Contains JAXB-related jar files needed to allow ant to run jaxb (specifically, the 'xjc' task)
+
+    multigraph.xsd
+	MUGL schema definition file
+
+    graph.xml
+    graph2.xml
+    graph3.xml
+	Sample MUGL files
+
+To build, just run 'ant'.
+
+To run, execute one of:
+
+    'ant graph2'   (runs the org.multigraph.UITest program on the file 'graph2.xml')
+    'ant graph3'   (runs the org.multigraph.UITest program on the file 'graph3.xml')
+    'ant graph'    (runs the org.multigraph.UITest program on the file 'graph.xml'; this one currently does not work)
