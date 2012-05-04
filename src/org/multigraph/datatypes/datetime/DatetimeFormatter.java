@@ -173,8 +173,8 @@ public class DatetimeFormatter extends Formatter {
     /**
      * Convert a value to a string.
      *
-     * @param value The value to be converted
-     * @returns The formatted String
+     * @param  value The value to be converted
+     * @return The formatted String
      */
     @Override
         public String format(DataValue value) {
@@ -199,7 +199,7 @@ public class DatetimeFormatter extends Formatter {
      *
      * @param c The '%' code
      * @param date The date value
-     * @returns The formatted string
+     * @return The formatted string
      */
     private static String formatSingleChar(char c, Date date) {
         SingleConversionFormatter scf = charFormatters.get(c);

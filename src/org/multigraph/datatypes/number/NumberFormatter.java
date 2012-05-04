@@ -26,8 +26,8 @@ public class NumberFormatter extends Formatter {
     /**
      * Convert a value to a string.
      *
-     * @param value The value to be converted
-     * @returns The formatted String
+     * @param  value The value to be converted
+     * @return The formatted String
      */
     @Override
         public String format(DataValue value) {
@@ -46,8 +46,8 @@ public class NumberFormatter extends Formatter {
     /**
      * Convert a value to a string.
      *
-     * @param value The value to be converted
-     * @returns The formatted String
+     * @param  value The value to be converted
+     * @return The formatted String
      */
     public String format(double value) {
         return String.format(mFormatString, value);

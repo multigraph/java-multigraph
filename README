@@ -19,6 +19,9 @@ OVERVIEW
 	graph3.xml
 	    Sample MUGL files
 
+        doc
+            Documentation files.  See 'BUILDING' below for instructions on how to generate the javadocs.
+
 SETUP
 
     After cloning this project from git, you need to also clone the 'mugl-schema' project into it, as follows:
@@ -33,6 +36,9 @@ SETUP
 BUILDING
 
     Execute 'ant'.
+
+    To generate the javadocs, execute 'ant javadoc'.  The output will be placed in the 'doc/javadoc' directory (which
+    will be created if it does not exist.)
 
 RUNNING
 

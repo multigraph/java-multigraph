@@ -64,8 +64,8 @@ public class DatetimeValue extends DataValue {
 
     /**
      * Comparison function.
-     * @param x Another DatetimeValue
-     * @returns -1, 0, or 1, according as this value is less, equal, or greater than x.
+     * @param  x Another DatetimeValue
+     * @return -1, 0, or 1, according as this value is less, equal, or greater than x.
      */
     @Override
         public int compareTo(DataValue x) {

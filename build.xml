@@ -32,6 +32,7 @@
   <target name="distclean">
     <delete dir="bin"/>
     <delete dir="gen-src"/>
+    <delete dir="doc/javadoc"/>
   </target>
 
   <target depends="init,xjc" name="build">
@@ -60,6 +61,17 @@
         <pathelement location="bin"/>
       </classpath>
     </java>
+  </target>
+
+  <target name="javadoc" depends="xjc">
+    <mkdir dir="doc/javadoc"/>
+    <javadoc packagenames="org.multigraph.*"
+             destdir="doc/javadoc"
+             windowtitle="Test API">
+      <fileset dir="src" includes="**/*.java" />  
+      <fileset dir="gen-src" includes="**/*.java" />  
+      <doctitle><![CDATA[<h1>Multigraph</h1>]]></doctitle>
+    </javadoc>
   </target>
 
 </project>
