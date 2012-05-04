@@ -1,25 +1,40 @@
-This directory contains the Java Multigraph project.
+OVERVIEW
 
-    src
-	Contains the Java source code
+    This directory contains the Java Multigraph project.
 
-    build.xml
-	Ant build file
+	src
+	    Contains the Java source code
 
-    ant-lib
-	Contains JAXB-related jar files needed to allow ant to run jaxb (specifically, the 'xjc' task)
+	build.xml
+	    Ant build file
 
-    multigraph.xsd
-	MUGL schema definition file
+	ant-lib
+	    Contains JAXB-related jar files needed to allow ant to run jaxb (specifically, the 'xjc' task)
 
-    graph.xml
-    graph2.xml
-    graph3.xml
-	Sample MUGL files
+	multigraph.xsd
+	    MUGL schema definition file
 
-To build, just run 'ant'.
+	graph.xml
+	graph2.xml
+	graph3.xml
+	    Sample MUGL files
 
-To run, execute one of:
+SETUP
+
+    After cloning this project from git, you need to also clone the 'mugl-schema' project into it, as follows:
+
+        1. cd into the top level directory of this project (the directory containing this README file)
+        2. % git clone git.nemac.org:/usr/local/git-repos/mugl-schema.git
+           OR
+           % git clone http://git.nemac.org:/mugl-schema.git
+        3. % cd mugl-schema
+        4. % checkout java-multigraph
+
+BUILDING
+
+    Execute 'ant'.
+
+RUNNING
 
     'ant graph2'   (runs the org.multigraph.UITest program on the file 'graph2.xml')
     'ant graph3'   (runs the org.multigraph.UITest program on the file 'graph3.xml')
