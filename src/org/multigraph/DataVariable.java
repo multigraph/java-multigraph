@@ -5,35 +5,35 @@ import org.multigraph.datatypes.DataValue;
 
 public class DataVariable {
 
-	private String mId;
-	public String getId() { return mId; }
-		
-	private int mColumn;
-	public int getColumn() { return mColumn; }
-		
-	private DataType mType;
-	public DataType getType() { return mType; }
+    private String mId;
+    public String getId() { return mId; }
+                
+    private int mColumn;
+    public int getColumn() { return mColumn; }
+                
+    private DataType mType;
+    public DataType getType() { return mType; }
 
     private static enum MissingOp { NONE, LT, LE, EQ, GE, GT };
     private MissingOp mMissingOp = MissingOp.NONE;
-	private DataValue mMissingValue;
+    private DataValue mMissingValue;
 
-	public DataVariable(String id, int column, DataType type, DataValue missingValue) {
+    public DataVariable(String id, int column, DataType type, DataValue missingValue) {
         this(id, column, type, missingValue, null);
     }
-	public DataVariable(String id, int column, DataType type) {
+    public DataVariable(String id, int column, DataType type) {
         this(id, column, type, null, null);
     }
 
-	public DataVariable(String id, int column, DataType type, DataValue missingValue, String missingOpString)
-	{
-	  this.mId           = id;
-	  this.mColumn       = column;
-	  this.mType         = type;
-	  this.mMissingValue = missingValue;
-	  this.mMissingOp    = parseMissingOpString(missingOpString);
-	}
-	
+    public DataVariable(String id, int column, DataType type, DataValue missingValue, String missingOpString)
+    {
+        this.mId           = id;
+        this.mColumn       = column;
+        this.mType         = type;
+        this.mMissingValue = missingValue;
+        this.mMissingOp    = parseMissingOpString(missingOpString);
+    }
+        
     public boolean isMissing(DataValue x) {
         switch (mMissingOp) {
         case LT:
@@ -69,8 +69,8 @@ public class DataVariable {
             return MissingOp.GT;
         }
         return MissingOp.NONE;
-    }	
-	
-	
-  }
+    }   
+        
+        
+}
 

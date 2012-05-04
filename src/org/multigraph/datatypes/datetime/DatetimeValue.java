@@ -20,7 +20,7 @@ public class DatetimeValue extends DataValue {
      * This is the only instance variable in this class.  It's important to keep this class
      * lightweight, since Multigraph keeps many instances of it data arrays.
      */
-	protected double mValue;
+    protected double mValue;
 
     /**
      * Create a new DatetimeValue object with the given double value.
@@ -33,19 +33,19 @@ public class DatetimeValue extends DataValue {
      * Create a new DatetimeValue object by parsing a string
      */
     public DatetimeValue(java.lang.String value) {
-    	try {
+        try {
             SimpleDateFormat sdf = mFormatters.get(value.length());
             if (sdf == null) {
                 sdf = mFormatters.get(16);
             }
             this.mValue = sdf.parse(value).getTime();
-    	} catch (Exception e) {
-    		this.mValue = 0;
-    	}
+        } catch (Exception e) {
+            this.mValue = 0;
+        }
     }
 
     @Override
-    public double getRealValue() {
+        public double getRealValue() {
         return mValue;
     }
 
@@ -54,12 +54,12 @@ public class DatetimeValue extends DataValue {
      * as this DatetimeValue.
      */
     public Date getDateValue() {
-    	return new Date((long)mValue);
+        return new Date((long)mValue);
     }
 
     @Override
-    public java.lang.String toString() {
-    	return mFormatters.get(16).format(new Date((long)mValue));
+        public java.lang.String toString() {
+        return mFormatters.get(16).format(new Date((long)mValue));
     }
 
     /**
@@ -68,8 +68,8 @@ public class DatetimeValue extends DataValue {
      * @returns -1, 0, or 1, according as this value is less, equal, or greater than x.
      */
     @Override
-    public int compareTo(DataValue x) {
-    	return (new Double(mValue)).compareTo(((DatetimeValue)x).mValue); 
+        public int compareTo(DataValue x) {
+        return (new Double(mValue)).compareTo(((DatetimeValue)x).mValue); 
     }
 
     /**
@@ -85,7 +85,7 @@ public class DatetimeValue extends DataValue {
      * HashMap can be populated with static initialization below.
      */
     @SuppressWarnings("serial")
-	private static class SimpleDateFormatHashMap extends HashMap<Integer,SimpleDateFormat> {
+        private static class SimpleDateFormatHashMap extends HashMap<Integer,SimpleDateFormat> {
         public SimpleDateFormatHashMap putFormatter(Integer n, SimpleDateFormat sdf) {
             if (sdf != null) {
                 sdf.setTimeZone(mUTCTimeZone);

@@ -34,7 +34,7 @@ public class NumberLabeler extends Labeler {
     }
 
     @Override
-    public double getLabelDensity() {
+        public double getLabelDensity() {
         double absAngle          = Math.abs(mAngle) * Math.PI / 180;
         double labelPixels       = (mAxis.getOrientation() == AxisOrientation.HORIZONTAL) 
             ? mLastTextLabelHeight * Math.sin(absAngle) + mLastTextLabelWidth * Math.cos(absAngle)
@@ -45,11 +45,11 @@ public class NumberLabeler extends Labeler {
     }
 
     @Override
-    public void renderLabel(GraphicsContext g, DataValue value) {
+        public void renderLabel(GraphicsContext g, DataValue value) {
         double a = mAxis.dataValueToAxisValue(value);
         double baseX, baseY;
         if (mAxis.getOrientation() == AxisOrientation.VERTICAL) {
-        	//px = axis.getPerpOffset() + mPosition.getX();
+            //px = axis.getPerpOffset() + mPosition.getX();
             //py = a + mPosition.getY();
             baseX = mAxis.getPerpOffset();
             baseY = a;
@@ -67,22 +67,22 @@ public class NumberLabeler extends Labeler {
     }
 
     private static double gmod(double m, double n) {
-		int sign = 1;
-		if (m < 0) {
-	    	sign = -1;
-	    	m = -m;
-		}
+        int sign = 1;
+        if (m < 0) {
+            sign = -1;
+            m = -m;
+        }
         double f = Math.floor(m/n);
-		return sign * ( m - f * n );
+        return sign * ( m - f * n );
     }
 
     @Override
-    public void prepare(DataValue dataMin, DataValue dataMax) {
+        public void prepare(DataValue dataMin, DataValue dataMax) {
         double min = dataMin.getRealValue();
         double max = dataMax.getRealValue();
         int direction = (max >= min) ? 1 : -1;
         mCurrent = firstTick(min, max, mSpacing, mStart);
-		mEnd     = (direction > 0) ? max : min;
+        mEnd     = (direction > 0) ? max : min;
     }
 
     private static double firstTick(double min, double max, double spacing, double start) {
@@ -90,35 +90,35 @@ public class NumberLabeler extends Labeler {
         double f;
         int direction = (max >= min) ? 1 : -1;
         double dataStart = (direction > 0) ? min : max;
-		if (dataStart >= start) {
-		    f = Math.floor( (dataStart - start) / spacing );
-		    if (dataStart - start > spacing * f * F) {
+        if (dataStart >= start) {
+            f = Math.floor( (dataStart - start) / spacing );
+            if (dataStart - start > spacing * f * F) {
                 return spacing * ( 1 + f ) + start;
-		    } else {
+            } else {
                 return spacing * f + start;
-		    }
-		} else {
-		    f = Math.floor( (start - dataStart) / spacing );
-		    if (dataStart - start > -spacing * (f + 1) * F) {
+            }
+        } else {
+            f = Math.floor( (start - dataStart) / spacing );
+            if (dataStart - start > -spacing * (f + 1) * F) {
                 return -spacing * (f) + start;
-		    } else {
+            } else {
                 return -spacing * (f - 1) + start;
-		    }
-		}
+            }
+        }
     }
 
     @Override
-    public boolean hasNext() {
+        public boolean hasNext() {
         return mCurrent <= mEnd;
-      }
+    }
 
     @Override 
-    public DataValue peekNext() {
+        public DataValue peekNext() {
         return new NumberValue(mCurrent);
     }
     
     @Override
-    public DataValue next() {
+        public DataValue next() {
         double val = mCurrent;
         mCurrent += mSpacing;    
         return new NumberValue(val);

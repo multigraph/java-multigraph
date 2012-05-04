@@ -32,39 +32,39 @@ public class GraphicsContext {
     }
     
     public AffineTransform getTransform() {
-    	return mTransformStack.peek();
+        return mTransformStack.peek();
     }
     
     public void scale(double sx, double sy) {
-    	mTransformStack.peek().scale(sx,sy);
+        mTransformStack.peek().scale(sx,sy);
     }
     
     public void rotate(double radians) {
-    	mTransformStack.peek().rotate(radians);
+        mTransformStack.peek().rotate(radians);
     }
     
     public void translate(double tx, double ty) {
-    	mTransformStack.peek().translate(tx, ty);
+        mTransformStack.peek().translate(tx, ty);
     }
     
     public void concatTransform(AffineTransform M) {
-    	mTransformStack.peek().concatenate(M);
+        mTransformStack.peek().concatenate(M);
     }
     
     public void preConcatTransform(AffineTransform M) {
-    	mTransformStack.peek().preConcatenate(M);
+        mTransformStack.peek().preConcatenate(M);
     }
     
     public void pushTransform(AffineTransform T) {
-    	mTransformStack.push(T);
+        mTransformStack.push(T);
     }
     
     public void pushTransform() {
-    	mTransformStack.push(new AffineTransform(mTransformStack.peek()));
+        mTransformStack.push(new AffineTransform(mTransformStack.peek()));
     }
     
     public AffineTransform popTransform() {
-    	return mTransformStack.pop();
+        return mTransformStack.pop();
     }
     
     private void pointToAWTPixels(Point p, double x, double y) {
@@ -74,16 +74,16 @@ public class GraphicsContext {
     }
 
     private int widthToAWTPixelWidth(double width) {
-    	double w = getTransform().getScaleX() * width;
-    	int iw = (int)Math.round(w);
-    	System.out.printf("  width %f => %f ~ %d\n", width, w, iw);
-    	return iw;
+        double w = getTransform().getScaleX() * width;
+        int iw = (int)Math.round(w);
+        System.out.printf("  width %f => %f ~ %d\n", width, w, iw);
+        return iw;
     }
 
     private int heightToAWTPixelHeight(double height) {
-    	double h = getTransform().getScaleY() * height;
-    	int ih = (int)Math.round(h); 
-    	System.out.printf("  height %f => %f ~ %d\n", height, h, ih);
+        double h = getTransform().getScaleY() * height;
+        int ih = (int)Math.round(h); 
+        System.out.printf("  height %f => %f ~ %d\n", height, h, ih);
         return ih;
     }
 
@@ -96,38 +96,38 @@ public class GraphicsContext {
     }
     
     public Box getStringBounds(String string) {
-    	Rectangle2D bounds = mFontMetrics.getStringBounds(string, mGraphics2D);
+        Rectangle2D bounds = mFontMetrics.getStringBounds(string, mGraphics2D);
         return new Box(bounds.getWidth(), bounds.getHeight());
     }
 
     public void drawString(String string,
-    					   double baseX,     double baseY,
-    					   double anchorX,   double anchorY,
-    					   double positionX, double positionY,
-    					   double angle) {
-    	Rectangle2D bounds = mFontMetrics.getStringBounds(string, mGraphics2D);
-    	double ax = (anchorX + 1) * bounds.getWidth()  / 2;
-    	double ay = (anchorY + 1) * bounds.getHeight() / 2;
-    	Point base = new Point();
-    	pointToAWTPixels(base, baseX, baseY);
-    	AffineTransform t = mGraphics2D.getTransform();
-    	/*
-    	mGraphics2D.translate(p.x, p.y);
-    	mGraphics2D.rotate(angle);
-    	mGraphics2D.drawString(string, -Math.round(ax+positionX), Math.round(ay-positionY));
-    	*/
+                           double baseX,     double baseY,
+                           double anchorX,   double anchorY,
+                           double positionX, double positionY,
+                           double angle) {
+        Rectangle2D bounds = mFontMetrics.getStringBounds(string, mGraphics2D);
+        double ax = (anchorX + 1) * bounds.getWidth()  / 2;
+        double ay = (anchorY + 1) * bounds.getHeight() / 2;
+        Point base = new Point();
+        pointToAWTPixels(base, baseX, baseY);
+        AffineTransform t = mGraphics2D.getTransform();
+        /*
+          mGraphics2D.translate(p.x, p.y);
+          mGraphics2D.rotate(angle);
+          mGraphics2D.drawString(string, -Math.round(ax+positionX), Math.round(ay-positionY));
+        */
 
-    	mGraphics2D.translate(base.x+positionX, base.y-positionY);
-    	mGraphics2D.rotate(angle);
-    	mGraphics2D.translate(-ax, ay);
-    	mGraphics2D.drawString(string, 0, 0);
-    	
-    	
-    	mGraphics2D.setTransform(t);
+        mGraphics2D.translate(base.x+positionX, base.y-positionY);
+        mGraphics2D.rotate(angle);
+        mGraphics2D.translate(-ax, ay);
+        mGraphics2D.drawString(string, 0, 0);
+        
+        
+        mGraphics2D.setTransform(t);
     }
 
     public void drawString(String string, double x, double y) {
-    	drawString(string, x, y, -1,-1,  0,0,  0);
+        drawString(string, x, y, -1,-1,  0,0,  0);
     }
 
     private class AWTRect {

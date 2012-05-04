@@ -37,39 +37,39 @@ public class StringValue extends DataValue {
      * this implementation always returns 0 and is not intended to be useful.  Just ignore it.
      */
     @Override
-    public double getRealValue() {
+        public double getRealValue() {
         return 0;
     }
 
     @Override
-    public int compareTo(DataValue x) {
-    	return this.mValue.compareTo(((StringValue)x).mValue);
+        public int compareTo(DataValue x) {
+        return this.mValue.compareTo(((StringValue)x).mValue);
     }
 
     /**
      * Static factory method to return a new StringValue instance with a given string value.
      */
     public static StringValue parse(String string) {
-    	return new StringValue(string);
+        return new StringValue(string);
     }
 
     @Override
-    public String toString() {
-    	return mValue;
+        public String toString() {
+        return mValue;
     }
 
     /**
      * Static method to convert a StringValue to a String
      */
     public static String toString(StringValue d) {
-    	return d.toString();
+        return d.toString();
     }
 
     /**
      * Test whether this StringValue is equal to the word "auto".  Test is case insensitive.
      */
     public boolean isAuto() {
-    	return this.mValue.toLowerCase().equals("auto");
+        return this.mValue.toLowerCase().equals("auto");
     }
 
     /**
@@ -80,16 +80,16 @@ public class StringValue extends DataValue {
      * @param type The DataType to convert to
      */
     public DataValue toDataValue(DataType type) throws DataTypeException {
-    	switch (type) {
-    	case NUMBER:
-    		return new NumberValue(this.mValue);
-    	case DATETIME:
-    		return new DatetimeValue(this.mValue);
+        switch (type) {
+        case NUMBER:
+            return new NumberValue(this.mValue);
+        case DATETIME:
+            return new DatetimeValue(this.mValue);
         default:
             throw new DataTypeException(String.format("StringValue.toDataValue: unknown DataType ('%s') when converting string '%s' to DataValue",
                                                       type.toString(), this.mValue));
 
-    	}
+        }
     }
 
 }

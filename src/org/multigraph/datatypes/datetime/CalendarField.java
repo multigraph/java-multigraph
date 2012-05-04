@@ -12,7 +12,7 @@ package org.multigraph.datatypes.datetime;
  * of milliseconds in a day.
  */
 public enum CalendarField {
-        MILLISECOND("ms",      1L                             ),
+    MILLISECOND("ms",      1L                             ),
         SECOND     ("s",       1000L                          ),
         MINUTE     ("m",       1000L * 60L                    ),                   
         HOUR       ("H",       1000L * 60L * 60L              ),             

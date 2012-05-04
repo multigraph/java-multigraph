@@ -30,17 +30,17 @@ public class NumberFormatter extends Formatter {
      * @returns The formatted String
      */
     @Override
-    public String format(DataValue value) {
-    	try {
-    		return String.format(mFormatString, value.getRealValue());
-    	} catch (java.util.IllegalFormatConversionException e) {
+        public String format(DataValue value) {
+        try {
+            return String.format(mFormatString, value.getRealValue());
+        } catch (java.util.IllegalFormatConversionException e) {
             // If the above formatting fails due to IllegalFormatConversionException, it
             // might be because the format string uses a 'd' format code, which Java
             // does not allow for double values.  Multigraph DOES allow it, though, with
             // the assumption being that the double value should be rounded to the nearest
             // integer.  So try that conversion here.
             return String.format(mFormatString, Math.round(value.getRealValue()));
-    	}
+        }
     }
 
     /**
@@ -56,10 +56,10 @@ public class NumberFormatter extends Formatter {
     /**
      * Return the maximum string length that this formatter typically generates.
      */
-	@Override
-	public int getMaxLength() {
-		// TODO Auto-generated method stub; this method hasn't been implemented yet.
+    @Override
+        public int getMaxLength() {
+        // TODO Auto-generated method stub; this method hasn't been implemented yet.
         System.out.println("NumberFormatter.getMaxLength() is not yet implemented!!");
-		return 0;
-	}
+        return 0;
+    }
 }

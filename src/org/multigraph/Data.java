@@ -17,7 +17,7 @@ public abstract class Data {
      * 'variables' is an array of DataVariable instances corresponding to the variables stored
      * in this data object.
      */
-	protected ArrayList<DataVariable> mVariables;
+    protected ArrayList<DataVariable> mVariables;
     public ArrayList<DataVariable> getVariables() { return mVariables; }
 
     /**
@@ -38,7 +38,7 @@ public abstract class Data {
      * nothing if it is true.  If it is false, they should do whatever work
      * they need to do, and set _prepareDataCalled to true.
      */
-	public void prepareData(DataValue min, DataValue max, int buffer) {}
+    public void prepareData(DataValue min, DataValue max, int buffer) {}
 
     /**
      * Once prepareData has been called, additional calls to prepareData should
@@ -50,7 +50,7 @@ public abstract class Data {
     public DataIterator getIterator(String variableIds[], DataValue min, DataValue max, int buffer) { return null; }
 
 
-	public DataValue[] getBounds(String varid) { return null; }
+    public DataValue[] getBounds(String varid) { return null; }
 
 
     /**
@@ -66,13 +66,13 @@ public abstract class Data {
     }
 
 
-	/**
+    /**
      * Return the column number (index in the variables array) of one
      * of this Data object's variables, given a string containing a
      * variable id.  Returns -1 if there is no variable with the given
      * id in this data object.
-	 */
-	protected int varIdToColumn(String id) {
+     */
+    protected int varIdToColumn(String id) {
         for (int j=0; j<mVariables.size(); ++j) {
             if (id.equals(mVariables.get(j).getId())) {
                 return j;
@@ -95,22 +95,22 @@ public abstract class Data {
         }
         return null;
     }
-    	
+        
     
     public static Data create(Graph parent, org.multigraph.jaxb.Data dataState) throws DataTypeException {
-    	ArrayList<DataVariable> dataVariables = new ArrayList<DataVariable>();
-    	for (org.multigraph.jaxb.Variable varState : dataState.getVariables().getVariable()) {
-    		dataVariables.add( new DataVariable(varState.getId(), varState.getColumn(), varState.getType(),
-    				                            DataValue.create(varState.getType(), varState.getMissingvalue()),
-    				                            varState.getMissingop()));
-    	}
-    	if (dataState.isSetValues()) {
-    		ArrayData data = new ArrayData(dataVariables);
-    		data.parseText(dataState.getValues());
-    		//data.dump();
-    		return data;
-    	}
-    	return null;
+        ArrayList<DataVariable> dataVariables = new ArrayList<DataVariable>();
+        for (org.multigraph.jaxb.Variable varState : dataState.getVariables().getVariable()) {
+            dataVariables.add( new DataVariable(varState.getId(), varState.getColumn(), varState.getType(),
+                                                DataValue.create(varState.getType(), varState.getMissingvalue()),
+                                                varState.getMissingop()));
+        }
+        if (dataState.isSetValues()) {
+            ArrayData data = new ArrayData(dataVariables);
+            data.parseText(dataState.getValues());
+            //data.dump();
+            return data;
+        }
+        return null;
     }
 
 }

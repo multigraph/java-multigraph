@@ -1,12 +1,12 @@
 package org.multigraph;
 
 public enum RendererType {
-	
+        
     UNKNOWN("unknown"),
-    POINTLINE("pointline"),
-    LINE("line"),
-    POINT("point"),
-    BAR("bar");
+        POINTLINE("pointline"),
+        LINE("line"),
+        POINT("point"),
+        BAR("bar");
     private final String value;
 
     RendererType(String v) {
@@ -24,10 +24,10 @@ public enum RendererType {
             }
         }
         throw new IllegalArgumentException(v);
-    }	
+    }   
     public static String toString(RendererType rendererType) {
-    	if (rendererType==null) { return "NULL-RendererType"; }
-    	return rendererType.value();
-    }	
+        if (rendererType==null) { return "NULL-RendererType"; }
+        return rendererType.value();
+    }   
 
 }

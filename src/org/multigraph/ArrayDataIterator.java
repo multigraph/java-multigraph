@@ -13,16 +13,16 @@ public class ArrayDataIterator extends DataIterator {
     private int mIndexMin;
     private int mIndexMax;
     private int mIndex;
-		
-		
+                
+                
     public ArrayDataIterator(ArrayData data, ArrayList<Integer> columnIndices,
-                                      DataValue min, DataValue max, int buffer)
+                             DataValue min, DataValue max, int buffer)
     {
-		mColumnIndices  = columnIndices;
-		mData           = data;
-		mDataMin        = min;
-		mDataMax        = max;
-		mIndexMin       = 0;
+        mColumnIndices  = columnIndices;
+        mData           = data;
+        mDataMin        = min;
+        mDataMax        = max;
+        mIndexMin       = 0;
 
         while ((mIndexMin < mData.getNumRows())
                &&
@@ -48,7 +48,7 @@ public class ArrayDataIterator extends DataIterator {
 
         mIndex = mIndexMin;
     }
-			
+                        
     //@override
     public boolean hasNext() {
         return mIndex <= mIndexMax;

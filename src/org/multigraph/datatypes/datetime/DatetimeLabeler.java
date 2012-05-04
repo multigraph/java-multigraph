@@ -11,7 +11,7 @@ import org.multigraph.datatypes.Labeler;
 public class DatetimeLabeler extends Labeler
 {
     private DatetimeMeasure mSpacing;
-	private DatetimeValue    mStart;
+    private DatetimeValue    mStart;
     private DatetimeValueCalendar        mCurrent;
     private DatetimeValue    mEnd;
     private double           mLabelWidthPixels;
@@ -21,7 +21,7 @@ public class DatetimeLabeler extends Labeler
     private double           mMSSpacing;
     
     public DatetimeLabeler(Axis axis,
-    					   DatetimeMeasure spacing,
+                           DatetimeMeasure spacing,
                            Formatter formatter,
                            DatetimeValue start,
                            DPoint position,
@@ -44,7 +44,7 @@ public class DatetimeLabeler extends Labeler
 
 
     @Override
-    public double getLabelDensity() {
+        public double getLabelDensity() {
         /*
          *  spacingPixels = number of pixels between tick marks
          *      
@@ -69,35 +69,35 @@ public class DatetimeLabeler extends Labeler
         double spacingPixels     = mMSSpacing * Math.abs(mAxis.getAxisToDataRatio());
         double density           = labelPixels / spacingPixels;
         return density;
-	}
-
-	@Override
-	public boolean hasNext() {
-		return (mCurrent.compareTo(mEnd) <= 0);
     }
 
-	@Override
-    public DataValue next() {
+    @Override
+        public boolean hasNext() {
+        return (mCurrent.compareTo(mEnd) <= 0);
+    }
+
+    @Override
+        public DataValue next() {
         DataValue val = mCurrent.toDatetimeValue();
         mCurrent.add(mSpacing.getUnit(), (int)(mSpacing.getMeasure()));
         return val;
-    }		
+    }           
 
     @Override 
-    public DataValue peekNext() {
+        public DataValue peekNext() {
         return mCurrent.toDatetimeValue();
     }
 
-	@Override
-	public void prepare(DataValue min, DataValue max) {
+    @Override
+        public void prepare(DataValue min, DataValue max) {
         int direction = max.compareTo(min);
         DatetimeValueCalendar dataStartTurboDate = (direction > 0) ? new DatetimeValueCalendar((DatetimeValue)min) : new DatetimeValueCalendar((DatetimeValue)max);
         mCurrent = dataStartTurboDate.firstSpacingLocationAtOrAfter(new DatetimeValueCalendar(mStart), mSpacing.getMeasure(), mSpacing.getUnit());
         mEnd = (DatetimeValue)((direction > 0) ? max : min);
-	}
+    }
 
-	@Override
-	public void renderLabel(GraphicsContext g, DataValue value) {
+    @Override
+        public void renderLabel(GraphicsContext g, DataValue value) {
         double a = mAxis.dataValueToAxisValue(value);
         double baseX, baseY;
         if(mAxis.getOrientation() == AxisOrientation.VERTICAL) {
@@ -116,6 +116,6 @@ public class DatetimeLabeler extends Labeler
         Box bounds = g.getStringBounds(string);
         mLastTextLabelWidth  = bounds.getWidth();
         mLastTextLabelHeight = bounds.getHeight();
-	}
+    }
 
 }

@@ -1,6 +1,6 @@
 package org.multigraph;
 
-public class Insets	{
+public class Insets     {
 
     private double top;
     public double getTop() { return top; }

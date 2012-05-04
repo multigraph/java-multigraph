@@ -17,7 +17,7 @@ public class NumberMeasure extends DataMeasure {
      * Construct a new NumberMeasure with a given real value.
      */
     public NumberMeasure(double realValue) {
-       	this.mValue = realValue;
+        this.mValue = realValue;
     }
 
     /**
@@ -32,12 +32,12 @@ public class NumberMeasure extends DataMeasure {
      * Return the real value of this NumberMeasure --- i.e. its length.
      */
     @Override
-    public double getRealValue() {
+        public double getRealValue() {
         return mValue;
     }
 
     @Override
-    public String toString() {
+        public String toString() {
         return String.format("%f", mValue);
     }
 

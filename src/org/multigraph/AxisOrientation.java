@@ -1,10 +1,10 @@
 package org.multigraph;
 
 public enum AxisOrientation {
-	
+        
     UNKNOWN("unknown"),
-    HORIZONTAL("horizontal"),
-    VERTICAL("vertical");
+        HORIZONTAL("horizontal"),
+        VERTICAL("vertical");
     private final String value;
 
     AxisOrientation(String v) {
@@ -22,10 +22,10 @@ public enum AxisOrientation {
             }
         }
         throw new IllegalArgumentException(v);
-    }	
+    }   
     public static String toString(AxisOrientation dt) {
-    	if (dt==null) { return "NULL-AxisOrientation"; }
-    	return dt.value();
+        if (dt==null) { return "NULL-AxisOrientation"; }
+        return dt.value();
     }
 
 }

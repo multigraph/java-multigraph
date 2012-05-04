@@ -14,15 +14,15 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Unmarshaller;
 
 /*
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
-import org.jdom.xpath.XPath;
+  import org.jdom.Document;
+  import org.jdom.Element;
+  import org.jdom.input.SAXBuilder;
+  import org.jdom.xpath.XPath;
 */
 
 public class Multigraph {
-	
-	private org.multigraph.jaxb.Graph mState;
+        
+    private org.multigraph.jaxb.Graph mState;
     private int mWidth;
     public int getWidth() { return mWidth; }
     private int mHeight;
@@ -43,7 +43,7 @@ public class Multigraph {
         }
     }    
     
-	private static org.multigraph.jaxb.Graph loadMugl(InputStream inputStream) throws Exception {
+    private static org.multigraph.jaxb.Graph loadMugl(InputStream inputStream) throws Exception {
         JAXBContext    jc = JAXBContext.newInstance("org.multigraph.jaxb");
         Unmarshaller    u = jc.createUnmarshaller();
         //u.setProperty("com.sun.xml.internal.bind.ObjectFactory",new org.multigraph.ObjectFactory());
@@ -51,34 +51,34 @@ public class Multigraph {
         org.multigraph.jaxb.Graph         graph = (org.multigraph.jaxb.Graph) mugle.getValue();
         setAxisOrientations(graph);
         return graph;
-	}    
-	
-	public Multigraph(InputStream inputStream, int width, int height) throws Exception {
-		org.multigraph.jaxb.Graph mugl = loadMugl(inputStream);
-		init(mugl, width, height);
-	}
-	
-	private void init(org.multigraph.jaxb.Graph mugl, int width, int height) throws DataTypeException {		
-		this.mState = mugl;
+    }    
+        
+    public Multigraph(InputStream inputStream, int width, int height) throws Exception {
+        org.multigraph.jaxb.Graph mugl = loadMugl(inputStream);
+        init(mugl, width, height);
+    }
+        
+    private void init(org.multigraph.jaxb.Graph mugl, int width, int height) throws DataTypeException {         
+        this.mState = mugl;
         this.mWidth = width;
         this.mHeight = height;
         
         this.mGraphs = new ArrayList<Graph>();
         if (mState.isSetGraph()) {
-        	for (org.multigraph.jaxb.Graph graphState : mState.getGraph()) {
-        		this.mGraphs.add(new Graph(graphState, width, height));
-        	}
+            for (org.multigraph.jaxb.Graph graphState : mState.getGraph()) {
+                this.mGraphs.add(new Graph(graphState, width, height));
+            }
         } else {
-    		this.mGraphs.add(new Graph(mState, width, height));
+            this.mGraphs.add(new Graph(mState, width, height));
         }
-	}
-	
-	
-	
-	public void render(GraphicsContext g) {
-		for (Graph graph : mGraphs) {
-			graph.render(g);
-		}
-	}
+    }
+        
+        
+        
+    public void render(GraphicsContext g) {
+        for (Graph graph : mGraphs) {
+            graph.render(g);
+        }
+    }
 
 }

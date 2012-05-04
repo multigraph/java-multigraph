@@ -19,8 +19,8 @@ import org.multigraph.datatypes.datetime.*;
  * subclasses.
  */
 public abstract class Labeler {
-	
-	protected Axis         mAxis;
+        
+    protected Axis         mAxis;
     protected DPoint       mPosition;
     protected double       mAngle;
     protected DPoint       mAnchor;
@@ -30,7 +30,7 @@ public abstract class Labeler {
      * Protected constructor, only to be used in subclasses.
      */
     protected Labeler(Axis axis, Formatter formatter, DPoint position, double angle, DPoint anchor) {
-    	mAxis         = axis;
+        mAxis         = axis;
         mPosition     = position;
         mAngle        = angle;
         mAnchor       = anchor;
@@ -58,13 +58,13 @@ public abstract class Labeler {
      * and max value.  These values will be spaced and aligned according to the spacing and
      * "start" values for this Labeler.
      */
-	public abstract void prepare(DataValue min, DataValue max);
+    public abstract void prepare(DataValue min, DataValue max);
 
     /**
      * Indicate whether this Labeler can produce more values in the most recent
      * range passed to prepare().
      */
-	public abstract boolean hasNext();
+    public abstract boolean hasNext();
 
     /**
      * Return this Labeler's next value along the axis according to its spacing, but
@@ -76,7 +76,7 @@ public abstract class Labeler {
      * Return this Labeler's next value along the axis according to its spacing, and
      * update the internal counter to the next value.
      */
-	public abstract DataValue next();
+    public abstract DataValue next();
 
     /**
      * Draw the label associated with a given DataValue along the axis
@@ -88,34 +88,34 @@ public abstract class Labeler {
      */
     public static Labeler create(DataType     type,
                                  Axis         axis,
-    		                     DataMeasure spacing,
+                                 DataMeasure spacing,
                                  String       format,
                                  DataValue    start,
                                  DPoint       position,
                                  double       angle,
                                  DPoint       anchor) throws DataTypeException {
-    	switch (type) {
-		case NUMBER:
-			return new NumberLabeler(axis,
-									 spacing.getRealValue(),
+        switch (type) {
+        case NUMBER:
+            return new NumberLabeler(axis,
+                                     spacing.getRealValue(),
                                      Formatter.create(DataType.NUMBER, format),
                                      start.getRealValue(),
                                      position,
                                      angle,
                                      anchor);
-		case DATETIME:
-			return new DatetimeLabeler(axis,
-									 (DatetimeMeasure)spacing,
-                                     Formatter.create(DataType.DATETIME, format),
-                                     (DatetimeValue)start,
-                                     position,
-                                     angle,
-                                     anchor);
-            default:
-                throw new DataTypeException(String.format("Labeler.create: unknown DataType ('%s')", type.toString()));
-    	}
+        case DATETIME:
+            return new DatetimeLabeler(axis,
+                                       (DatetimeMeasure)spacing,
+                                       Formatter.create(DataType.DATETIME, format),
+                                       (DatetimeValue)start,
+                                       position,
+                                       angle,
+                                       anchor);
+        default:
+            throw new DataTypeException(String.format("Labeler.create: unknown DataType ('%s')", type.toString()));
+        }
     }
-    	
+        
 
     
 }

@@ -6,7 +6,7 @@ public class Box {
 
     public double getWidth() { return width; }
     public double getHeight() { return height; }
-		
+                
     public Box() {
         this.width = 0;
         this.height = 0;

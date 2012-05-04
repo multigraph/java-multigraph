@@ -27,7 +27,7 @@ public class PointLineRenderer extends Renderer {
             pointoutlinecolor;
     }
 
-	private RGBColor mLinecolor           = new RGBColor(0,0,0);
+    private RGBColor mLinecolor           = new RGBColor(0,0,0);
     private double   mLinewidth           = 1;
     private double   mPointsize           = 0;
     private Shape    mPointshape          = Shape.circle;
@@ -124,69 +124,69 @@ public class PointLineRenderer extends Renderer {
     }
 
     private void drawPoint(GraphicsContext g, double x, double y) {
-		if (mPointsize <= 0) {
-			return;
-		}
+        if (mPointsize <= 0) {
+            return;
+        }
 
-		//
-		// The plus and x shape do not involve fills --- only lines, so handle them separately:
-		//
+        //
+        // The plus and x shape do not involve fills --- only lines, so handle them separately:
+        //
 
-		if (mPointshape == Shape.plus || mPointshape == Shape.x) {
-			g.setLineWidth(mPointoutlinewidth > 0 ? mPointoutlinewidth : 1);
-			if (isSetOption(Option.pointoutlinecolor)) {
-				g.setColor(mPointoutlinecolor);
-			} else if (isSetOption(Option.pointcolor)) {
-				g.setColor(mPointcolor);
-			} else {
-				g.setColor(RGBColor.BLACK);
-			}
-			switch (mPointshape) {
-			case plus:
-				g.drawLine(x, y - mPointsize, x, y + mPointsize);
-				g.drawLine(x - mPointsize, y, x + mPointsize, y);
-				break;
-			case x:
-				double p = 0.70710 * mPointsize;
-				g.drawLine(x - p, y - p, x + p, y + p);
-				g.drawLine(x - p, y + p, x + p, y - p);
-				break;
-			}
-			return;
-		}
+        if (mPointshape == Shape.plus || mPointshape == Shape.x) {
+            g.setLineWidth(mPointoutlinewidth > 0 ? mPointoutlinewidth : 1);
+            if (isSetOption(Option.pointoutlinecolor)) {
+                g.setColor(mPointoutlinecolor);
+            } else if (isSetOption(Option.pointcolor)) {
+                g.setColor(mPointcolor);
+            } else {
+                g.setColor(RGBColor.BLACK);
+            }
+            switch (mPointshape) {
+            case plus:
+                g.drawLine(x, y - mPointsize, x, y + mPointsize);
+                g.drawLine(x - mPointsize, y, x + mPointsize, y);
+                break;
+            case x:
+                double p = 0.70710 * mPointsize;
+                g.drawLine(x - p, y - p, x + p, y + p);
+                g.drawLine(x - p, y + p, x + p, y - p);
+                break;
+            }
+            return;
+        }
 
-		//
-		// These shapes involve (possibly) both fill and outline, and can be
+        //
+        // These shapes involve (possibly) both fill and outline, and can be
         // done with drawPolygon():
-		//
-		DPoint vertices[] = null;
-		switch (mPointshape) {
-		case square: {
-			vertices = new DPoint[] {
+        //
+        DPoint vertices[] = null;
+        switch (mPointshape) {
+        case square: {
+            vertices = new DPoint[] {
                 new DPoint(x - mPointsize, y - mPointsize),
                 new DPoint(x - mPointsize, y + mPointsize),
                 new DPoint(x + mPointsize, y + mPointsize),
                 new DPoint(x + mPointsize, y - mPointsize) };
-			break;
-		}
-		case triangle: {
-			double p = 1.5 * mPointsize;
-			double a = 0.866025 * p;
-			double b = 0.5 * p;
-			vertices = new DPoint[] { new DPoint(x, y + p),
+            break;
+        }
+        case triangle: {
+            double p = 1.5 * mPointsize;
+            double a = 0.866025 * p;
+            double b = 0.5 * p;
+            vertices = new DPoint[] { new DPoint(x, y + p),
                                       new DPoint(x + a, y - b), new DPoint(x - a, y - b) };
-			break;
-		}
-		case diamond: {
-			double p = 1.5 * mPointsize;
-			vertices = new DPoint[] { new DPoint(x - mPointsize, y),
+            break;
+        }
+        case diamond: {
+            double p = 1.5 * mPointsize;
+            vertices = new DPoint[] { new DPoint(x - mPointsize, y),
                                       new DPoint(x, y + p), new DPoint(x + mPointsize, y),
                                       new DPoint(x, y - p) };
-			break;
-		}
-		case star: {
-			double p = 1.5 * mPointsize;
-			vertices = new DPoint[] {
+            break;
+        }
+        case star: {
+            double p = 1.5 * mPointsize;
+            vertices = new DPoint[] {
                 new DPoint(x - p * 0.0000, y + p * 1.0000),
                 new DPoint(x + p * 0.3536, y + p * 0.3536),
                 new DPoint(x + p * 0.9511, y + p * 0.3090),
@@ -197,9 +197,9 @@ public class PointLineRenderer extends Renderer {
                 new DPoint(x - p * 0.4938, y - p * 0.0782),
                 new DPoint(x - p * 0.9511, y + p * 0.3090),
                 new DPoint(x - p * 0.2270, y + p * 0.4455) };
-			break;
-		}
-		}
+            break;
+        }
+        }
         if (vertices != null) {
             g.setColor(mPointcolor);
             g.fillPolygon(vertices);
@@ -214,16 +214,16 @@ public class PointLineRenderer extends Renderer {
         //
         // And lastly, if we get this far, assume the circle shape, which is the default
         //
-		g.setColor(mPointcolor);
-		g.fillCircle(x, y, mPointsize);
-		if (mPointoutlinewidth > 0) {
-			g.setLineWidth(mPointoutlinewidth);
-			g.setColor(mPointoutlinecolor);
-			g.drawCircle(x, y, mPointsize);
-		}
+        g.setColor(mPointcolor);
+        g.fillCircle(x, y, mPointsize);
+        if (mPointoutlinewidth > 0) {
+            g.setLineWidth(mPointoutlinewidth);
+            g.setColor(mPointoutlinecolor);
+            g.drawCircle(x, y, mPointsize);
+        }
 
 
-	}
+    }
 
     /*    
           override public function renderLegendIcon(sprite:MultigraphUIComponent, legendLabel:String, opacity:Number):void {

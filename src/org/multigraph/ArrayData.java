@@ -19,7 +19,7 @@ public class ArrayData extends Data {
     public ArrayData(ArrayList<DataVariable> variables) {
         super(variables);
         mValues = null;
-	}
+    }
 
     public int getNumRows() { return mNumRows; }
     public int getNumCols() { return mNumCols; }
@@ -39,7 +39,7 @@ public class ArrayData extends Data {
         }
     }
 
-	//@override
+    //@override
     public DataValue[] getBounds(String varid) {
         int j = varIdToColumn(varid);
         DataValue min = mValues[0][j];
@@ -53,15 +53,15 @@ public class ArrayData extends Data {
             }
         }
         return new DataValue[] { min, max };
-	}
+    }
 
-	public void parseText(String text) throws DataTypeException {
-		String lines[] = text.split("\n");
-		mNumRows = 0;
-		mNumCols = 0;
-		for (String line : lines) {
-			line = leadingWSPattern.matcher(line).replaceFirst("");
-			line = trailingWSPattern.matcher(line).replaceFirst("");
+    public void parseText(String text) throws DataTypeException {
+        String lines[] = text.split("\n");
+        mNumRows = 0;
+        mNumCols = 0;
+        for (String line : lines) {
+            line = leadingWSPattern.matcher(line).replaceFirst("");
+            line = trailingWSPattern.matcher(line).replaceFirst("");
             if (delimPattern.matcher(line).find()) {
                 String fields[] = delimPattern.split(line, 1000);
                 if (fields.length > 0) {
@@ -71,33 +71,33 @@ public class ArrayData extends Data {
                     }
                 }
             }
-		}
-		mValues = new DataValue[mNumRows][mNumCols];
-		int row = 0;
-		for (String line : lines) {
-			line = leadingWSPattern.matcher(line).replaceFirst("");
-			line = trailingWSPattern.matcher(line).replaceFirst("");
+        }
+        mValues = new DataValue[mNumRows][mNumCols];
+        int row = 0;
+        for (String line : lines) {
+            line = leadingWSPattern.matcher(line).replaceFirst("");
+            line = trailingWSPattern.matcher(line).replaceFirst("");
             if (delimPattern.matcher(line).find()) {
                 String fields[] = delimPattern.split(line, 1000);
-				if (fields.length > 0) {
-					int j = 0;
-					int col = 0;
-					while (j < fields.length) {
-						if (fields[j].length() > 0) {
-							if (mVariables.get(col) != null) {
-								mValues[row][col] = DataValue.create(mVariables
+                if (fields.length > 0) {
+                    int j = 0;
+                    int col = 0;
+                    while (j < fields.length) {
+                        if (fields[j].length() > 0) {
+                            if (mVariables.get(col) != null) {
+                                mValues[row][col] = DataValue.create(mVariables
                                                                      .get(col).getType(), fields[j]);
-							}
-							++col;
-						}
-						++j;
-					}
-					++row;
-				}
-			}
-		}
-	}
-	
+                            }
+                            ++col;
+                        }
+                        ++j;
+                    }
+                    ++row;
+                }
+            }
+        }
+    }
+        
     // @override
     public DataIterator getIterator(String variableIds[], DataValue min, DataValue max, int buffer) {
 

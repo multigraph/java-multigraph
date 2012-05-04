@@ -131,12 +131,12 @@ public class BarRenderer extends Renderer {
 
     //@override 
     public void begin(GraphicsContext g) {
-    	if (this.isSetOption(Option.barbase)) {
-    		mBarbaseAxisValue = mVerticalAxis.dataValueToAxisValue(mBarbase);
-    	} else {
+        if (this.isSetOption(Option.barbase)) {
+            mBarbaseAxisValue = mVerticalAxis.dataValueToAxisValue(mBarbase);
+        } else {
             // if barbase is not explicitly set, set it to the y-axis coordinate equivalent of the height of the
             // horizontal axis
-			mBarbaseAxisValue = mHorizontalAxis.getPerpOffset();
+            mBarbaseAxisValue = mHorizontalAxis.getPerpOffset();
             mBarbase          = mVerticalAxis.axisValueToDataValueDouble(mBarbaseAxisValue);
         }
         mBarGroups = new ArrayList<ArrayList<double[]>>();

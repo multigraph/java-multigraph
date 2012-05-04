@@ -7,18 +7,18 @@ public class DataPlot extends Plot {
     private String[] mVariableIds;
     
     public DataPlot(Graph parent, org.multigraph.jaxb.Plot state, 
-    				Data data, String[] variableIds, Axis haxis, Axis vaxis,
-    				String legendLabel) throws DataTypeException {
-      super(parent, state, haxis, vaxis, legendLabel);
-      mData        = data;
-      mVariableIds = variableIds;
-      mRenderer    = Renderer.create(this, state.getRenderer());
+                    Data data, String[] variableIds, Axis haxis, Axis vaxis,
+                    String legendLabel) throws DataTypeException {
+        super(parent, state, haxis, vaxis, legendLabel);
+        mData        = data;
+        mVariableIds = variableIds;
+        mRenderer    = Renderer.create(this, state.getRenderer());
     }
 
-	//@override
+    //@override
     public void prepareData() {
-		mData.prepareData(mHorizontalAxis.getDataMin(), mHorizontalAxis.getDataMax(), 1);	
-	}
+        mData.prepareData(mHorizontalAxis.getDataMin(), mHorizontalAxis.getDataMax(), 1);       
+    }
 
     //@override 
     public void render(GraphicsContext g) {

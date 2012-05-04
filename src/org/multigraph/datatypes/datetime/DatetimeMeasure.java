@@ -62,10 +62,10 @@ public class DatetimeMeasure extends DataMeasure {
      * Construct a DatetimeMeasure instance using a given measure and unit.
      */
     public DatetimeMeasure(double measure, CalendarField unit) throws DataTypeException {
-    	mMeasure       = measure;
-    	mUnit          = unit;
-    	mValue         = (long)(measure * unit.millisecs);
-    	mMeasureString = Double.toString(mMeasure);
+        mMeasure       = measure;
+        mUnit          = unit;
+        mValue         = (long)(measure * unit.millisecs);
+        mMeasureString = Double.toString(mMeasure);
     }
 
     /**
@@ -87,13 +87,13 @@ public class DatetimeMeasure extends DataMeasure {
                 mMeasure = Double.parseDouble(mMeasureString);
             } catch (IllegalArgumentException e) {
                 throw new DataTypeException(String.format("DatetimeMeasure constructor: cannot convert measure value '%s' to double "
-                                            			  + " when converting string '%s' to DatetimeMeasure", m.group(1), string));
+                                                          + " when converting string '%s' to DatetimeMeasure", m.group(1), string));
             }
             try {
                 mUnit = CalendarField.parse(m.group(2));
             } catch (IllegalArgumentException e) {
                 throw new DataTypeException(String.format("DatetimeMeasure constructor: unknown unit specifier '%s' when "
-                                            			  + "converting string '%s' to DatetimeMeasure", m.group(2), string));
+                                                          + "converting string '%s' to DatetimeMeasure", m.group(2), string));
             }
         } else {
 
@@ -104,7 +104,7 @@ public class DatetimeMeasure extends DataMeasure {
                     mMeasure = Double.parseDouble(mMeasureString);
                 } catch (IllegalArgumentException e) {
                     throw new DataTypeException(String.format("DatetimeMeasure constructor: cannot convert measure value '%s' to double "
-                                                			  + " when converting string '%s' to DatetimeMeasure", m.group(1), string));
+                                                              + " when converting string '%s' to DatetimeMeasure", m.group(1), string));
                 }
                 mUnit = CalendarField.SECOND;
             } else {
@@ -140,17 +140,17 @@ public class DatetimeMeasure extends DataMeasure {
     /**
      * Convert this DatetimeMeasure to a floating point value on the same scale as a DatetimeValue.
      */
-	@Override
-	public double getRealValue() {
+    @Override
+        public double getRealValue() {
         return (double)mValue;
-	}
+    }
 
     /**
      * Convert this DatetimeMeasure to a string.
      */
-	@Override
-	public String toString() {
+    @Override
+        public String toString() {
         return String.format("%s%s", mMeasureString, mUnit.value);
-	}
+    }
 
 }

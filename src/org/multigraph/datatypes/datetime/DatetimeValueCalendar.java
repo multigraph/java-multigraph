@@ -43,15 +43,15 @@ public class DatetimeValueCalendar extends DatetimeValue {
      * @param datetimeValue The DatetimeValue to use
      */
     public DatetimeValueCalendar(DatetimeValue datetimeValue) {
-    	this(datetimeValue.getRealValue());
+        this(datetimeValue.getRealValue());
     }
 
     /**
      * Private constructor to create a DatetimeValueCalendar using a 
      * double value.
      */
-    private DatetimeValueCalendar(double time) {    	
-    	super(time);
+    private DatetimeValueCalendar(double time) {        
+        super(time);
         mCalendar = Calendar.getInstance();
         mCalendar.setTimeZone(TimeZone.getTimeZone("GMT"));
         mCalendar.setTimeInMillis((long)time);
@@ -61,20 +61,20 @@ public class DatetimeValueCalendar extends DatetimeValue {
      * Convert this DatetimeValueCalendar to a plain DatetimeValue.
      */
     public DatetimeValue toDatetimeValue() {
-    	return new DatetimeValue(mValue);
+        return new DatetimeValue(mValue);
     }
 
     /**
      * Return the year part of this value.  Years are based at 0 AD.  So 1900 is 1900, 2000 is 2000, etc.
      */
     public long getYear() {
-    	return mCalendar.get(Calendar.YEAR);
+        return mCalendar.get(Calendar.YEAR);
     }
 
     /**
      * Return the month part of this value, in the range 1-12.
      */
-    public long getMonth() {    	
+    public long getMonth() {            
         return mCalendar.get(Calendar.MONTH) + 1; // java.util.Calendar's MONTH is 0-based 
     }
 
@@ -118,7 +118,7 @@ public class DatetimeValueCalendar extends DatetimeValue {
      * Return a copy of this DatetimeValueCalendar.
      */
     public DatetimeValueCalendar clone() {
-    	return new DatetimeValueCalendar(mValue);
+        return new DatetimeValueCalendar(mValue);
     }
 
     /**
@@ -160,35 +160,35 @@ public class DatetimeValueCalendar extends DatetimeValue {
         switch (spacingUnit) {
         default:
         case MILLISECOND:
-        {
-            double startms = start.getRealValue();
-            double tms     = mValue - startms;
-            long d       = (long)(Math.floor( tms / spacingMeasure ));
-            if (tms % spacingMeasure != 0) {
-                ++d;
+            {
+                double startms = start.getRealValue();
+                double tms     = mValue - startms;
+                long d       = (long)(Math.floor( tms / spacingMeasure ));
+                if (tms % spacingMeasure != 0) {
+                    ++d;
+                }
+                return new DatetimeValueCalendar(startms + d * spacingMeasure);
             }
-            return new DatetimeValueCalendar(startms + d * spacingMeasure);
-        }
         case SECOND:
         case MINUTE:
         case HOUR:
         case DAY:
             return firstSpacingLocationAtOrAfter(start, spacingMeasure * spacingUnit.millisecs, CalendarField.MILLISECOND);
         case MONTH:
-        {
-            long tmonths = 12 * (getYear() - start.getYear()) + (this.getMonth() - start.getMonth());
-            long d = (long)(Math.floor( tmonths / spacingMeasure ));
-            if (tmonths % spacingMeasure != 0) { ++d; }
-            else if (this.getDay()>start.getDay()) { ++d; }
-            else if (this.getDay()==start.getDay() && this.getHour()>start.getHour()) { ++d; }
-            else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()>start.getHour()) { ++d; }
-            else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()>start.getMinute()) { ++d; }
-            else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()==start.getMinute() && this.getSecond()==start.getSecond() && this.getMillisecond()>start.getMillisecond()) { ++d; }
+            {
+                long tmonths = 12 * (getYear() - start.getYear()) + (this.getMonth() - start.getMonth());
+                long d = (long)(Math.floor( tmonths / spacingMeasure ));
+                if (tmonths % spacingMeasure != 0) { ++d; }
+                else if (this.getDay()>start.getDay()) { ++d; }
+                else if (this.getDay()==start.getDay() && this.getHour()>start.getHour()) { ++d; }
+                else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()>start.getHour()) { ++d; }
+                else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()>start.getMinute()) { ++d; }
+                else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()==start.getMinute() && this.getSecond()==start.getSecond() && this.getMillisecond()>start.getMillisecond()) { ++d; }
             
-            DatetimeValueCalendar firstTick = start.clone();
-            firstTick.add(CalendarField.MONTH, (int)(d * spacingMeasure));
-            return firstTick;
-        }
+                DatetimeValueCalendar firstTick = start.clone();
+                firstTick.add(CalendarField.MONTH, (int)(d * spacingMeasure));
+                return firstTick;
+            }
         case YEAR:
             return firstSpacingLocationAtOrAfter(start, 12*spacingMeasure, CalendarField.MONTH);
         }

@@ -1,11 +1,11 @@
 package org.multigraph.datatypes;
 
 public enum DataType {
-	
+        
     UNKNOWN("unknown"),
-    NUMBER("number"),
-    DATETIME("datetime"),
-    STRING("string");
+        NUMBER("number"),
+        DATETIME("datetime"),
+        STRING("string");
     private final String value;
 
     DataType(String v) {
@@ -23,10 +23,10 @@ public enum DataType {
             }
         }
         throw new IllegalArgumentException(v);
-    }	
+    }   
     public static String toString(DataType dt) {
-    	if (dt==null) { return "NULL-DATATYPE"; }
-    	return dt.value();
+        if (dt==null) { return "NULL-DATATYPE"; }
+        return dt.value();
     }
 
 }

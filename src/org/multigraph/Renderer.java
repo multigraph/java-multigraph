@@ -28,7 +28,7 @@ public abstract class Renderer {
 
     protected Renderer(Plot parent,
                        org.multigraph.jaxb.Renderer state) {
-    	mPlot           = parent;
+        mPlot           = parent;
         mHorizontalAxis = parent.getHorizontalAxis();
         mVerticalAxis   = parent.getVerticalAxis();
         mOptions        = new HashMap<Enum,ArrayList<Option>>();
@@ -53,8 +53,8 @@ public abstract class Renderer {
     }
 
     public Object getOption(Enum key, DataValue value) {
-    	if (value == null) { return getOption(key, (Double)null); }
-    	return getOption(key, value.getRealValue());
+        if (value == null) { return getOption(key, (Double)null); }
+        return getOption(key, value.getRealValue());
     }
     public Object getOption(Enum key, Double value) {
         Option opt = getOptionObject(key,value);
@@ -65,8 +65,8 @@ public abstract class Renderer {
     }
 
     public Object getOptionStringValue(Enum key, DataValue value) {
-    	if (value == null) { return getOptionStringValue(key, (Double)null); }
-    	return getOptionStringValue(key, value.getRealValue());
+        if (value == null) { return getOptionStringValue(key, (Double)null); }
+        return getOptionStringValue(key, value.getRealValue());
     }
     public Object getOptionStringValue(Enum key, Double value) {
         Option opt = getOptionObject(key,value);
@@ -91,60 +91,60 @@ public abstract class Renderer {
     }
 
     /*
-    protected Enum parseEnum(Enum values[], String v) {
-        for (Enum c: values) {
-            if (c.name().equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }	
+      protected Enum parseEnum(Enum values[], String v) {
+      for (Enum c: values) {
+      if (c.name().equals(v)) {
+      return c;
+      }
+      }
+      throw new IllegalArgumentException(v);
+      } 
     */
 
     public void begin(GraphicsContext g) {}
     public void end(GraphicsContext g) {}
     public void dataPoint(GraphicsContext g, DataValue p[]) {}
 
-  	public double[] transformPoint(DataValue[] input) {
+    public double[] transformPoint(DataValue[] input) {
         double output[] = new double[input.length];
-		output[0] = mHorizontalAxis.dataValueToAxisValue(input[0]);
+        output[0] = mHorizontalAxis.dataValueToAxisValue(input[0]);
         for (int i = 1; i<input.length; ++i) {
             output[i] = mVerticalAxis.dataValueToAxisValue(input[i]);
         }
         return output;
-  	}
+    }
 
-  	public double[] transformPoint(double[] input) {
+    public double[] transformPoint(double[] input) {
         double output[] = new double[input.length];
-		output[0] = mHorizontalAxis.dataValueToAxisValue(input[0]);
+        output[0] = mHorizontalAxis.dataValueToAxisValue(input[0]);
         for (int i = 1; i<input.length; ++i) {
             output[i] = mVerticalAxis.dataValueToAxisValue(input[i]);
         }
         return output;
-  	}
+    }
 
-  	public double[] transformPoint(double x, double y) {
+    public double[] transformPoint(double x, double y) {
         double output[] = new double[2];
-		output[0] = mHorizontalAxis.dataValueToAxisValue(x);
+        output[0] = mHorizontalAxis.dataValueToAxisValue(x);
         output[1] = mVerticalAxis.dataValueToAxisValue(y);
         return output;
-  	}
-  	
-  	public static Renderer create(Plot parent, org.multigraph.jaxb.Renderer state) throws DataTypeException {
+    }
+        
+    public static Renderer create(Plot parent, org.multigraph.jaxb.Renderer state) throws DataTypeException {
         Renderer renderer = null;
-  		switch (state.getType()) {
-  		case POINTLINE:
-  		case LINE:
-  		case POINT:
-  			renderer = new PointLineRenderer(parent, state);
+        switch (state.getType()) {
+        case POINTLINE:
+        case LINE:
+        case POINT:
+            renderer = new PointLineRenderer(parent, state);
             break;
-  		case BAR:
-  			renderer = new BarRenderer(parent, state);
+        case BAR:
+            renderer = new BarRenderer(parent, state);
             break;
 
-  		}
-  		return renderer;
-  	}
+        }
+        return renderer;
+    }
 
 
 }

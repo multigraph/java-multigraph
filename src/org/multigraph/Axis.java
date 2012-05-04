@@ -9,8 +9,8 @@ import org.multigraph.datatypes.Labeler;
 import org.multigraph.datatypes.number.NumberLabeler;
 
 public class Axis {
-	
-	private org.multigraph.jaxb.Axis mState;
+        
+    private org.multigraph.jaxb.Axis mState;
     private Graph mParent;
 
     private String mId;
@@ -39,13 +39,13 @@ public class Axis {
     private double mDensity;
     private Labeler mLabeler;
     
-	//
-	// _dataMin is the min data value; access through dataMin getter/setter property in order to keep
-	// record of whether it is set, and to update the axisToDataRatio accordingly.
-	//
+    //
+    // _dataMin is the min data value; access through dataMin getter/setter property in order to keep
+    // record of whether it is set, and to update the axisToDataRatio accordingly.
+    //
     private DataValue mDataMin;
     private boolean mHaveDataMin = false;
-	public boolean haveDataMin(){ return mHaveDataMin; }
+    public boolean haveDataMin(){ return mHaveDataMin; }
     public DataValue getDataMin() { return mDataMin; }
     public void setDataMin(DataValue min) {
         mDataMin = min;
@@ -55,13 +55,13 @@ public class Axis {
         }
     }
 
-	//
-	// _dataMax is the max data value; access through dataMax getter/setter property in order to keep
-	// record of whether it is set, and to update the axisToDataRatio accordingly.
-	//
+    //
+    // _dataMax is the max data value; access through dataMax getter/setter property in order to keep
+    // record of whether it is set, and to update the axisToDataRatio accordingly.
+    //
     private DataValue mDataMax;
     private boolean mHaveDataMax = false;
-	public boolean haveDataMax(){ return mHaveDataMax; }
+    public boolean haveDataMax(){ return mHaveDataMax; }
     public DataValue getDataMax() { return mDataMax; }
     public void setDataMax(DataValue max) {
         mDataMax = max;
@@ -80,8 +80,8 @@ public class Axis {
     public AxisOrientation getOrientation() { return mOrientation; }
     
     private void prepareState() {
-    	if (!mState.isSetGrid()) { mState.setGrid( new org.multigraph.jaxb.Grid() ); }
-    	if (!mState.isSetLabels()) { mState.setLabels(new org.multigraph.jaxb.Labels() ); }
+        if (!mState.isSetGrid()) { mState.setGrid( new org.multigraph.jaxb.Grid() ); }
+        if (!mState.isSetLabels()) { mState.setLabels(new org.multigraph.jaxb.Labels() ); }
         if (mState.getLabels().getLabel().isEmpty()) {
             mState.getLabels().getLabel().add(new org.multigraph.jaxb.Label());
         }
@@ -97,8 +97,8 @@ public class Axis {
         prepareState();
 
         this.mLength = (int)Math.round(mState.getLength() * ((mOrientation == AxisOrientation.HORIZONTAL)
-                                            ? mParent.getPlotbox().getWidth()
-                                            : mParent.getPlotbox().getHeight()));
+                                                             ? mParent.getPlotbox().getWidth()
+                                                             : mParent.getPlotbox().getHeight()));
 
         if (!state.getMin().isAuto()) {
             setDataMin(state.getMin().toDataValue(state.getType()));
@@ -113,13 +113,13 @@ public class Axis {
 
 
     private void buildLabelers() throws DataTypeException {
-    	this.mLabelers = new ArrayList<Labeler>();
+        this.mLabelers = new ArrayList<Labeler>();
 
-    	////////////////////////////////////////////////////////////////////////
-    	int numLabelSubtags = mState.getLabels()!=null ? mState.getLabels().getLabel().size() : 0; 
-    	if (numLabelSubtags > 0) {
-    		// This is the case where we have <labels><label>...</label>...</labels>,
-    		// i.e. single <label> tags nested inside the <labels> tag
+        ////////////////////////////////////////////////////////////////////////
+        int numLabelSubtags = mState.getLabels()!=null ? mState.getLabels().getLabel().size() : 0; 
+        if (numLabelSubtags > 0) {
+            // This is the case where we have <labels><label>...</label>...</labels>,
+            // i.e. single <label> tags nested inside the <labels> tag
             for(int k = 0; k < numLabelSubtags; ++k) {
                 String spacingAttrValue = null;
                 if (mState.getLabels().getLabel().get(k).isSetSpacing()) {
@@ -132,7 +132,7 @@ public class Axis {
                     spacingAttrValue = mState.getLabels().DEFAULT_DATETIME_SPACING;
                 }
                 // spacingAttrValue better not be null here!!!
-            	String hlabelSpacings[] = spacingAttrValue.split("[ \t]+");
+                String hlabelSpacings[] = spacingAttrValue.split("[ \t]+");
 
                 String format = ( mState.getLabels().getLabel().get(k).isSetFormat()
                                   ? mState.getLabels().getLabel().get(k).getFormat()
@@ -149,10 +149,10 @@ public class Axis {
                 DPoint anchor = ( mState.getLabels().getLabel().get(k).isSetAnchor()
                                   ? mState.getLabels().getLabel().get(k).getAnchor()
                                   : mState.getLabels().getAnchor() );
-            	for (int j=0; j<hlabelSpacings.length; ++j) {
-            		DataMeasure spacing = DataMeasure.create(mType, hlabelSpacings[j]);
+                for (int j=0; j<hlabelSpacings.length; ++j) {
+                    DataMeasure spacing = DataMeasure.create(mType, hlabelSpacings[j]);
                     Labeler labeler = Labeler.create(mType,
-                    								 this,
+                                                     this,
                                                      spacing, 
                                                      format,
                                                      start,
@@ -162,52 +162,52 @@ public class Axis {
                     this.mLabelers.add(labeler);
                 }
             }
-    	} else {
+        } else {
 
             ///
             /// This better not happen any more; prepareState() has ensured we have at least one <label> subelement
             /// inside a <labels> element.
             ///
-    		System.out.printf("Axis.java.buildLabels(): labels state error!!!!\n");
+            System.out.printf("Axis.java.buildLabels(): labels state error!!!!\n");
 
 
-/*
-    		// This is the case where we have no <label> tags nested inside the <labels> tag
+            /*
+            // This is the case where we have no <label> tags nested inside the <labels> tag
             String spacingAttrValue = null; 
             if (!mState.getLabels().isSetSpacing() && mType==DataType.DATETIME) {
-            	spacingAttrValue = mState.getLabels().DEFAULT_DATETIME_SPACING;
+            spacingAttrValue = mState.getLabels().DEFAULT_DATETIME_SPACING;
             } else {
-            	spacingAttrValue = mState.getLabels().getSpacing();
+            spacingAttrValue = mState.getLabels().getSpacing();
             }
             String hlabelSpacings[] = spacingAttrValue.split("[ \t]+");
-    		for (int k=0; k<hlabelSpacings.length; ++k) {
-    			DataMeasure spacing = DataMeasure.create(mType, hlabelSpacings[k]);
-    			DataValue start = DataValue.create(mType, mState.getLabels().getStart());
-                Labeler labeler = Labeler.create(this,
-                		                         mType,
-                                                 spacing, 
-                                                 mState.getLabels().getFormat(),
-                                                 start,
-                                                 mState.getLabels().getPosition(),
-                                                 mState.getLabels().getAngle(),
-                                                 mState.getLabels().getAnchor());
-                this.mLabelers.add(labeler);
-    		}
-*/
+            for (int k=0; k<hlabelSpacings.length; ++k) {
+            DataMeasure spacing = DataMeasure.create(mType, hlabelSpacings[k]);
+            DataValue start = DataValue.create(mType, mState.getLabels().getStart());
+            Labeler labeler = Labeler.create(this,
+            mType,
+            spacing, 
+            mState.getLabels().getFormat(),
+            start,
+            mState.getLabels().getPosition(),
+            mState.getLabels().getAngle(),
+            mState.getLabels().getAnchor());
+            this.mLabelers.add(labeler);
+            }
+            */
 
 
-    	}
-    	////////////////////////////////////////////////////////////////////////
+        }
+        ////////////////////////////////////////////////////////////////////////
 
-    	/*
-    	if (mOrientation == AxisOrientation.HORIZONTAL) {
-    	for (Labeler lab : mLabelers) {
-    		((org.multigraph.datatypes.datetime.DatetimeLabeler)lab).dump();
-    	}
-    	}
-    	*/
-    	
-    	
+        /*
+          if (mOrientation == AxisOrientation.HORIZONTAL) {
+          for (Labeler lab : mLabelers) {
+          ((org.multigraph.datatypes.datetime.DatetimeLabeler)lab).dump();
+          }
+          }
+        */
+        
+        
     }
 
 
@@ -245,68 +245,68 @@ public class Axis {
 
     public void render(GraphicsContext g, int step) {
 
-      switch (step) {
-      case 0:  // in step 0, render the grid lines associated with this axis, if any
-        prepareRender();
-        if (mState.getGrid().isVisible()) {
-            if (mLabelers.size() > 0 && mDensity <= 1.5) {
-                mLabeler.prepare(mDataMin, mDataMax);
-                boolean first = true;
-                while (mLabeler.hasNext()) {
-                    DataValue v = mLabeler.next();
-                    if (first) {
-                        first = false;
-                    }
-                    double a = dataValueToAxisValue(v);
-                    g.setLineWidth(1.0);
-                    g.setColor(mState.getGrid().getColor());
-                    if (mOrientation == AxisOrientation.HORIZONTAL) {
-                        g.drawLine(a, mPerpOffset, a, mParent.getPlotbox().getHeight() - mPerpOffset);
-                    } else {
-                        g.drawLine(mPerpOffset, a, mParent.getPlotbox().getWidth() - mPerpOffset, a);
+        switch (step) {
+        case 0:  // in step 0, render the grid lines associated with this axis, if any
+            prepareRender();
+            if (mState.getGrid().isVisible()) {
+                if (mLabelers.size() > 0 && mDensity <= 1.5) {
+                    mLabeler.prepare(mDataMin, mDataMax);
+                    boolean first = true;
+                    while (mLabeler.hasNext()) {
+                        DataValue v = mLabeler.next();
+                        if (first) {
+                            first = false;
+                        }
+                        double a = dataValueToAxisValue(v);
+                        g.setLineWidth(1.0);
+                        g.setColor(mState.getGrid().getColor());
+                        if (mOrientation == AxisOrientation.HORIZONTAL) {
+                            g.drawLine(a, mPerpOffset, a, mParent.getPlotbox().getHeight() - mPerpOffset);
+                        } else {
+                            g.drawLine(mPerpOffset, a, mParent.getPlotbox().getWidth() - mPerpOffset, a);
+                        }
                     }
                 }
             }
+            break;
+
+        default:
+        case 1:  // in step 1, render everything else
+            // render the axis itself:
+            if (mState.getLinewidth() > 0) {
+                g.setLineWidth(mState.getLinewidth());
+                g.setColor(mState.getColor());
+
+                if (mOrientation == AxisOrientation.HORIZONTAL) {
+                    g.drawLine(mParallelOffset, mPerpOffset, mParallelOffset + mLength, mPerpOffset);
+                } else {
+                    g.drawLine(mPerpOffset, mParallelOffset, mPerpOffset, mParallelOffset + mLength);
+                }
+            }
+
+            // render the axis title
+            // ... NYI ...
+
+            // render the tick marks and labels
+            if (mLabelers.size() > 0 && mDensity <= 1.5) {
+                int tickThickness = 1;
+                g.setLineWidth(tickThickness);
+                g.setColor(mState.getColor());
+                mLabeler.prepare(mDataMin, mDataMax);
+                while (mLabeler.hasNext()) {
+                    DataValue v = mLabeler.next();
+                    double    a = dataValueToAxisValue(v);
+                    if (mOrientation == AxisOrientation.HORIZONTAL) {
+                        g.drawLine(a, mPerpOffset+mState.getTickmax(), a, mPerpOffset+mState.getTickmin());
+                    } else {
+                        g.drawLine(mPerpOffset+mState.getTickmin(), a, mPerpOffset+mState.getTickmax(), a);
+                    }
+                    mLabeler.renderLabel(g, v);
+                }
+            }
+            break;
+
         }
-        break;
-
-      default:
-      case 1:  // in step 1, render everything else
-          // render the axis itself:
-          if (mState.getLinewidth() > 0) {
-              g.setLineWidth(mState.getLinewidth());
-              g.setColor(mState.getColor());
-
-              if (mOrientation == AxisOrientation.HORIZONTAL) {
-                  g.drawLine(mParallelOffset, mPerpOffset, mParallelOffset + mLength, mPerpOffset);
-              } else {
-                  g.drawLine(mPerpOffset, mParallelOffset, mPerpOffset, mParallelOffset + mLength);
-              }
-          }
-
-          // render the axis title
-          // ... NYI ...
-
-          // render the tick marks and labels
-          if (mLabelers.size() > 0 && mDensity <= 1.5) {
-              int tickThickness = 1;
-              g.setLineWidth(tickThickness);
-              g.setColor(mState.getColor());
-              mLabeler.prepare(mDataMin, mDataMax);
-              while (mLabeler.hasNext()) {
-                  DataValue v = mLabeler.next();
-                  double    a = dataValueToAxisValue(v);
-                  if (mOrientation == AxisOrientation.HORIZONTAL) {
-                      g.drawLine(a, mPerpOffset+mState.getTickmax(), a, mPerpOffset+mState.getTickmin());
-                  } else {
-                      g.drawLine(mPerpOffset+mState.getTickmin(), a, mPerpOffset+mState.getTickmax(), a);
-                  }
-                  mLabeler.renderLabel(g, v);
-              }
-          }
-          break;
-
-      }
 
     }
 

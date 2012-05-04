@@ -36,7 +36,7 @@ public class RGBColor {
     }
 
     public static String toString(RGBColor rgbcolor) {
-    	if (rgbcolor==null) { return "NULL-RGBCOLOR"; }
+        if (rgbcolor==null) { return "NULL-RGBCOLOR"; }
         return rgbcolor.toString();
     }
 

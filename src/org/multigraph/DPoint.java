@@ -8,8 +8,8 @@ public class DPoint {
     private double y;
     
     public DPoint(double x, double y) {
-    	this.x = x;
-    	this.y = y;
+        this.x = x;
+        this.y = y;
     }
 
     public DPoint(String string) {
@@ -22,8 +22,8 @@ public class DPoint {
 
     public String toString() {
         return (((xString != null) ? xString : Double.toString(x))
-        		+ " " +
-        		((yString != null) ? yString : Double.toString(y)));
+                + " " +
+                ((yString != null) ? yString : Double.toString(y)));
     }
 
     public double getX() {
@@ -34,11 +34,11 @@ public class DPoint {
     }
     
     public static DPoint parse(String string) {
-    	return new DPoint(string);
+        return new DPoint(string);
     }
     public static String toString(DPoint d) {
-    	if (d==null) { return "NULL-DPOINT"; }
-    	return d.toString();
+        if (d==null) { return "NULL-DPOINT"; }
+        return d.toString();
     }
 
 }

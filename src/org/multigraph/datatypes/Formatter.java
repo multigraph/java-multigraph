@@ -39,7 +39,7 @@ public abstract class Formatter {
      *
      * @return The maximum string length.
      */
-	abstract public int getMaxLength();
+    abstract public int getMaxLength();
 
     /**
      * Creates a formatter instance.
@@ -58,7 +58,7 @@ public abstract class Formatter {
         case NUMBER:
             return new NumberFormatter(formatString);
         case DATETIME:
-        	return new DatetimeFormatter(formatString);
+            return new DatetimeFormatter(formatString);
         default:
             throw new DataTypeException(String.format("Formatter.create: unknown DataType ('%s') when constructing Formatter with format '%s'",
                                                       type.toString(), formatString));
