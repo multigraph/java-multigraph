@@ -15,7 +15,7 @@
   <target name="xjc" description="Generate JAXB source files">  
     <echo message="Compiling the schema..." />  
     <mkdir dir="gen-src"/>
-    <xjc schema="multigraph.xsd" package="org.multigraph.jaxb" destdir="gen-src">  
+    <xjc schema="mugl-schema/mugl.xsd" package="org.multigraph.jaxb" destdir="gen-src">  
       <produces dir="gen-src/org/multigraph/jaxb" includes="**/*.java" />  
     </xjc>  
   </target>  
