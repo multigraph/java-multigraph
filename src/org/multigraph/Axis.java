@@ -51,7 +51,7 @@ public class Axis {
         mDataMin = min;
         mHaveDataMin = true;
         if (mHaveDataMin && mHaveDataMax) {
-            mAxisToDataRatio = (mLength - mMaxOffset - mMaxOffset) / (mDataMax.getRealValue() - mDataMin.getRealValue());
+            mAxisToDataRatio = (mLength - mMinOffset - mMaxOffset) / (mDataMax.getRealValue() - mDataMin.getRealValue());
         }
     }
 
@@ -67,7 +67,7 @@ public class Axis {
         mDataMax = max;
         mHaveDataMax = true;
         if (mHaveDataMax && mHaveDataMax) {
-            mAxisToDataRatio = (mLength - mMaxOffset - mMaxOffset) / (mDataMax.getRealValue() - mDataMin.getRealValue());
+            mAxisToDataRatio = (mLength - mMinOffset - mMaxOffset) / (mDataMax.getRealValue() - mDataMin.getRealValue());
         }
     }
 
