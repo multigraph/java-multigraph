@@ -181,9 +181,9 @@ public class DatetimeValueCalendar extends DatetimeValue {
                 if (tmonths % spacingMeasure != 0) { ++d; }
                 else if (this.getDay()>start.getDay()) { ++d; }
                 else if (this.getDay()==start.getDay() && this.getHour()>start.getHour()) { ++d; }
-                else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()>start.getHour()) { ++d; }
-                else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()>start.getMinute()) { ++d; }
-                else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getHour()==start.getHour() && this.getMinute()==start.getMinute() && this.getSecond()==start.getSecond() && this.getMillisecond()>start.getMillisecond()) { ++d; }
+                else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getMinute()>start.getMinute()) { ++d; }
+                else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getMinute()==start.getMinute() && this.getSecond()>start.getSecond()) { ++d; }
+                else if (this.getDay()==start.getDay() && this.getHour()==start.getHour() && this.getMinute()==start.getMinute() && this.getSecond()==start.getSecond() && this.getMillisecond()>start.getMillisecond()) { ++d; }
             
                 DatetimeValueCalendar firstTick = start.clone();
                 firstTick.add(CalendarField.MONTH, (int)(d * spacingMeasure));
